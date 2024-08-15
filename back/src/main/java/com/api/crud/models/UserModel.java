@@ -15,7 +15,9 @@ public class UserModel {
 
     private String password;
 
-    private Integer rol; // TO DO: preguntar -> 0: Admin, 1: Propietario, 2: UsuarioInteresado, 3: Notario
+    private String numeroTelefono;
+
+    private Integer rol; // TO DO: preguntar -> 0: Admin, 1: usuarioRegistrado, 2: Agente Inmobiliario
 
     public String getNombre() {
         return nombre;
@@ -56,5 +58,9 @@ public class UserModel {
     public void setRol(Integer rol) {
         this.rol = rol;
     } // TO DO: preguntar
+
+    public String getnumeroTelefono() { return numeroTelefono; }
+
+    public void setnumeroTelefono(String numeroTelefono) { this.numeroTelefono = numeroTelefono; }
 
 }
