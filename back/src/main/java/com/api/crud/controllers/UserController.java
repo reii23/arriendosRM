@@ -24,8 +24,13 @@ public class UserController {
     @PostMapping(path ="/crearUsuario")
     public ResponseEntity<?> crearUsuario(@RequestBody UserModel user) {
         try {
-            UserModel nuevoUsuario = this.userService.crearUsuario(user);
-            return ResponseEntity.ok().body(new MensajeRespuesta("Usuario creado exitosamente", nuevoUsuario));
+            // Validar si el email ya existe
+            UserModel userDB = this.userService.findByEmail(user.getEmail());
+            if (userDB != null) {
+                return ResponseEntity.badRequest().body(new MensajeRespuesta("El email ya existe"));
+            }
+            UserModel userCreado = this.userService.crearUsuario(user);
+            return ResponseEntity.ok().body(new MensajeRespuesta("Usuario creado correctamente", userCreado));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MensajeRespuesta("Error al crear usuario: " + e.getMessage()));
         }
