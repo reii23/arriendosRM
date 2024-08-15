@@ -1,5 +1,5 @@
 <template>
-  <div class="inmueble-card">
+  <div class="inmueble-card" @click="goToDetail">
     <img :src="inmueble.imagen || getDefaultImage(inmueble.tipoInmueble)" :alt="inmueble.direccion" class="inmueble-image">
     <div class="inmueble-detalles">
       <h3 class="inmueble-precio">{{ formatPrice(inmueble.precio) }}</h3>
@@ -48,6 +48,9 @@
           case 'TERRENO':
             return defaultTerrenoImagen;
         }
+      },
+      goToDetail() {
+        this.$router.push({ name: 'PropertyDetail', params: { id: this.inmueble.id } });
       }
     }
   }
@@ -62,7 +65,8 @@
   }
   
   .inmueble-card:hover {
-    box-shadow: black 0px 0px 10px;
+    box-shadow: black 0px 0px 30px;
+    cursor: pointer;
   }
   
   .inmueble-image {

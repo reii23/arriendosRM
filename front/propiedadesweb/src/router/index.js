@@ -4,6 +4,7 @@ import About from "../views/AboutView.vue";
 import Inmuebles from "../views/InmueblesView.vue";
 import Register from "../views/RegisterView.vue";
 import Login from "../views/LoginView.vue";
+import PropertyDetail from "../views/PropertyDetailView.vue";
 
 const routes = [
   {
@@ -30,6 +31,12 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/inmuebles/:id",
+    name: "PropertyDetail",
+    component: PropertyDetail,
+    props: true
   }
 ];
 

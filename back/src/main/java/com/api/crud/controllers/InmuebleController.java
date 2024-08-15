@@ -26,6 +26,13 @@ public class InmuebleController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/property/{id}")
+    public ResponseEntity<InmuebleModel> obtenerPropiedadesPorId(@PathVariable Long id) {
+        return inmuebleService.obtenerInmueblePorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/casa")
     public ResponseEntity<CasaModel> crearCasa(@RequestBody CasaModel casa) {
         return ResponseEntity.ok(inmuebleService.crearCasa(casa));
@@ -54,4 +61,6 @@ public class InmuebleController {
                 ? ResponseEntity.ok().build()
                 : ResponseEntity.notFound().build();
     }
+
+
 }
