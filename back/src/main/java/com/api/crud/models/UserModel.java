@@ -1,6 +1,7 @@
 package com.api.crud.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -63,4 +64,7 @@ public class UserModel {
 
     public void setnumeroTelefono(String numeroTelefono) { this.numeroTelefono = numeroTelefono; }
 
+    // Relación de uno a muchos con PublicacionModel
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PublicacionModel> publicaciones;
 }
