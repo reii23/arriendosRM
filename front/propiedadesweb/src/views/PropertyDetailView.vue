@@ -17,7 +17,7 @@
       </template>
       <template v-else-if="propiedad.tipoInmueble === 'DEPARTAMENTO'">
         <p><strong>Piso:</strong> {{ propiedad.piso }}</p>
-        <p><strong>Gastos Comunes:</strong> ${{ propiedad.gastosComunes.toLocaleString() }}</p>
+        <p><strong>Tiene Ascensor:</strong> {{ propiedad.tieneAscensor ? 'Sí' : 'No' }}</p>
       </template>
       <template v-else-if="propiedad.tipoInmueble === 'TERRENO'">
         <p><strong>Tipo de Suelo:</strong> {{ propiedad.tipoSuelo }}</p>
@@ -45,7 +45,7 @@ export default {
   methods: {
     async obtenerDetallesPropiedad() {
       try {
-        const id = this.$route.params.id; // Asumiendo que el ID se pasa como parámetro de ruta
+        const id = this.$route.params.id;
         const response = await axios.get(`http://localhost:8080/inmuebles/${id}`);
         this.propiedad = response.data;
       } catch (error) {
