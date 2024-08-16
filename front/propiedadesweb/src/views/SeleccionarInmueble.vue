@@ -1,6 +1,6 @@
 <template>
     <div class="selector-inmueble">
-      <h2>¿Qué tipo de propiedad desea crear?</h2>
+      <h2>¿Qué tipo de propiedad quieres publicar?</h2>
       <div class="button-group">
         <button @click="navigateTo('/seleccionar-datos-c')" class="btn-casa">Casa</button>
         <button @click="navigateTo('/seleccionar-datos-d')" class="btn-departamento">Departamento</button>
@@ -57,7 +57,6 @@
   }
   
   button:hover {
-    transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
   
