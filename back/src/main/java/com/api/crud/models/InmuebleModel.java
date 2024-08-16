@@ -144,7 +144,6 @@ public abstract class InmuebleModel {
         this.metrosCuadrados = metrosCuadrados;
     }
 
-    public Comuna getComuna() { return comuna;
+    public Comuna getComuna() { return comuna;}
 
-    }
 }
