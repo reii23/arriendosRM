@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link>
-      <span v-if="auth.isLoggedIn"> | </span>
-      <router-link to="/about">Subsidios</router-link>
-      <span> | </span>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">Subsidios</router-link> |
       <router-link to="/inmuebles">Inmuebles</router-link>
       <span v-if="!auth.isLoggedIn"> | </span>
       <!-- Mostrar Login y Register solo si no está logueado -->
