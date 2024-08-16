@@ -5,6 +5,10 @@ import Inmuebles from "../views/InmueblesView.vue";
 import Register from "../views/RegisterView.vue";
 import Login from "../views/LoginView.vue";
 import PropertyDetail from "../views/PropertyDetailView.vue";
+import SeleccionarInmueble from "@/views/SeleccionarInmueble.vue";
+import SeleccionarDatosC from "@/views/SeleccionarDatosC.vue";
+import SeleccionarDatosD from "@/views/SeleccionarDatosD.vue";
+import SeleccionarDatosT from "@/views/SeleccionarDatosT.vue";
 
 const routes = [
   {
@@ -37,6 +41,26 @@ const routes = [
     name: "PropertyDetail",
     component: PropertyDetail,
     props: true
+  },
+  {
+    path: "/seleccionar-inmueble",
+    name: "SeleccionarInmueble",
+    component: SeleccionarInmueble,
+  },
+  {
+    path: "/seleccionar-datos-c",
+    name: "SeleccionarDatosC",
+    component: SeleccionarDatosC,
+  },
+  {
+    path: "/seleccionar-datos-d",
+    name: "SeleccionarDatosD",
+    component: SeleccionarDatosD,
+  },
+  {
+    path: "/seleccionar-datos-t",
+    name: "SeleccionarDatosT",
+    component: SeleccionarDatosT,
   }
 ];
 

@@ -21,7 +21,7 @@ export default {
 
     const publicarInmueble = () => {
       if (AuthService.isAuthenticated()) {
-        router.push('/publicar-inmueble');
+        router.push('/seleccionar-inmueble');
       } else {
         router.push('/login');
       }
