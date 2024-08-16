@@ -17,6 +17,7 @@
 
 <script>
 import axios from 'axios';
+import {auth} from "@/auth";
 
 export default {
   name: 'Login',
@@ -32,9 +33,7 @@ export default {
     async loginUser() {
       try {
         const response = await axios.post('http://localhost:8080/user/login', this.user);
-        // Suponiendo que la autenticación fue exitosa, se establece la variable booleana en true
-        localStorage.setItem('isLoggedIn', 'true');
-        console.log('Usuario logueado correctamente:', response.data);
+        auth.login(); // Actualiza el estado reactivo
         this.$router.push('/');
       } catch (error) {
         console.error('Error al iniciar sesión:', error);

@@ -1,17 +1,36 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">Subsidios</router-link> | 
-      <router-link to="/inmuebles">Inmuebles</router-link> |
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/register">Register</router-link> |
-      <router-link to="/seleccionar-inmueble">SeleccionarProvisional</router-link> |
-      <router-link to="/logout"> Logout</router-link>
+      <router-link to="/">Home</router-link>
+      <span v-if="auth.isLoggedIn"> | </span>
+      <router-link to="/about">Subsidios</router-link>
+      <span> | </span>
+      <router-link to="/inmuebles">Inmuebles</router-link>
+      <span v-if="!auth.isLoggedIn"> | </span>
+      <!-- Mostrar Login y Register solo si no está logueado -->
+      <router-link v-if="!auth.isLoggedIn" to="/login">Login</router-link>
+      <span v-if="!auth.isLoggedIn"> | </span>
+      <router-link v-if="!auth.isLoggedIn" to="/register">Register</router-link>
+      <!-- Mostrar Logout solo si está logueado -->
+      <span v-if="auth.isLoggedIn"> | </span>
+      <router-link v-if="auth.isLoggedIn" to="/logout">Logout</router-link>
     </nav>
     <router-view />
   </div>
 </template>
+
+<script>
+import { auth } from '@/auth';
+
+export default {
+  name: "App",
+  setup() {
+    return {
+      auth
+    }
+  }
+}
+</script>
 
 <style>
 #app {
@@ -36,4 +55,3 @@ nav a.router-link-exact-active {
   color: rgb(255,146,2);
 }
 </style>
-
