@@ -6,7 +6,8 @@
       <router-link to="/inmuebles">Inmuebles</router-link> |
       <router-link to="/login">Login</router-link> |
       <router-link to="/register">Register</router-link> |
-      <router-link to="/seleccionar-inmueble">SeleccionarProvisional</router-link>
+      <router-link to="/seleccionar-inmueble">SeleccionarProvisional</router-link> |
+      <router-link to="/logout"> Logout</router-link>
     </nav>
     <router-view />
   </div>

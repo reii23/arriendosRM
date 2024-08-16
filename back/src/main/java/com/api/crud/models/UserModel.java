@@ -11,6 +11,7 @@ public class UserModel {
 
     private String nombre;
 
+    @Column(unique = true)
     private String email;
 
     private String password;

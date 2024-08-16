@@ -10,6 +10,7 @@ import SeleccionarDatosC from "@/views/SeleccionarDatosC.vue";
 import SeleccionarDatosD from "@/views/SeleccionarDatosD.vue";
 import SeleccionarDatosT from "@/views/SeleccionarDatosT.vue";
 import PublicacionCreada from "@/views/PublicacionCreada.vue";
+import LogoutView from "@/views/LogoutView.vue";
 
 const routes = [
   {
@@ -67,7 +68,13 @@ const routes = [
     path: "/publicacion-creada",
     name: "PublicacionCreada",
     component: PublicacionCreada,
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    component: LogoutView,
   }
+
 ];
 
 const router = createRouter({
