@@ -148,4 +148,7 @@ public abstract class InmuebleModel {
 
     }
 
+    // Relación uno a uno con PublicacionModel
+    @OneToOne(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PublicacionModel publicacion;
 }
