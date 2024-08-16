@@ -4,9 +4,7 @@ package com.api.crud.controllers;
 import com.api.crud.models.HorarioVisitaModel;
 import com.api.crud.services.HorarioVisitaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -22,7 +20,12 @@ public class HorarioVisitaController {
     }
 
     @GetMapping(path = "/obtenerHorariosVisitaPorInmueble/{id}")
-    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorInmueble(Long id) {
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorInmueble(@PathVariable Long id) {
         return this.horarioVisitaService.obtenerHorariosVisitaPorInmueble(id);
+    }
+
+    @PostMapping(path = "/crearHorarioVisita")
+    public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
+        return this.horarioVisitaService.crearHorarioVisita(horarioVisita);
     }
 }

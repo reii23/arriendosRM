@@ -24,7 +24,10 @@ public class HorarioVisitaService {
         return horarioVisitaRepository.findByIdInmueble(id);
     }
 
-
+    // Crear horario de visita
+    public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
+        return horarioVisitaRepository.save(horarioVisita);
+    }
 
 
 }
