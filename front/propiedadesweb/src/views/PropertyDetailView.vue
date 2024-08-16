@@ -28,10 +28,13 @@
     <p>Cargando detalles de la propiedad...</p>
   </div>
 
+  <h2>Horarios de Visita</h2>
   <div v-if="horariosVisita">
-    <h2>Horarios de Visita</h2>
     <!-- Saco el primer horario-->
-    <p><strong>Fecha:</strong> {{ horariosVisita[0].fecha }}</p>
+    <div v-for="horario in horariosVisita" :key="horario.id">
+      <p><strong>Fecha:</strong> {{horario.fecha}}</p>
+    </div>
+    
   </div>
   <div v-else>
     <p>Cargando horarios de visita...</p>
@@ -59,8 +62,6 @@ export default {
         const id = this.$route.params.id;
         const response = await axios.get(`http://localhost:8080/inmuebles/${id}`);
         this.propiedad = response.data;
-        const date = new Date(this.propiedad.fecha);
-
       } catch (error) {
         console.error('Error al obtener los detalles de la propiedad:', error);
       }
@@ -70,8 +71,6 @@ export default {
         const id = this.$route.params.id;
         const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorInmueble/${id}`);
         this.horariosVisita = response.data;
-        
-
       } catch (error) {
         console.error('Error al obtener los horarios de visita:', error);
       }
