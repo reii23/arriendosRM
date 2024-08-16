@@ -13,7 +13,7 @@
       
       <!-- Campos específicos según el tipo de inmueble -->
       <template v-if="propiedad.tipoInmueble === 'CASA'">
-        <p><strong>Número de Pisos:</strong> {{ propiedad.numeroPisos }}</p>
+        <p><strong>Número de Pisos:</strong> {{ propiedad.numPisos }}</p>
       </template>
       <template v-else-if="propiedad.tipoInmueble === 'DEPARTAMENTO'">
         <p><strong>Piso:</strong> {{ propiedad.piso }}</p>
