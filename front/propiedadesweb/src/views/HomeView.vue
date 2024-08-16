@@ -2,34 +2,30 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/residenciasRM.png" />
     <Componente msg="Bienvenido a residenciasRM" />
-    <button @click="publicarInmueble" class="btn-publicar">Publicar Inmueble</button>
+    <!-- Utilizar la función handleCreatePublicationClick en el botón -->
+    <button @click="handleCreatePublicationClick" class="btn-publicar">Publicar Inmueble</button>
   </div>
 </template>
 
 <script>
 import Componente from "@/components/Componente.vue";
-import AuthService from '@/services/auth.service';
-import { useRouter } from 'vue-router';
 
 export default {
   name: "HomeView",
   components: {
     Componente,
   },
-  setup() {
-    const router = useRouter();
-
-    const publicarInmueble = () => {
-      if (AuthService.isAuthenticated()) {
-        router.push('/seleccionar-inmueble');
+  methods: {
+    handleCreatePublicationClick() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      if (isLoggedIn) {
+        this.$router.push('/seleccionar-inmueble');
       } else {
-        router.push('/login');
+        this.$router.push('/login');
       }
-    };
-
-    return { publicarInmueble };
+    }
   }
-};
+}
 </script>
 
 <style scoped>

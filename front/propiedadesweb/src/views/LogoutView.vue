@@ -5,21 +5,22 @@
 </template>
 
 <script>
-import AuthService from "@/services/auth.service";
-import { useRouter } from "vue-router";
-
 export default {
   name: "LogoutView",
-  setup() {
-    const router = useRouter();
 
-    // Llamar al método de logout cuando el componente se monte
-    AuthService.logout();
-    router.push("/login");
-
-    return {};
+  created() {
+    this.logoutUser();
   },
-};
+
+  methods: {
+    logoutUser() {
+      // Establecer la variable isLoggedIn en false al cerrar sesión
+      localStorage.setItem('isLoggedIn', 'false');
+      // Redirigir al login
+      this.$router.push('/login');
+    }
+  }
+}
 </script>
 
 <style scoped>
