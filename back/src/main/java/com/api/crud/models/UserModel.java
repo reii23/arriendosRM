@@ -20,6 +20,13 @@ public class UserModel {
 
     private Integer rol; // TO DO: preguntar -> 0: Admin, 1: usuarioRegistrado, 2: Agente Inmobiliario
 
+    // Relación de uno a muchos con PublicacionModel
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private List<InmuebleModel> inmueble;
+
+
+    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -64,7 +71,13 @@ public class UserModel {
 
     public void setnumeroTelefono(String numeroTelefono) { this.numeroTelefono = numeroTelefono; }
 
-    // Relación de uno a muchos con PublicacionModel
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PublicacionModel> publicaciones;
+
+    public List<InmuebleModel> getInmueble() {
+        return inmueble;
+    }
+
+    public void setInmueble(List<InmuebleModel> inmueble) {
+        this.inmueble = inmueble;
+    }
+
 }

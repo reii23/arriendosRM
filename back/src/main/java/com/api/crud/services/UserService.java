@@ -21,8 +21,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<UserModel> obtenerUsuarioPorId(Long id) {
-        return userRepository.findById(id);
+    public UserModel obtenerUsuarioPorId(Long id) {
+        return userRepository.findUserModelById(id);
     }
 
 
@@ -58,6 +58,7 @@ public class UserService {
     public UserModel findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
 }
 
 

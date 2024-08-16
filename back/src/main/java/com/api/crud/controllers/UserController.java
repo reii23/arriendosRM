@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/obtenerUsuarioPorId/{id}")
-    public Optional<UserModel> obtenerUsuarioPorId(@PathVariable("id") Long id) {
+    public UserModel obtenerUsuarioPorId(@PathVariable("id") Long id) {
         return this.userService.obtenerUsuarioPorId(id);
     }
 
