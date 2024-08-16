@@ -9,6 +9,7 @@ import SeleccionarInmueble from "@/views/SeleccionarInmueble.vue";
 import SeleccionarDatosC from "@/views/SeleccionarDatosC.vue";
 import SeleccionarDatosD from "@/views/SeleccionarDatosD.vue";
 import SeleccionarDatosT from "@/views/SeleccionarDatosT.vue";
+import PublicacionCreada from "@/views/PublicacionCreada.vue";
 
 const routes = [
   {
@@ -61,6 +62,11 @@ const routes = [
     path: "/seleccionar-datos-t",
     name: "SeleccionarDatosT",
     component: SeleccionarDatosT,
+  },
+  {
+    path: "/publicacion-creada",
+    name: "PublicacionCreada",
+    component: PublicacionCreada,
   }
 ];
 
