@@ -147,8 +147,4 @@ public abstract class InmuebleModel {
     public Comuna getComuna() { return comuna;
 
     }
-
-    // Relación uno a uno con PublicacionModel
-    @OneToOne(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private PublicacionModel publicacion;
 }
