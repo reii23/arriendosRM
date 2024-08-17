@@ -12,6 +12,7 @@ import SeleccionarDatosT from "@/views/SeleccionarDatosT.vue";
 import PublicacionCreada from "@/views/PublicacionCreada.vue";
 import LogoutView from "@/views/LogoutView.vue";
 import AccountView from "@/views/AccountView.vue";
+import AgenteView from "@/views/AgenteView.vue";
 
 const routes = [
   {
@@ -79,8 +80,11 @@ const routes = [
 	path: "/account",
 	name: "account",
 	component: AccountView,
+  },
+  { path: '/agente',
+    name: "AgenteView",
+    component: AgenteView,
   }
-
 ];
 
 const router = createRouter({
