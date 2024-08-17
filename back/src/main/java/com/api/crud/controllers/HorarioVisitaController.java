@@ -5,6 +5,7 @@ import com.api.crud.models.HorarioVisitaModel;
 import com.api.crud.services.HorarioVisitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 
@@ -35,8 +36,22 @@ public class HorarioVisitaController {
     }
 
     @PostMapping(path = "/crearHorarioVisita")
-    public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
-        return this.horarioVisitaService.crearHorarioVisita(horarioVisita);
+    public ResponseEntity<?> crearHorarioVisita(@RequestBody HorarioVisitaModel horarioVisita) {
+        try {
+            // Validar los datos de entrada
+            if (horarioVisita.getFecha() == null || horarioVisita.getIdInmueble() == null || horarioVisita.getIdUsuario() == null) {
+                return ResponseEntity.badRequest().body("Faltan datos necesarios");
+            }
+
+            // Crear el horario de visita
+            HorarioVisitaModel horarioCreado = this.horarioVisitaService.crearHorarioVisita(horarioVisita);
+
+            // Devolver la respuesta
+            return ResponseEntity.ok().body("Horario de visita creado correctamente: " + horarioCreado.toString());
+        } catch (Exception e) {
+            // Manejar excepciones
+            return ResponseEntity.badRequest().body("Error al crear horario de visita: " + e.getMessage());
+        }
     }
 
     @PostMapping(path = "agendarVisita/{id}/{idVisitante}")
