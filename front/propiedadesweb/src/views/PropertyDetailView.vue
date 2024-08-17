@@ -1,48 +1,57 @@
-<template>
-  <div v-if="propiedad" class="propiedad-detalle">
+Copy<template>
+  <div class="propiedad-detalle-container">
     <h1>Detalles de la Propiedad</h1>
-    <div class="propiedad-info">
-      <p><strong>ID:</strong> {{ propiedad.id }}</p>
-      <p><strong>Tipo de Inmueble:</strong> {{ propiedad.tipoInmueble }}</p>
-      <p><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
-      <p><strong>Precio:</strong> ${{ propiedad.precio.toLocaleString() }}</p>
-      <p><strong>Disponible:</strong> {{ propiedad.disponible ? 'Sí' : 'No' }}</p>
-      <p><strong>Verificado:</strong> {{ propiedad.verificado ? 'Sí' : 'No' }}</p>
-      <p><strong>Metros Cuadrados:</strong> {{ propiedad.metrosCuadrados }} m²</p>
-      <p><strong>Comuna:</strong> {{ propiedad.comuna }}</p>
-      
-      <!-- Campos específicos según el tipo de inmueble -->
-      <template v-if="propiedad.tipoInmueble === 'CASA'">
-        <p><strong>Número de Pisos:</strong> {{ propiedad.numPisos }}</p>
-      </template>
-      <template v-else-if="propiedad.tipoInmueble === 'DEPARTAMENTO'">
-        <p><strong>Piso:</strong> {{ propiedad.piso }}</p>
-        <p><strong>Tiene Ascensor:</strong> {{ propiedad.tieneAscensor ? 'Sí' : 'No' }}</p>
-      </template>
-      <template v-else-if="propiedad.tipoInmueble === 'TERRENO'">
-        <p><strong>Tipo de Suelo:</strong> {{ propiedad.tipoSuelo }}</p>
-      </template>
+    <div v-if="propiedad" class="propiedad-detalle">
+      <div class="propiedad-info">
+        <div class="imagen-container">
+          <img :src="propiedad.imagen ? propiedad.imagen : getDefaultImage(propiedad.tipoInmueble)" alt="Imagen de la propiedad" class="propiedad-imagen">
+        </div>
+        <div class="caracteristicas-container">
+          <p><strong>Tipo de Inmueble:</strong> {{ propiedad.tipoInmueble }}</p>
+          <p><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
+          <p><strong>Precio:</strong> ${{ propiedad.precio.toLocaleString() }}</p>
+          <p><strong>Disponible:</strong> {{ propiedad.disponible ? 'Sí' : 'No' }}</p>
+          <p><strong>Verificado:</strong> {{ propiedad.verificado ? 'Sí' : 'No' }}</p>
+          <p><strong>Metros Cuadrados:</strong> {{ propiedad.metrosCuadrados }} m²</p>
+          <p><strong>Comuna:</strong> {{ propiedad.comuna }}</p>
+          
+          <!-- Campos específicos según el tipo de inmueble -->
+          <template v-if="propiedad.tipoInmueble === 'CASA'">
+            <p><strong>Número de Pisos:</strong> {{ propiedad.numPisos }}</p>
+          </template>
+          <template v-else-if="propiedad.tipoInmueble === 'DEPARTAMENTO'">
+            <p><strong>Piso:</strong> {{ propiedad.piso }}</p>
+            <p><strong>Tiene Ascensor:</strong> {{ propiedad.tieneAscensor ? 'Sí' : 'No' }}</p>
+          </template>
+          <template v-else-if="propiedad.tipoInmueble === 'TERRENO'">
+            <p><strong>Tipo de Suelo:</strong> {{ propiedad.tipoSuelo }}</p>
+          </template>
+        </div>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    <p>Cargando detalles de la propiedad...</p>
-  </div>
+    <div v-else>
+      <p>Cargando detalles de la propiedad...</p>
+    </div>
 
-  <h2>Horarios de Visita</h2>
-  <div v-if="horariosVisita">
-    <!-- Saco el primer horario-->
-    <div v-for="horario in horariosVisita" :key="horario.id">
-      <p><strong>Fecha:</strong> {{horario.fecha}}</p>
+    <div class="horarios-visita">
+      <h2>Horarios de Visita</h2>
+      <div v-if="horariosVisita" class="horarios-lista">
+        <div v-for="horario in horariosVisita" :key="horario.id" class="horario-item">
+          <p><strong>Fecha:</strong> {{horario.fecha}}</p>
+        </div>
+      </div>
+      <div v-else>
+        <p>Cargando horarios de visita...</p>
+      </div>
     </div>
-    
-  </div>
-  <div v-else>
-    <p>Cargando horarios de visita...</p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import defaultCasaImagen from '@/assets/default-house.jpg';
+import defaultDepartamentoImagen from '@/assets/default-departamento.jpg';
+import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
 
 export default {
   name: 'PropiedadDetalle',
@@ -74,19 +83,68 @@ export default {
       } catch (error) {
         console.error('Error al obtener los horarios de visita:', error);
       }
+    },
+    getDefaultImage(tipoInmueble){
+      switch (tipoInmueble) {
+        case 'CASA':
+          return defaultCasaImagen;
+        case 'DEPARTAMENTO':
+          return defaultDepartamentoImagen;
+        case 'TERRENO':
+          return defaultTerrenoImagen;
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.propiedad-detalle {
-  max-width: 600px;
+.propiedad-detalle-container {
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.propiedad-info p {
+h1, h2 {
+  margin-bottom: 20px;
+}
+
+.propiedad-info {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.imagen-container {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.propiedad-imagen {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.caracteristicas-container {
+  flex: 1;
+}
+
+.caracteristicas-container p {
   margin-bottom: 10px;
+}
+
+.horarios-visita {
+  margin-top: 30px;
+}
+
+.horarios-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.horario-item {
+  padding: 10px;
+  border-radius: 8px;
 }
 </style>
