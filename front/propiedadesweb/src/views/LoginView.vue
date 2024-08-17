@@ -12,39 +12,32 @@
       </div>
       <button type="submit">Iniciar Sesión</button>
     </form>
-    <p v-if="message" :class="messageClass">{{ message }}</p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { auth } from "@/auth";
+import {auth} from "@/auth";
 
 export default {
   name: 'Login',
   data() {
     return {
       user: {
-        email: "",
-        password: ""
-      },
-      message: "",
-      messageClass: ""
+        email: '',
+        password: ''
+      }
     }
   },
   methods: {
-    async loginUser(){
+    async loginUser() {
       try {
-        const respuesta = await axios.post('http://localhost:8080/user/login', this.user);
-        const respuesta2 = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorEmail/${this.user.email}`);
-        auth.login(respuesta2.data.id, respuesta2.data.rol);
-        this.message = "Has iniciado sesión correctamente";
-        this.messageClass = "success-message";
-
+        const response = await axios.post('http://localhost:8080/user/login', this.user);
+        const response2 = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorEmail/${this.user.email}`);
+        console.log(response2.data.id);
+        auth.login(response2.data.id, response2.data.rol); 
         this.$router.push('/');
-      } catch (error){
-        this.message = "Error al iniciar sesión. Verifica los datos ingresados";
-        this.messageClass = "error-message";
+      } catch (error) {
         console.error('Error al iniciar sesión:', error);
       }
     }
@@ -57,8 +50,6 @@ export default {
   max-width: 350px;
   margin: 0 auto;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .form-group {
   margin-bottom: 15px;
@@ -66,18 +57,14 @@ export default {
 label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
 }
-
-input{
+input {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
-
 }
-button{
+button {
   width: 100%;
   padding: 10px;
   background-color: rgb(255,146,2);
@@ -85,25 +72,8 @@ button{
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-
 }
-
-button:hover{
+button:hover {
   background-color: rgb(8, 8, 8);
 }
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-.success-message {
-  color: green;
-  font-weight: bold;
-}
-.error-message {
-  color: red;
-  font-weight: bold;
-}
-
 </style>
