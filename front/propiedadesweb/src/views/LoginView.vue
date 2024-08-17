@@ -10,63 +10,42 @@
         <label for="password">Contraseña</label>
         <input type="password" id="password" v-model="user.password" required>
       </div>
-      <button type="submit":disabled="isSubmitting">
-        {{ isSubmitting ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
-      </button>
+      <button type="submit">Iniciar Sesión</button>
     </form>
-    <p v-if="message":class="{ 'success-message': isSuccess, 'error-message': !isSuccess }">
-      {{ message }}
-    </p>
+    <p v-if="message" :class="messageClass">{{ message }}</p>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import {auth} from "@/auth";
+import axios from 'axios';
+import { auth } from "@/auth";
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       user: {
         email: "",
         password: ""
       },
-      isSubmitting: false,
       message: "",
-      isSuccess: false
+      messageClass: ""
     }
   },
-
-
   methods: {
-    async loginUser() {
-      this.isSubmitting = true;
-      this.message = "";
+    async loginUser(){
       try {
-        const loginResponse = await axios.post("http://localhost:8080/user/login", this.user);
-        
-        if (loginResponse.data && loginResponse.data.success) {
-          const userResponse = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorEmail/${this.user.email}`);
-          if (userResponse.data) {
-            auth.login(userResponse.data.id, userResponse.data.rol);
-            this.message = "Has iniciado sesión correctamente";
-            this.isSuccess = true;
-            setTimeout(() => this.$router.push("/"), 1500);
-          } else {
-            throw new Error("No se pudo obtener la información del usuario");
-          }
+        const respuesta = await axios.post('http://localhost:8080/user/login', this.user);
+        const respuesta2 = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorEmail/${this.user.email}`);
+        auth.login(respuesta2.data.id, respuesta2.data.rol);
+        this.message = "Has iniciado sesión correctamente";
+        this.messageClass = "success-message";
 
-        } else{
-          throw new Error("Credenciales ingresadas inválidas");
-        }
-        
+        this.$router.push('/');
       } catch (error){
-        console.error("Error al iniciar sesion:", error);
-        this.message = error.response?.data?.message || "Error al iniciar sesión. Inténtalo de nuevo";
-        this.isSuccess = false;
-      } finally{
-        this.isSubmitting = false;
+        this.message = "Error al iniciar sesión. Verifica los datos ingresados";
+        this.messageClass = "error-message";
+        console.error('Error al iniciar sesión:', error);
       }
     }
   }
@@ -79,25 +58,25 @@ export default {
   margin: 0 auto;
   padding: 20px;
   border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .form-group {
   margin-bottom: 15px;
 }
-
 label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
 
-input {
+input{
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
-}
 
+}
 button{
   width: 100%;
   padding: 10px;
@@ -111,15 +90,18 @@ button{
 
 }
 
-button:hover {
+button:hover{
   background-color: rgb(8, 8, 8);
 }
-
-.success-message{
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+.success-message {
   color: green;
   font-weight: bold;
 }
-.error-message{
+.error-message {
   color: red;
   font-weight: bold;
 }
