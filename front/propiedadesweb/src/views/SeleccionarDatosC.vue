@@ -24,14 +24,20 @@
         <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
         <input type="text" v-model="address.line3" placeholder="m2 del interior" />
         <input type="text" v-model="address.line4" placeholder="Cantidad de pisos" />
-        <input type="text" v-model="address.line5" placeholder="¿Tiene patio?" />
+        <div class="patio-option">
+        <span>¿Tiene patio?</span>
+        <div class="button-group">
+          <button @click="setPatio(true)" :class="{ active: address.hasPatio === true }">Sí</button>
+          <button @click="setPatio(false)" :class="{ active: address.hasPatio === false }">No</button>
+        </div>
       </div>
-      <button @click="publishProperty">Publicar Casa</button>
+    </div>
+    <button @click="publishProperty" class="publicar-button">Publicar Casa</button>
     <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
       {{ message }}
     </p>
-    </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import { ref } from 'vue';
@@ -77,8 +83,13 @@
         line2: '',
         line3: '',
         line4: '',
-        line5: ''
+        hasPatio: null
       });
+
+      const setPatio = (value) => {
+      address.value.hasPatio = value;
+    };
+
   
       return {
         navigateTo,
@@ -87,7 +98,8 @@
         message,
         isSuccess,
         publishProperty,
-        comunas
+        comunas,
+        setPatio
       };
     }
   }
@@ -136,7 +148,7 @@
     text-align: center;
   }
   
-  input[type="text"] {
+  input[type="text"], select {
     padding: 12px;
     border: none;
     border-radius: 4px;
@@ -148,56 +160,66 @@
   input[type="text"]::placeholder {
     color: #7a8ca7;
   }
+  
+  .patio-option {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px;
+  }
 
-  .btn-crear-publicacion{
-    background-color: #f7c545;
+  .button-group button.active{
+  background-color: #009908;
+  color: #fff;
+}
+  
+  .button-group button {
+    flex: 1;
+    padding: 10px;
+    border:#000000;
+    border-radius: 4px;
+    background-color: #e4f0ff;
     color: #022b60;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 8px;
     cursor: pointer;
   }
-  button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #ff6b35;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  display: block;
-  margin: 20px auto;
-}
 
-button:hover {
-  background-color: #ff5630;
-}
-
-.success-message {
-  color: #28a745;
-  text-align: center;
-  margin-top: 20px;
-}
-
-.error-message {
-  color: #dc3545;
-  text-align: center;
-  margin-top: 20px;
-}
-
-select {
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: #e4f0ff;
-  color: #7a8ca7;
-  width: 100%;
-  margin-bottom: 2px;
-}
-
-select:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #ff6b35;
-}
+  
+  .publicar-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f7c545;
+    color: #022b60;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    transition: background-color 0.3s;
+  }
+  
+  .publish-button:hover {
+    background-color: #f9d676;
+  }
+  
+  .success-message {
+    color: #28a745;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #ff6b35;
+  }
   </style>

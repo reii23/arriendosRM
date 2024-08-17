@@ -23,14 +23,20 @@
         <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
         <input type="text" v-model="address.line3" placeholder="m2 del terreno" />
         <input type="text" v-model="address.line4" placeholder="Tipo de suelo" />
-        <input type="text" v-model="address.line5" placeholder="¿Cuenta con servicios básicos? (Si/No)" />
+        <div class="servicios-option">
+          <span>¿Cuenta con servicios básicos?</span>
+          <div class="button-group">
+            <button @click="setServicios(true)" :class="{ active: address.hasServicios === true }">Sí</button>
+            <button @click="setServicios(false)" :class="{ active: address.hasServicios === false }">No</button>
+          </div>
+        </div>
       </div>
-      <button @click="publishProperty">Publicar Terreno</button>
-    <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
-      {{ message }}
-    </p>
+      <button @click="publishProperty" class="publicar-button">Publicar Terreno</button>
+      <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
+        {{ message }}
+      </p>
     </div>
-  </template>
+</template>
 
   <script>
   import { ref } from 'vue';
@@ -45,7 +51,7 @@
         line2: '',
         line3: '',
         line4: '',
-        line5: ''
+        hasServicios: null
       });
       const message = ref('');
       const isSuccess = ref(false);
@@ -79,7 +85,7 @@
                 line2: address.value.line2,
                 line3: address.value.line3,
                 line4: address.value.line4,
-                line5: address.value.line5
+                hasServicios: address.value.hasServicios
               }
             }),
           });
@@ -99,6 +105,10 @@
         message.value = "Los datos de la publicación no son válidos";
       }
     };
+
+    const setServicios = (value) => {
+      address.value.hasServicios = value;
+    };
   
       return {
         action,
@@ -106,7 +116,8 @@
         message,
         isSuccess,
         publishProperty,
-        comunas
+        comunas,
+        setServicios
       };
     }
   }
@@ -155,7 +166,7 @@
     text-align: center;
   }
   
-  input[type="text"] {
+  input[type="text"], select {
     padding: 12px;
     border: none;
     border-radius: 4px;
@@ -167,23 +178,54 @@
   input[type="text"]::placeholder {
     color: #7a8ca7;
   }
+
+  .servicios-option {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   
-  button {
+  .button-group {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .button-group button {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    background-color: #e4f0ff;
+    color: #022b60;
+    cursor: pointer;
+  }
+
+  .button-group button.active {
+    background-color: #009908;
+    color: #fff;
+  }
+
+  .publicar-button {
     padding: 12px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #ff6b35;
-    color: #fff;
+    background-color: #f7c545;
+    color: #022b60;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
     display: block;
     margin: 20px auto;
+    transition: background-color 0.3s;
   }
-  
-  button:hover {
-    background-color: #ff5630;
+
+  .publicar-button:hover {
+    background-color: #f9d676;
   }
-  
+
+
+
   .success-message {
     color: #28a745;
     text-align: center;

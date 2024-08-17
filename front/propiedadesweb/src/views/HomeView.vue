@@ -30,12 +30,24 @@ export default {
 
 <style scoped>
 .btn-publicar {
-  margin-top: 20px;
-  padding: 10px 20px;
+  margin-top: 10px;
+  padding: 12px 60px;
+  font-size: 18px;
   background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
+
+
+.btn-publicar:hover {
+  background-color: #45a049;
+}
+
+.btn-publicar:active {
+  transform: scale(0.98);
+}
+
 </style>

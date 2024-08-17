@@ -12,25 +12,31 @@
         </label>
       </div>
       <div class="address-inputs">
-        <h3>Ingresa los datos de tu propiedad</h3>
-        <input type="text" v-model="address.line1" placeholder="Dirección" />
-        <select v-model="address.comuna">
+      <h3>Ingresa los datos de tu propiedad</h3>
+      <input type="text" v-model="address.line1" placeholder="Dirección" />
+      <select v-model="address.comuna">
         <option value="">Selecciona una comuna</option>
         <option v-for="comuna in comunas" :key="comuna" :value="comuna">
           {{ comuna.replace(/_/g, ' ') }}
         </option>
       </select>
-        <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
-        <input type="text" v-model="address.line3" placeholder="m2 del departamento" />
-        <input type="text" v-model="address.line4" placeholder="¿El edificio cuenta con un ascensor (Si/No)?" />
-        <input type="text" v-model="address.line5" placeholder="¿Cuál es el número de piso del departamento?" />
+      <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
+      <input type="text" v-model="address.line3" placeholder="m2 del departamento" />
+      <input type="text" v-model="address.line4" placeholder="Cantidad de pisos" />
+      <div class="ascensor-option">
+        <span>¿El edificio cuenta con ascensor?</span>
+        <div class="button-group">
+          <button @click="setAscensor(true)" :class="{ active: address.hasAscensor === true }">Sí</button>
+          <button @click="setAscensor(false)" :class="{ active: address.hasAscensor === false }">No</button>
+        </div>
       </div>
-      <button @click="publishProperty">Publicar Departamento</button>
+    </div>
+    <button @click="publishProperty" class="publicar-button">Publicar Departamento</button>
     <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
       {{ message }}
     </p>
-    </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import { ref } from 'vue';
@@ -76,8 +82,12 @@
         line2: '',
         line3: '',
         line4: '',
-        line5: ''
+        hasAscensor: null
       });
+
+      const setAscensor = (value) => {
+        address.hasAscensor = value;
+      };
 
       return {
         navigateTo,
@@ -86,7 +96,8 @@
         message,
         isSuccess,
         publishProperty,
-        comunas
+        comunas,
+        setAscensor
       };
     }
   }
@@ -116,12 +127,6 @@
     margin-bottom: 30px;
   }
   
-  .radio-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-  }
   
   .address-inputs {
     display: flex;
@@ -135,7 +140,7 @@
     text-align: center;
   }
   
-  input[type="text"] {
+  input[type="text"] ,select {
     padding: 12px;
     border: none;
     border-radius: 4px;
@@ -147,20 +152,50 @@
   input[type="text"]::placeholder {
     color: #7a8ca7;
   }
-  button {
+
+  .ascensor-option {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+
+.button-group button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  background-color: #e4f0ff;
+  color: #022b60;
+  cursor: pointer;
+}
+
+.button-group button.active {
+  background-color: #009908;
+  color: #fff;
+}
+
+.publicar-button {
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
-  background-color: #ff6b35;
-  color: #fff;
+  background-color: #f7c545;
+  color: #022b60;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   display: block;
   margin: 20px auto;
+  transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #ff5630;
+.publicar-button:hover {
+  background-color: #f9d676;
 }
 
 .success-message {
@@ -174,20 +209,9 @@ button:hover {
   text-align: center;
   margin-top: 20px;
 }
-select {
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: #e4f0ff;
-  color: #7a8ca7;
-  width: 100%;
-  margin-bottom: 2px;
-}
 
 select:focus {
   outline: none;
   box-shadow: 0 0 0 2px #ff6b35;
 }
-  
-  </style>
+</style>
