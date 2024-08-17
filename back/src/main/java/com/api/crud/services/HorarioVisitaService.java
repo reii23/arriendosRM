@@ -5,7 +5,9 @@ import com.api.crud.repository.IHorarioVisitaRepository;
 import com.api.crud.repository.IInmuebleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,11 @@ public class HorarioVisitaService {
     // Crear horario de visita
     public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
         return horarioVisitaRepository.save(horarioVisita);
+    }
+
+    @DeleteMapping(path = "/agendarVisita/{id}")
+    public void agendarVisita(@PathVariable Long id) {
+        horarioVisitaRepository.deleteById(id);
     }
 
 

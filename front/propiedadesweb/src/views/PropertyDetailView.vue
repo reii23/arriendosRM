@@ -37,7 +37,7 @@ Copy<template>
       <h2>Horarios de Visita</h2>
       <div v-if="horariosVisita" class="horarios-lista">
         <div v-for="horario in horariosVisita" :key="horario.id" class="horario-item">
-          <p><strong>Fecha:</strong> {{horario.fecha}}</p>
+          <button @click="agendarVisita(horario.id, propiedad.id)"><strong>Fecha:</strong> {{horario.fecha}}</button>
         </div>
       </div>
       <div v-else>
@@ -84,6 +84,17 @@ export default {
         console.error('Error al obtener los horarios de visita:', error);
       }
     },
+	async agendarVisita(idHorario, idInmueble) {
+	  try {
+		const response = await axios.delete(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}`);
+		const response2 = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorInmueble/${idInmueble}`);
+        this.horariosVisita = response2.data;
+		alert('Visita agendada correctamente');
+	  } catch (error) {
+		console.error('Error al agendar la visita:', error);
+		alert('Error al agendar la visita');
+	  }
+	},
     getDefaultImage(tipoInmueble){
       switch (tipoInmueble) {
         case 'CASA':

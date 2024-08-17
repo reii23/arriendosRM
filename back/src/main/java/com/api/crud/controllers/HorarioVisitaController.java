@@ -28,4 +28,9 @@ public class HorarioVisitaController {
     public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
         return this.horarioVisitaService.crearHorarioVisita(horarioVisita);
     }
+
+    @DeleteMapping(path = "/agendarVisita/{id}")
+    public void agendarVisita(@PathVariable Long id) {
+        this.horarioVisitaService.agendarVisita(id);
+    }
 }
