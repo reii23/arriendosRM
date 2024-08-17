@@ -2,11 +2,11 @@
     <div class="seleccionar-depa">
       <h2>¿Qué deseas hacer con tu propiedad?</h2>
       <div class="options">
-        <label>
+        <label class="radio-option">
           <input type="radio" v-model="action" value="vender" />
           Vender
         </label>
-        <label>
+        <label class="radio-option">
           <input type="radio" v-model="action" value="arrendar" />
           Arrendar
         </label>
@@ -22,7 +22,7 @@
       </select>
       <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
       <input type="text" v-model="address.line3" placeholder="m2 del departamento" />
-      <input type="text" v-model="address.line4" placeholder="Cantidad de pisos" />
+      <input type="text" v-model="address.line4" placeholder="Número de piso del departamento" />
       <div class="ascensor-option">
         <span>¿El edificio cuenta con ascensor?</span>
         <div class="button-group">
@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <button @click="publishProperty" class="publicar-button">Publicar Departamento</button>
+    <button @click="publicarPropiedad" class="publicar-button">Publicar Departamento</button>
     <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
       {{ message }}
     </p>
@@ -41,6 +41,7 @@
   <script>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import axios from 'axios';
   
   export default {
     name: 'SeleccionarDatosD',
@@ -66,15 +67,38 @@
       'ISLA_DE_MAIPO', 'PADRE_HURTADO', 'PENAFLOR', 'TALAGANTE'
     ];
 
-    const publishProperty = () => {
-      if (action.value && address.value.line1 && address.value.line2) {
-        isSuccess.value = true;
-        message.value = "Su publicación está a la espera de ser verificada";
+    const publicarPropiedad = async () => {
+      if (action.value && address.value.line1 && address.value.comuna && address.value.line2 &&
+          address.value.line3 && address.value.line4 && address.hasAscensor !== null){
+        try {
+          // Crear objeto con los datos del departamento
+          const DatosDepa = { 
+            tipoOperacion: action.value, // Obtener tipo de operación
+            direccion: address.value.line1, // Obtener dirección
+            comuna: address.value.comuna, // Obtener comuna
+            precio: parseInt(address.value.line2), // Obtener valor
+            metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
+            tieneAscensor: address.value.hasAscensor, // Obtener si tiene ascensor
+            piso: parseInt(address.value.line4) // Obtener número de piso del departamento  // Obtener si tiene patio
+          };
+        const response = await axios.post('http://localhost:8080/inmuebles/departamento', DatosDepa); // Enviar datos al servidor
+        if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
+            isSuccess.value = true;
+            message.value = "Su publicación ha sido guardada exitosamente";
+          } else {
+            throw new Error('Error al guardar la publicación');
+          }
+        } catch (error) {
+          console.error('Error al publicar la propiedad:', error);
+          isSuccess.value = false;
+          message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+        }
       } else {
         isSuccess.value = false;
-        message.value = "Los datos de la publicación no son válidos";
+        message.value = "Por favor, complete todos los campos requeridos";
       }
     };
+
     const action = ref('');
       const address = ref({
         line1: '',
@@ -86,7 +110,7 @@
       });
 
       const setAscensor = (value) => {
-        address.hasAscensor = value;
+        address.value.hasAscensor = value;
       };
 
       return {
@@ -95,7 +119,7 @@
         address,
         message,
         isSuccess,
-        publishProperty,
+        publicarPropiedad,
         comunas,
         setAscensor
       };
@@ -127,6 +151,12 @@
     margin-bottom: 30px;
   }
   
+  .radio-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+}
   
   .address-inputs {
     display: flex;
@@ -168,7 +198,7 @@
 .button-group button {
   flex: 1;
   padding: 10px;
-  border: 1px solid #000000;
+  border: none;
   border-radius: 4px;
   background-color: #e4f0ff;
   color: #022b60;
