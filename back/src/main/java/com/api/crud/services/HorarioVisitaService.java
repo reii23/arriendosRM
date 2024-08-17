@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class HorarioVisitaService {
@@ -29,6 +31,26 @@ public class HorarioVisitaService {
     // Crear horario de visita
     public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
         return horarioVisitaRepository.save(horarioVisita);
+    }
+
+    public ArrayList<HorarioVisitaModel>  obtenerHorariosVisitaDisponiblesPorIdInmueble(Long idInmueble) {
+        ArrayList<HorarioVisitaModel> horariosVisita = horarioVisitaRepository.findByIdInmueble(idInmueble);
+        ArrayList<HorarioVisitaModel> horariosVisitaDisponibles = new ArrayList<HorarioVisitaModel>();
+        for (HorarioVisitaModel horarioVisita : horariosVisita) {
+            if(horarioVisita.getIdVisitante() == -1){
+                horariosVisitaDisponibles.add(horarioVisita);
+            }
+        }
+        return horariosVisitaDisponibles;
+    }
+
+    @PostMapping(path = "/agendarVisita/{id}/{idVisitante}")
+    public HorarioVisitaModel agendarVisita(@PathVariable Long id, @PathVariable Long idVisitante) {
+        HorarioVisitaModel horarioVisita = horarioVisitaRepository.findById(id).get();
+        horarioVisita.setIdVisitante(idVisitante);
+        return horarioVisitaRepository.save(horarioVisita);
+
+
     }
 
     @DeleteMapping(path = "/agendarVisita/{id}")

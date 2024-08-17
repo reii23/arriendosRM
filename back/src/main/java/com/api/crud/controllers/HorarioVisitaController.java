@@ -24,9 +24,19 @@ public class HorarioVisitaController {
         return this.horarioVisitaService.obtenerHorariosVisitaPorInmueble(id);
     }
 
+    @GetMapping(path = "obtenerHorariosVisitaDisponiblesPorInmueble/{id}")
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaDisponiblesPorIdInmueble(@PathVariable Long id) {
+        return this.horarioVisitaService.obtenerHorariosVisitaDisponiblesPorIdInmueble(id);
+    }
+
     @PostMapping(path = "/crearHorarioVisita")
     public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
         return this.horarioVisitaService.crearHorarioVisita(horarioVisita);
+    }
+
+    @PostMapping(path = "agendarVisita/{id}/{idVisitante}")
+    public HorarioVisitaModel agendarVisita(@PathVariable Long id, @PathVariable Long idVisitante) {
+        return this.horarioVisitaService.agendarVisita(id, idVisitante);
     }
 
     @DeleteMapping(path = "/agendarVisita/{id}")

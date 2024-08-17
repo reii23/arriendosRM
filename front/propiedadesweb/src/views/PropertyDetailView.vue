@@ -65,6 +65,7 @@ import axios from 'axios';
 import defaultCasaImagen from '@/assets/default-house.jpg';
 import defaultDepartamentoImagen from '@/assets/default-departamento.jpg';
 import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
+import {auth} from "@/auth";
 
 export default {
   name: 'PropiedadDetalle',
@@ -91,7 +92,7 @@ export default {
     async obtenerHorariosVisita() {
       try {
         const id = this.$route.params.id;
-        const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorInmueble/${id}`);
+        const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${id}`);
         this.horariosVisita = response.data;
       } catch (error) {
         console.error('Error al obtener los horarios de visita:', error);
@@ -99,8 +100,14 @@ export default {
     },
 	async agendarVisita(idHorario, idInmueble) {
 	  try {
-		const response = await axios.delete(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}`);
-		const response2 = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorInmueble/${idInmueble}`);
+		const isLoged = auth.isLoggedIn;
+		const idUsuario = localStorage.getItem('userId');
+        if(!isLoged){
+		  alert('Debe iniciar sesión para agendar una visita');
+		  return;
+		}
+		const response = await axios.post(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}/${idUsuario}`);
+		const response2 = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${idInmueble}`);
         this.horariosVisita = response2.data;
 		alert('Visita agendada correctamente');
 	  } catch (error) {

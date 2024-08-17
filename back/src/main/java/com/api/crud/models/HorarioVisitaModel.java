@@ -10,6 +10,7 @@ public class HorarioVisitaModel {
     private Long id;
     private Long idInmueble;
     private Long idUsuario;
+    private Long idVisitante;
     private String fecha;
 
     public Long getId() {
@@ -35,6 +36,10 @@ public class HorarioVisitaModel {
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    public Long getIdVisitante() {return idVisitante;}
+
+    public void setIdVisitante(Long idVisitante) {this.idVisitante = idVisitante;}
 
     public String getFecha() {
         return fecha;
