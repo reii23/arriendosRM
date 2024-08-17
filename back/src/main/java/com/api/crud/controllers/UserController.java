@@ -41,6 +41,12 @@ public class UserController {
         return this.userService.obtenerUsuarioPorId(id);
     }
 
+    // Obtener usuario por email
+    @GetMapping(path = "/obtenerUsuarioPorEmail/{email}")
+    public UserModel obtenerUsuarioPorEmail(@PathVariable("email") String email) {
+        return this.userService.findByEmail(email);
+    }
+
     @PutMapping(path = "/modificarUsuarioPorId/{id}")
     public UserModel modificarUsuarioPorId(@RequestBody UserModel request, @PathVariable("id") Long id) {
         return this.userService.modificarUsuarioPorId(request, id);

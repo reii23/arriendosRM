@@ -8,14 +8,10 @@ public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nombre;
-
     @Column(unique = true)
     private String email;
-
     private String password;
-
     private String numeroTelefono;
 
     private Integer rol; // TO DO: preguntar -> 0: Admin, 1: usuarioRegistrado, 2: Agente Inmobiliario
