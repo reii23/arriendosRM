@@ -33,7 +33,10 @@ export default {
     async loginUser() {
       try {
         const response = await axios.post('http://localhost:8080/user/login', this.user);
-        auth.login(); // Actualiza el estado reactivo
+        // Obtengo el usuario a traves del id para obtener el rol y el id
+        const response2 = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorEmail/${this.user.email}`);
+        console.log(response2.data.id);
+        auth.login(response2.data.id, response2.data.rol); // Actualiza el estado reactivo
         this.$router.push('/');
       } catch (error) {
         console.error('Error al iniciar sesión:', error);

@@ -1,24 +1,33 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/residenciasRM.png" />
+    
+    <div v-if="auth.isLoggedIn">
+      <p>Usuario: {{ auth.id }}</p>
+      <p>Rol: {{ auth.rol }}</p>
+    </div>
     <Componente msg="Bienvenido a residenciasRM" />
-    <!-- Utilizar la función handleCreatePublicationClick en el botón -->
     <button @click="handleCreatePublicationClick" class="btn-publicar">Publicar Inmueble</button>
   </div>
 </template>
 
 <script>
 import Componente from "@/components/Componente.vue";
+import { auth } from "@/auth";
 
 export default {
   name: "HomeView",
   components: {
     Componente,
   },
+  data() {
+    return {
+      auth // Hacemos que el store de autenticación esté disponible en el template
+    };
+  },
   methods: {
     handleCreatePublicationClick() {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      if (isLoggedIn) {
+      if (this.auth.isLoggedIn) {
         this.$router.push('/seleccionar-inmueble');
       } else {
         this.$router.push('/login');
