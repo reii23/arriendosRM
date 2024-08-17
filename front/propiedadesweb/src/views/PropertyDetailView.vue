@@ -37,7 +37,20 @@ Copy<template>
       <h2>Horarios de Visita</h2>
       <div v-if="horariosVisita" class="horarios-lista">
         <div v-for="horario in horariosVisita" :key="horario.id" class="horario-item">
-          <button @click="agendarVisita(horario.id, propiedad.id)"><strong>Fecha:</strong> {{horario.fecha}}</button>
+          <button @click="agendarVisita(horario.id, propiedad.id)"
+		  style="width: 150px; height: 50px  ; background-color: #FFF;">
+		  <strong>Fecha:</strong> {{horario.fecha}} <br> 
+			<div v-if="horario.fecha[9] === 'm'"> 
+				<strong>Hora:</strong> 9:00 - 10:30
+			</div>
+			<div v-if="horario.fecha[9] === 't'">
+				<strong>Hora:</strong> 14:00 - 15:30
+			</div>
+			<div v-if="horario.fecha[9] === 'n'">
+				<strong>Hora:</strong> 18:00 - 19:30
+			</div>
+		</button>
+
         </div>
       </div>
       <div v-else>
@@ -151,7 +164,7 @@ h1, h2 {
 .horarios-lista {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
+  gap: 10px;
 }
 
 .horario-item {
