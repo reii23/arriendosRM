@@ -65,8 +65,7 @@ import axios from 'axios';
 import defaultCasaImagen from '@/assets/default-house.jpg';
 import defaultDepartamentoImagen from '@/assets/default-departamento.jpg';
 import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
-import { Calendar, setupCalendar } from 'v-calendar';
-import 'v-calendar/style.css';
+
 export default {
   name: 'PropiedadDetalle',
   data() {
