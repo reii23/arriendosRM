@@ -1,7 +1,7 @@
 <template>
     <div class="selector-inmueble">
       <h2>¿Qué tipo de propiedad quieres publicar?</h2>
-      <div class="button-group">
+      <div class="botones">
         <button @click="navigateTo('/seleccionar-datos-c')" class="btn-casa">Casa</button>
         <button @click="navigateTo('/seleccionar-datos-d')" class="btn-departamento">Departamento</button>
         <button @click="navigateTo('/seleccionar-datos-t')" class="btn-terreno">Terreno</button>
@@ -33,7 +33,6 @@
     max-width: 500px;
     margin: 60px auto;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
   h2 {
@@ -42,7 +41,7 @@
     font-weight: 600;
   }
   
-  .button-group {
+  .botones {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -56,23 +55,16 @@
     cursor: pointer;
   }
   
-  button:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
   .btn-casa {
     background-color: #f7c545;
-    color: #022b60;
   }
   
   .btn-departamento {
     background-color: #85c1e9;
-    color: #022b60;
   }
   
   .btn-terreno {
     background-color: #58d68d;
-    color: #022b60;
   }
   </style>
   

@@ -67,39 +67,60 @@ export default {
     'ISLA_DE_MAIPO', 'PADRE_HURTADO', 'PENAFLOR', 'TALAGANTE'
   ];
 
+  const validarCampoNumerico = (dato, nombreDato) => {
+      if (isNaN(address.value[dato]) || address.value[dato] === '') {
+        isSuccess.value = false;
+        message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
+        address.value[dato] = ''; // Limpiar el campo
+        return false;
+      }
+      return true;
+    };
+
     const publicarPropiedad = async () => {
       if (action.value && address.value.line1 && address.value.comuna && address.value.line2 &&
           address.value.line3 && address.value.line4 && address.value.tieneServicios != null) { // Validar campos requeridos
-        try {
-          // Crear objeto con los datos del terreno
-          const DatosTerreno = { 
-            tipoOperacion: action.value, // Obtener tipo de operación
-            direccion: address.value.line1, // Obtener dirección
-            comuna: address.value.comuna, // Obtener comuna
-            precio: parseInt(address.value.line2), // Obtener valor
-            metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
-            tipoSuelo: address.value.line4, // Obtener el tipo de suelo
-            tieneServiciosBasicos: address.value.tieneServicios, // Obtener si tiene servicios básicos
-			idUsuario: localStorage.getItem('userId')
-          };
-        const response = await axios.post('http://localhost:8080/inmuebles/terreno', DatosTerreno); // Enviar datos al servidor
-        if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
-            isSuccess.value = true;
-            message.value = "Su publicación ha sido guardada exitosamente";
-          } else {
-            throw new Error('Error al guardar la publicación');
-          }
-        } catch (error) {
-          console.error('Error al publicar la propiedad:', error);
-          isSuccess.value = false;
-          message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
-        }
-      } else {
-        isSuccess.value = false;
-        message.value = "Por favor, complete todos los campos requeridos";
-      }
-    };
+            const datoNumerico = [
+            { dato: 'line2', nombreDato: 'Valor (pesos)' },
+            { dato: 'line3', nombreDato: 'm2 del interior' },
+          ];
 
+          for (const { dato, nombreDato } of datoNumerico) {
+            if (!validarCampoNumerico(dato, nombreDato)) {
+              return;
+            }
+          }
+          try {
+            // Crear objeto con los datos del terreno
+            const DatosTerreno = { 
+              tipoOperacion: action.value, // Obtener tipo de operación
+              direccion: address.value.line1, // Obtener dirección
+              comuna: address.value.comuna, // Obtener comuna
+              precio: parseInt(address.value.line2), // Obtener valor
+              metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
+              tipoSuelo: address.value.line4, // Obtener el tipo de suelo
+              tieneServiciosBasicos: address.value.tieneServicios, // Obtener si tiene servicios básicos
+              idUsuario: localStorage.getItem('userId')
+            };
+          const response = await axios.post('http://localhost:8080/inmuebles/terreno', DatosTerreno); // Enviar datos al servidor
+          if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
+              isSuccess.value = true;
+              message.value = "Su publicación ha sido guardada exitosamente";
+            } else {
+              throw new Error('Error al guardar la publicación');
+            }
+          } catch (error) {
+            console.error('Error al publicar la propiedad:', error);
+            isSuccess.value = false;
+            message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+          }
+            
+      } else {
+            isSuccess.value = false;
+            message.value = "Por favor, complete todos los campos requeridos";
+          }
+    };
+      
     const action = ref('');
     const address = ref({
       line1: '',
@@ -136,7 +157,6 @@ export default {
     border-radius: 10px;
     max-width: 600px;
     margin: 40px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   h2 {

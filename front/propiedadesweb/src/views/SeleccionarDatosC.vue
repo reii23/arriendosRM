@@ -1,5 +1,6 @@
 <template>
   <div class="seleccionar-casa">
+
     <h2>¿Qué deseas hacer con tu propiedad?</h2>
     <div class="options">
       <label class="radio-option">
@@ -11,13 +12,14 @@
         Arrendar
       </label>
     </div>
+
     <div class="address-inputs">
       <h3>Ingresa los datos de tu propiedad</h3>
       <input type="text" v-model="address.line1" placeholder="Dirección" />
       <select v-model="address.comuna">
         <option value="">Selecciona una comuna</option>
         <option v-for="comuna in comunas" :key="comuna" :value="comuna">
-          {{ comuna.replace(/_/g, ' ') }}
+            {{ comuna.replace(/_/g, ' ') }}
         </option>
       </select>
       <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
@@ -31,6 +33,7 @@
         </div>
       </div>
     </div>
+
     <button @click="publicarPropiedad" class="publicar-button">Publicar Casa</button>
     <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
       {{ message }}
@@ -40,17 +43,11 @@
 
 <script>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
-  name: 'SeleccionarDatosC',
+  name: 'SeleccionarDatosC', 
   setup() {
-    const router = useRouter();
-    const navigateTo = (path) => {
-      router.push(path);
-    };
-
     const message = ref('');
     const isSuccess = ref(false);
 
@@ -67,40 +64,65 @@ export default {
       'ISLA_DE_MAIPO', 'PADRE_HURTADO', 'PENAFLOR', 'TALAGANTE'
     ];
 
-    const publicarPropiedad = async () => {
-      if (action.value && address.value.line1 && address.value.comuna && address.value.line2 && 
-          address.value.line3 && address.value.line4 && address.value.tienePatio !== null) {
-        try {
-          // Crear objeto con los datos de la casa
-          const DatosCasa = {
-            tipoOperacion: action.value,
-            direccion: address.value.line1,
-            comuna: address.value.comuna,
-            precio: parseInt(address.value.line2),
-            metrosCuadrados: parseInt(address.value.line3),
-            numPisos: parseInt(address.value.line4),
-            tienePatio: address.value.tienePatio,
-			idUsuario: localStorage.getItem('userId')
-          };
-          const response = await axios.post('http://localhost:8080/inmuebles/casa', DatosCasa);
-          if (response.status === 200 || response.status === 201) {
-            isSuccess.value = true;
-            message.value = "Su publicación ha sido guardada exitosamente";
-          } else {
-            throw new Error('Error al guardar la publicación');
-          }
-        } catch (error) {
-          console.error('Error al publicar la propiedad:', error);
-          isSuccess.value = false;
-          message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
-        }
-      } else {
+    const validarCampoNumerico = (dato, nombreDato) => {
+      if (isNaN(address.value[dato]) || address.value[dato] === '') {
         isSuccess.value = false;
-        message.value = "Por favor, complete todos los campos requeridos";
+        message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
+        address.value[dato] = ''; // Limpiar el campo
+        return false;
       }
+      return true;
     };
 
-    const action = ref('');
+    const publicarPropiedad = async () => {
+      // Si los campos están completos
+      if (action.value && address.value.line1 && address.value.comuna && address.value.line2 &&
+          address.value.line3 && address.value.line4 && address.value.tienePatio !== null) {
+          
+          const datoNumerico = [
+            { dato: 'line2', nombreDato: 'Valor (pesos)' },
+            { dato: 'line3', nombreDato: 'm2 del interior' },
+            { dato: 'line4', nombreDato: 'Cantidad de pisos' }
+          ];
+
+          for (const { dato, nombreDato } of datoNumerico) {
+            if (!validarCampoNumerico(dato, nombreDato)) {
+              return;
+            }
+          }
+          try {
+            // Crear objeto con los datos de la casa
+            const DatosCasa = {
+              tipoOperacion: action.value, // Obtener tipo de operación (vender o arrendar)
+              direccion: address.value.line1, // Obtener dirección
+              comuna: address.value.comuna, // Obtener comuna
+              precio: parseInt(address.value.line2), // Obtener precio
+              metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
+              numPisos: parseInt(address.value.line4), // Obtener cantidad de pisos
+              tienePatio: address.value.tienePatio, // Obtener si tiene patio
+              idUsuario: localStorage.getItem('userId') // Obtener id del usuario
+            };
+            const response = await axios.post('http://localhost:8080/inmuebles/casa', DatosCasa); // Enviar datos al servidor
+            if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
+              isSuccess.value = true;
+              message.value = "Su publicación ha sido guardada exitosamente";
+            } else {
+              throw new Error('Error al guardar la publicación');
+            }
+          } 
+          catch (error) { // Manejar errores
+            console.error('Error al publicar la propiedad:', error);
+            isSuccess.value = false;
+            message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+          }
+        // Si los campos no están completos, mostrar mensaje de error
+      } else { 
+        isSuccess.value = false;
+        message.value = "Por favor, complete todos los campos requeridos";
+        }
+    };
+    
+    const action = ref(''); 
     const address = ref({
       line1: '',
       comuna: '',
@@ -115,7 +137,6 @@ export default {
     };
 
     return {
-      navigateTo,
       action,
       address,
       message,
@@ -136,7 +157,6 @@ export default {
   border-radius: 10px;
   max-width: 600px;
   margin: 40px auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -148,7 +168,7 @@ h2 {
 .options {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 80px;
   margin-bottom: 30px;
 }
 
@@ -222,10 +242,6 @@ input[type="text"]::placeholder {
   display: block;
   margin: 20px auto;
   transition: background-color 0.3s;
-}
-
-.publicar-button:hover {
-  background-color: #f9d676;
 }
 
 .success-message {
