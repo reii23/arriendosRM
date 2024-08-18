@@ -79,7 +79,8 @@ export default {
             precio: parseInt(address.value.line2), // Obtener valor
             metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
             tipoSuelo: address.value.line4, // Obtener el tipo de suelo
-            tieneServiciosBasicos: address.value.tieneServicios// Obtener si tiene servicios básicos
+            tieneServiciosBasicos: address.value.tieneServicios, // Obtener si tiene servicios básicos
+			idUsuario: localStorage.getItem('userId')
           };
         const response = await axios.post('http://localhost:8080/inmuebles/terreno', DatosTerreno); // Enviar datos al servidor
         if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa

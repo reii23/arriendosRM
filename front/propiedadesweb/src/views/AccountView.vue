@@ -21,12 +21,10 @@
 			<strong>Verificado:</strong> {{ propiedad.verificado ? 'Sí' : 'No' }} <br>
 			<strong>Metros Cuadrados:</strong> {{ propiedad.metrosCuadrados }} m² <br>
 			<strong>Comuna:</strong> {{ propiedad.comuna }} <br>
-		</div>
-		<div class="propiedad-item">
-			<router-link to="/seleccionar-inmueble">
-			<p>Crear Publicación</p>
-		  </router-link>
-		</div>
+		</div>	
+		<button @click="goToCrearPublicacion()"
+					 style= "font: 1em sans-serif; font-size: x-large; color: black;background-color: beige;
+					 padding: 10px;border-radius: 8px; height: 180px; width: 200px; text-align: center">Crear Publicación</button>
 	  </div>
 	</div>
 	<div v-if="user && (user.rol === 1 || user.rol === 0)"class="visitas-agendadas">
@@ -109,6 +107,9 @@
 				console.error('Error al desagendar la visita:', error);
 				alert('Error al desagendar la visita');
 			}
+		},
+		goToCrearPublicacion(){
+			this.$router.push('/seleccionar-inmueble');
 		}
 	}
   }
@@ -132,8 +133,8 @@ h1, h2 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 150px;
+  margin-right: 150px;
 }
 
 .horario-item {
@@ -147,9 +148,9 @@ h1, h2 {
 .propiedades-lista {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-  margin-left: 100px;
-  margin-right: 100px;
+  gap: 15px;
+  margin-left: 150px;
+  margin-right: 150px;
 }
 
 .propiedad-item {
@@ -158,6 +159,9 @@ h1, h2 {
   background-color: beige;
   padding: 10px;
   border-radius: 8px;
+  height: 180px;
+  width: 200px;
+  text-align: center;
   
 }
 </style>
