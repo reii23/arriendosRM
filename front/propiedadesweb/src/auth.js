@@ -2,8 +2,8 @@ import { reactive } from 'vue';
 
 export const auth = reactive({
     isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
-    id: localStorage.getItem('id') || null,
-    rol: localStorage.getItem('rol') || null,
+    id: localStorage.getItem('userId') || null,
+    rol: localStorage.getItem('userRole') || null,
 
     login(id, rol) {
         this.isLoggedIn = true;
@@ -19,7 +19,7 @@ export const auth = reactive({
         this.id = null;
         this.rol = null;
         localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('id');
-        localStorage.removeItem('rol');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userRole');
     }
 });

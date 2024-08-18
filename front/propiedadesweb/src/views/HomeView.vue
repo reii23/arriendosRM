@@ -3,8 +3,7 @@
     <img alt="Vue logo" src="../assets/residenciasRM.png" />
 
     <div v-if="auth.isLoggedIn">
-      <p>Usuario: {{ auth.id }}</p>
-      <p>Rol: {{ auth.rol }}</p>
+      <p>Hola {{ userName }}, bienvenido a residenciasRM, tu rol es {{userRole}}.</p>
     </div>
     <Componente msg="Bienvenido a residenciasRM" />
 
@@ -17,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Componente from "@/components/Componente.vue";
 import { auth } from "@/auth";
 
@@ -27,10 +27,36 @@ export default {
   },
   data() {
     return {
-      auth // Hacemos que el store de autenticación esté disponible en el template
+      auth,
+      userName: '',
+      userRole: ''
     };
   },
+  async created() {
+    await this.setUserDetails();
+  },
   methods: {
+    async setUserDetails() {
+      if (this.auth.isLoggedIn) {
+        try {
+          const response = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorId/${this.auth.id}`);
+          const userData = response.data;
+          this.userName = userData.nombre;
+          switch (userData.rol) {
+            case 0:
+              this.userRole = 'administrador'; // 0 = administrador
+              break;
+            case 1:
+              this.userRole = 'cliente'; // 1 = cliente
+              break;
+            case 2:
+              this.userRole = 'agente inmobiliario'; // 2 = agente inmobiliario
+          }
+        } catch (error) {
+          console.error('Error al obtener la información del usuario:', error);
+        }
+      }
+    },
     handleCreatePublicationClick() {
       if (this.auth.isLoggedIn) {
         this.$router.push('/seleccionar-inmueble');
@@ -59,6 +85,7 @@ export default {
 
 .btn-publicar {
   background-color: #4CAF50;
+  margin-top: -20px;
 }
 
 .btn-publicar:hover {
@@ -67,6 +94,7 @@ export default {
 
 .btn-horarios {
   background-color: #ff6200;
+  margin-top: -20px;
 }
 
 .btn-horarios:hover {
