@@ -10,4 +10,5 @@ import java.util.ArrayList;
 @Repository
 public interface IHorarioVisitaRepository extends JpaRepository<HorarioVisitaModel, Long> {
     ArrayList<HorarioVisitaModel> findByIdInmueble(Long idInmueble);
+    ArrayList<HorarioVisitaModel> findByIdVisitante(Long idVisitante);
 }

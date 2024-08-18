@@ -28,6 +28,10 @@ public class HorarioVisitaService {
         return horarioVisitaRepository.findByIdInmueble(id);
     }
 
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuario(Long id) {
+        return horarioVisitaRepository.findByIdVisitante(id);
+    }
+
     // Crear horario de visita
     public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
         return horarioVisitaRepository.save(horarioVisita);
@@ -51,6 +55,13 @@ public class HorarioVisitaService {
         return horarioVisitaRepository.save(horarioVisita);
 
 
+    }
+
+    @PostMapping(path = "/desagendarVisita/{id}")
+    public HorarioVisitaModel desagendarVisita(@PathVariable Long id) {
+        HorarioVisitaModel horarioVisita = horarioVisitaRepository.findById(id).get();
+        horarioVisita.setIdVisitante(-1L);
+        return horarioVisitaRepository.save(horarioVisita);
     }
 
     @DeleteMapping(path = "/agendarVisita/{id}")

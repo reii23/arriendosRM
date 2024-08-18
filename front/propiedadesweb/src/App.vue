@@ -12,6 +12,8 @@
       <!-- Mostrar Logout solo si está logueado -->
       <span v-if="auth.isLoggedIn"> | </span>
       <router-link v-if="auth.isLoggedIn" to="/logout">Logout</router-link>
+	  <span v-if="auth.isLoggedIn"> | </span>
+	  <router-link v-if="auth.isLoggedIn" to="/account">Mi Cuenta</router-link>
     </nav>
     <router-view />
   </div>

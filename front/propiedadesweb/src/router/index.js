@@ -11,6 +11,7 @@ import SeleccionarDatosD from "@/views/SeleccionarDatosD.vue";
 import SeleccionarDatosT from "@/views/SeleccionarDatosT.vue";
 import PublicacionCreada from "@/views/PublicacionCreada.vue";
 import LogoutView from "@/views/LogoutView.vue";
+import AccountView from "@/views/AccountView.vue";
 
 const routes = [
   {
@@ -73,6 +74,11 @@ const routes = [
     path: "/logout",
     name: "Logout",
     component: LogoutView,
+  },
+  {
+	path: "/account",
+	name: "account",
+	component: AccountView,
   }
 
 ];

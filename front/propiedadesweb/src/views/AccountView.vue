@@ -1,0 +1,111 @@
+<template>
+	  <div class="account-page">
+	   <h1>Mi Cuenta</h1>
+	   <div v-if="user" class="account-info">
+		 <h2>Información de la Cuenta</h2>
+		 <p>Nombre: {{ user.nombre }}</p>
+		 <p>Email: {{ user.email }}</p>
+		 <p>Número de telefono: {{ user.numeroTelefono}} </p>
+		 <p v-if="user.rol === 0"> Rol: Administrador</p>
+		 <p v-if="user.rol === 1"> Rol: Cliente</p>
+		 <p v-if="user.rol === 2"> Rol: Agente Inmobiliario</p>	 
+	   </div>
+  </div>
+  <div class="visitas-agendadas">
+	<h2>Visitas Agendadas</h2>
+	<div v-if="horariosVisitas" class="visitas-lista">
+		<div v-for="horario in horariosVisitas" :key="horario.id" class="horario-item">
+			<strong>Propiedad:</strong> {{ horario.idInmueble}} <br>
+			<strong>Fecha:</strong> {{ horario.fecha }} <br>
+			<div v-if="horario.fecha[9] === 'm'"> 
+				<strong>Hora:</strong> 9:00 - 10:30
+			</div>
+			<div v-if="horario.fecha[9] === 't'">
+				<strong>Hora:</strong> 14:00 - 15:30
+			</div>
+			<div v-if="horario.fecha[9] === 'n'">
+				<strong>Hora:</strong> 18:00 - 19:30
+			</div> 
+			<br>
+			<button @click="desagendarVisita(horario.id)"
+			style="width: 120px; height: 30px  ; background-color: #FFF"> Desagendar</button>
+		</div>
+	</div>
+  </div>
+</template>
+
+<script>
+  import axios from 'axios';
+  import { auth } from '@/auth';
+
+  export default{
+	name: 'AcountInfo',
+	data(){
+        return {
+		  user: null,
+		  horariosVisitas: null
+		}
+	},
+	created(){
+		this.obtenerUsuario();
+		this.obtenerHorariosVisitas();
+	},
+	methods:{
+		async obtenerUsuario(){
+			try{
+				const id = localStorage.getItem('userId');
+				const response = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorId/${id}`);
+				this.user = response.data;
+			}catch(error){
+				console.error('Error al obtener los detalles del usuario:', error);
+			}
+		},
+		async obtenerHorariosVisitas(){
+			try{
+				const id = localStorage.getItem('userId');
+				const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorUsuario/${id}`);
+				this.horariosVisitas = response.data;
+			}catch(error){
+				console.error('Error al obtener las visitas del usuario:', error);
+			}
+		},
+		async desagendarVisita(horarioId){
+			try{
+				const response = await axios.post(`http://localhost:8080/horarioVisita/desagendarVisita/${horarioId}`);
+				this.obtenerHorariosVisitas();
+				alert('Visita desagendada correctamente');
+			}catch(error){
+				console.error('Error al desagendar la visita:', error);
+				alert('Error al desagendar la visita');
+			}
+		}
+	}
+  }
+
+</script>
+
+<style scoped>
+.account-info {
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+}
+.visitas-agendadas {
+  margin-top: 30px;
+}
+.visitas-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+.horario-items {
+	padding: 10px;
+	border-radius: 8px;
+}
+</style>
