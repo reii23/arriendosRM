@@ -3,7 +3,7 @@
     <h2>Iniciar Sesión</h2>
     <form @submit.prevent="loginUser">
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">Correo electrónico</label>
         <input type="email" id="email" v-model="user.email" required>
       </div>
       <div class="form-group">

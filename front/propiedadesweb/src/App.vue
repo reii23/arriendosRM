@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
+      <router-link to="/">Inicio</router-link> |
       <router-link to="/about">Subsidios</router-link> |
       <router-link to="/inmuebles">Inmuebles</router-link>
       <span v-if="!auth.isLoggedIn"> | </span>
       <!-- Mostrar Login y Register solo si no está logueado -->
-      <router-link v-if="!auth.isLoggedIn" to="/login">Login</router-link>
+      <router-link v-if="!auth.isLoggedIn" to="/login">Iniciar sesión</router-link>
       <span v-if="!auth.isLoggedIn"> | </span>
-      <router-link v-if="!auth.isLoggedIn" to="/register">Register</router-link>
+      <router-link v-if="!auth.isLoggedIn" to="/register">Crear cuenta</router-link>
       <!-- Mostrar Logout solo si está logueado -->
       <span v-if="auth.isLoggedIn"> | </span>
-      <router-link v-if="auth.isLoggedIn" to="/logout">Logout</router-link>
+      <router-link v-if="auth.isLoggedIn" to="/logout">Cerrar sesión</router-link>
 	  <span v-if="auth.isLoggedIn"> | </span>
 	  <router-link v-if="auth.isLoggedIn" to="/account">Mi Cuenta</router-link>
     </nav>

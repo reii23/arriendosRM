@@ -7,11 +7,11 @@
           <input type="text" id="nombre" v-model="user.nombre" required>
         </div>
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="email">Correo electrónico</label>
           <input type="email" id="email" v-model="user.email" required>
         </div>
         <div class = "form-group">
-          <label for="numeroTelefono">Numero de Telefono</label>
+          <label for="numeroTelefono">Número de Teléfono</label>
           <input type="text" id="numeroTelefono" v-model="user.numeroTelefono" required>
         </div>
         <div class="form-group">
