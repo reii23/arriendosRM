@@ -79,7 +79,8 @@ export default {
             precio: parseInt(address.value.line2),
             metrosCuadrados: parseInt(address.value.line3),
             numPisos: parseInt(address.value.line4),
-            tienePatio: address.value.tienePatio
+            tienePatio: address.value.tienePatio,
+			idUsuario: localStorage.getItem('userId')
           };
           const response = await axios.post('http://localhost:8080/inmuebles/casa', DatosCasa);
           if (response.status === 200 || response.status === 201) {

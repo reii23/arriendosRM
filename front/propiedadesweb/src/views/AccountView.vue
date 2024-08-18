@@ -21,7 +21,11 @@
 			<strong>Verificado:</strong> {{ propiedad.verificado ? 'Sí' : 'No' }} <br>
 			<strong>Metros Cuadrados:</strong> {{ propiedad.metrosCuadrados }} m² <br>
 			<strong>Comuna:</strong> {{ propiedad.comuna }} <br>
-		  
+		</div>
+		<div class="propiedad-item">
+			<router-link to="/seleccionar-inmueble">
+			<p>Crear Publicación</p>
+		  </router-link>
 		</div>
 	  </div>
 	</div>
@@ -29,7 +33,8 @@
 	  <h2>Visitas Agendadas</h2>
 	  <div v-if="horariosVisitas" class="visitas-lista">
 		<div v-for="horario in horariosVisitas" :key="horario.id" class="horario-item">
-		<strong>Propiedad:</strong> {{ horario.idInmueble}} <br>
+		<router-link :to="'/inmuebles/' + horario.idInmueble">
+		<strong>Propiedad:</strong> {{ horario.idInmueble}}</router-link> <br>
 		<strong>Fecha:</strong> {{ horario.fecha }} <br>
 		<div v-if="horario.fecha[9] === 'm'"> 
 		  <strong>Hora:</strong> 9:00 - 10:30
@@ -130,7 +135,11 @@ h1, h2 {
   margin-left: 100px;
   margin-right: 100px;
 }
-.horario-items {
+
+.horario-item {
+	font: 1em sans-serif;
+    color: black;
+    background-color: beige;
 	padding: 10px;
 	border-radius: 8px;
 }
@@ -149,5 +158,6 @@ h1, h2 {
   background-color: beige;
   padding: 10px;
   border-radius: 8px;
+  
 }
 </style>
