@@ -19,6 +19,7 @@ public abstract class InmuebleModel {
     private boolean disponible;
     private boolean verificado;
     private double metrosCuadrados;
+    private Long idUsuario;
 
     public enum TipoInmueble {
         CASA, DEPARTAMENTO, TERRENO
@@ -146,4 +147,11 @@ public abstract class InmuebleModel {
 
     public Comuna getComuna() { return comuna;}
 
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 }

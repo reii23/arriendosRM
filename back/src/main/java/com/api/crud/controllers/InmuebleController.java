@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,6 +32,11 @@ public class InmuebleController {
         return inmuebleService.obtenerInmueblePorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(path = "/obtenerInmueblesPorUsuario/{idUsuario}")
+    public ArrayList<InmuebleModel> obtenerInmueblesPorIdUsuario(@PathVariable Long idUsuario) {
+        return inmuebleService.obtenerInmueblePorIdUsuario(idUsuario);
     }
 
     @PostMapping("/casa")

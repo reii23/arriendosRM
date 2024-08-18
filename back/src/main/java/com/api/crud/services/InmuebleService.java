@@ -5,6 +5,7 @@ import com.api.crud.repository.IInmuebleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,10 @@ public class InmuebleService {
 
     public DepartamentoModel crearDepartamento(DepartamentoModel departamento) {
         return inmuebleRepository.save(departamento);
+    }
+
+    public ArrayList<InmuebleModel> obtenerInmueblePorIdUsuario(Long idUsuario) {
+        return inmuebleRepository.findByIdUsuario(idUsuario);
     }
 
     public TerrenoModel crearTerreno(TerrenoModel terreno) {

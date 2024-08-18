@@ -39,6 +39,7 @@
         <div v-for="horario in horariosVisita" :key="horario.id" class="horario-item">
           <button @click="agendarVisita(horario.id, propiedad.id)"
 		  style="width: 150px; height: 50px  ; background-color: #FFF;">
+		<strong>Agendar Visita</strong> <br>
 		  <strong>Fecha:</strong> {{horario.fecha}} <br> 
 			<div v-if="horario.fecha[9] === 'm'"> 
 				<strong>Hora:</strong> 9:00 - 10:30
