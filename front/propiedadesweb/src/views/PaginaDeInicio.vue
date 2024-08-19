@@ -3,7 +3,7 @@
     <img alt="Vue logo" src="../assets/residenciasRM.png" />
 
     <div v-if="auth.isLoggedIn">
-      <p>Hola {{ userName }}, bienvenido a residenciasRM, tu rol es {{userRole}}.</p>
+      <p>Hola {{ nombreUsuario }}, bienvenido a residenciasRM, tu rol es {{rolUsuario}}.</p>
     </div>
     <Componente msg="Bienvenido a residenciasRM" />
 
@@ -21,15 +21,15 @@ import Componente from "@/components/Componente.vue";
 import { auth } from "@/auth";
 
 export default {
-  name: "HomeView",
+  nombre: "HomeView",
   components: {
     Componente,
   },
   data() {
     return {
       auth,
-      userName: '',
-      userRole: ''
+      nombreUsuario: '',
+      rolUsuario: ''
     };
   },
   async created() {
@@ -41,16 +41,16 @@ export default {
         try {
           const response = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorId/${this.auth.id}`);
           const userData = response.data;
-          this.userName = userData.nombre;
+          this.nombreUsuario = userData.nombre;
           switch (userData.rol) {
             case 0:
-              this.userRole = 'administrador'; // 0 = administrador
+              this.rolUsuario = 'administrador'; // 0 = administrador
               break;
             case 1:
-              this.userRole = 'cliente'; // 1 = cliente
+              this.rolUsuario = 'cliente'; // 1 = cliente
               break;
             case 2:
-              this.userRole = 'agente inmobiliario'; // 2 = agente inmobiliario
+              this.rolUsuario = 'agente inmobiliario'; // 2 = agente inmobiliario
           }
         } catch (error) {
           console.error('Error al obtener la información del usuario:', error);

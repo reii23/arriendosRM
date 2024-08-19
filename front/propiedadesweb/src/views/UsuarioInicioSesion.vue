@@ -2,11 +2,11 @@
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
     <form @submit.prevent="loginUser">
-      <div class="form-group">
+      <div class="formulario">
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" v-model="user.email" required>
       </div>
-      <div class="form-group">
+      <div class="formulario">
         <label for="password">Contraseña</label>
         <input type="password" id="password" v-model="user.password" required>
       </div>
@@ -20,7 +20,7 @@ import axios from 'axios';
 import {auth} from "@/auth";
 
 export default {
-  name: 'Login',
+  nombre: 'Login',
   data() {
     return {
       user: {
@@ -51,7 +51,7 @@ export default {
   margin: 0 auto;
   padding: 20px;
 }
-.form-group {
+.formulario {
   margin-bottom: 15px;
 }
 label {

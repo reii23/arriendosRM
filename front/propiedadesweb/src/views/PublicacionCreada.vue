@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'PublicacionCreada',
+  nombre: 'PublicacionCreada',
 };
 
 </script>

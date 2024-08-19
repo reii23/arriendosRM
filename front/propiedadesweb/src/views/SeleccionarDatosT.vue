@@ -1,7 +1,7 @@
 <template>
   <div class="seleccionar-terreno">
     <h2>¿Qué deseas hacer con tu propiedad?</h2>
-    <div class="options">
+    <div class="opciones">
       <label class="radio-option">
         <input type="radio" v-model="action" value="vender" />
         Vender
@@ -11,28 +11,28 @@
         Arrendar
       </label>
     </div>
-    <div class="address-inputs">
+    <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>
-      <input type="text" v-model="address.line1" placeholder="Dirección" />
-      <select v-model="address.comuna">
+      <input type="text" v-model="datosTerreno.line1" placeholder="Dirección" />
+      <select v-model="datosTerreno.comuna">
       <option value="">Selecciona una comuna</option>
       <option v-for="comuna in comunas" :key="comuna" :value="comuna">
         {{ comuna.replace(/_/g, ' ') }}
       </option>
     </select>
-      <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
-      <input type="text" v-model="address.line3" placeholder="m2 del terreno" />
-      <input type="text" v-model="address.line4" placeholder="Tipo de suelo" />
+      <input type="text" v-model="datosTerreno.line2" placeholder="Valor (pesos)" />
+      <input type="text" v-model="datosTerreno.line3" placeholder="m2 del terreno" />
+      <input type="text" v-model="datosTerreno.line4" placeholder="Tipo de suelo" />
       <div class="patio-option">
         <span>¿Cuenta con servicios básicos?</span>
         <div class="button-group">
-          <button @click="setServicios(true)" :class="{ active: address.tieneServicios === true }">Sí</button>
-          <button @click="setServicios(false)" :class="{ active: address.tieneServicios === false }">No</button>
+          <button @click="establecerServicios(true)" :class="{ active: datosTerreno.tieneServicios === true }">Sí</button>
+          <button @click="establecerServicios(false)" :class="{ active: datosTerreno.tieneServicios === false }">No</button>
         </div>
       </div>
     </div>
     <button @click="publicarPropiedad" class="publicar-button">Publicar Terreno</button>
-  <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
+  <p v-if="message" :class="{'mensaje-exito': isSuccess, 'mensaje-error': !isSuccess}">
     {{ message }}
   </p>
   </div>
@@ -40,17 +40,11 @@
 
 <script>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
   name: 'SeleccionarDatosT',
   setup() {
-    const router = useRouter();
-    const navigateTo = (path) => {
-      router.push(path);
-    };
-    
     const message = ref('');
     const isSuccess = ref(false);
 
@@ -68,18 +62,18 @@ export default {
   ];
 
   const validarCampoNumerico = (dato, nombreDato) => {
-      if (isNaN(address.value[dato]) || address.value[dato] === '') {
+      if (isNaN(datosTerreno.value[dato]) || datosTerreno.value[dato] === '') {
         isSuccess.value = false;
         message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
-        address.value[dato] = ''; // Limpiar el campo
+        datosTerreno.value[dato] = ''; // Limpiar el campo
         return false;
       }
       return true;
     };
 
     const publicarPropiedad = async () => {
-      if (action.value && address.value.line1 && address.value.comuna && address.value.line2 &&
-          address.value.line3 && address.value.line4 && address.value.tieneServicios != null) { // Validar campos requeridos
+      if (action.value && datosTerreno.value.line1 && datosTerreno.value.comuna && datosTerreno.value.line2 &&
+          datosTerreno.value.line3 && datosTerreno.value.line4 && datosTerreno.value.tieneServicios != null) { // Validar campos requeridos
             const datoNumerico = [
             { dato: 'line2', nombreDato: 'Valor (pesos)' },
             { dato: 'line3', nombreDato: 'm2 del interior' },
@@ -94,12 +88,12 @@ export default {
             // Crear objeto con los datos del terreno
             const DatosTerreno = { 
               tipoOperacion: action.value, // Obtener tipo de operación
-              direccion: address.value.line1, // Obtener dirección
-              comuna: address.value.comuna, // Obtener comuna
-              precio: parseInt(address.value.line2), // Obtener valor
-              metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
-              tipoSuelo: address.value.line4, // Obtener el tipo de suelo
-              tieneServiciosBasicos: address.value.tieneServicios, // Obtener si tiene servicios básicos
+              direccion: datosTerreno.value.line1, // Obtener dirección
+              comuna: datosTerreno.value.comuna, // Obtener comuna
+              precio: parseInt(datosTerreno.value.line2), // Obtener valor
+              metrosCuadrados: parseInt(datosTerreno.value.line3), // Obtener m2 del interior
+              tipoSuelo: datosTerreno.value.line4, // Obtener el tipo de suelo
+              tieneServiciosBasicos: datosTerreno.value.tieneServicios, // Obtener si tiene servicios básicos
               idUsuario: localStorage.getItem('userId')
             };
           const response = await axios.post('http://localhost:8080/inmuebles/terreno', DatosTerreno); // Enviar datos al servidor
@@ -122,7 +116,7 @@ export default {
     };
       
     const action = ref('');
-    const address = ref({
+    const datosTerreno = ref({
       line1: '',
       comuna: '',
       line2: '',
@@ -131,19 +125,18 @@ export default {
       tieneServicios: null
     });
 
-    const setServicios = (value) => {
-      address.value.tieneServicios = value;
+    const establecerServicios = (value) => {
+      datosTerreno.value.tieneServicios = value;
     };
 
     return {
-      navigateTo,
       action,
-      address,
+      datosTerreno,
       message,
       isSuccess,
       publicarPropiedad,
       comunas,
-      setServicios
+      establecerServicios
     };
   }
 }
@@ -165,7 +158,7 @@ export default {
     font-size: 24px;
   }
 
-  .options {
+  .opciones {
     display: flex;
     justify-content: center;
     gap: 40px;
@@ -179,13 +172,13 @@ export default {
     font-size: 18px;
   }
 
-  .address-inputs {
+  .entrada-datos-depa {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
 
-  .address-inputs h3 {
+  .entrada-datos-depa h3 {
     font-size: 20px;
     margin-bottom: 20px;
     text-align: center;
@@ -248,14 +241,14 @@ export default {
     background-color: #f9d676;
   }
 
-  .success-message {
+  .mensaje-exito {
     color: #28a745;
     text-align: center;
     margin-top: 20px;
   }
 
 
-  .error-message {
+  .mensaje-error {
     color: #dc3545;
     text-align: center;
     margin-top: 20px;

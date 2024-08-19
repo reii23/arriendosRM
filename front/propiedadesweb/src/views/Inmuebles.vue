@@ -6,8 +6,8 @@
       :first="first"
       @page-change="onPageChange"
     />
-    <div v-if="paginatedInmuebles.length === 0" class="no-inmuebles">No hay inmuebles disponibles para mostrar </div>
-    <InmuebleGrid v-else :inmuebles="paginatedInmuebles" />
+    <div v-if="InmueblesEnPagina.length === 0" class="no-inmuebles">No hay inmuebles disponibles para mostrar </div>
+    <InmuebleGrid v-else :inmuebles="InmueblesEnPagina" />
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
     };
   },
   computed: {
-    paginatedInmuebles() {
+    InmueblesEnPagina() {
       const inicio = this.first;
       const fin = inicio + this.rows;
       return this.inmuebles.slice(inicio, fin);

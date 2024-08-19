@@ -1,16 +1,16 @@
 <template>
   <div class="account-page">
 	<h1>Mi Cuenta</h1>
-	<div v-if="user" class="account-info">
+	<div v-if="usuario" class="cuenta-info">
 	  <h2>Información de la Cuenta</h2>
-	  <p>Nombre: {{ user.nombre }}</p>
-		<p>Email: {{ user.email }}</p>
-		<p>Número de telefono: {{ user.numeroTelefono}} </p>
-		<p v-if="user.rol === 0"> Rol: Administrador</p>
-		<p v-if="user.rol === 1"> Rol: Cliente</p>
-		<p v-if="user.rol === 2"> Rol: Agente Inmobiliario</p>
+	  <p>Nombre: {{ usuario.nombre }}</p>
+		<p>Email: {{ usuario.email }}</p>
+		<p>Número de telefono: {{ usuario.numeroTelefono}} </p>
+		<p v-if="usuario.rol === 0"> Rol: Administrador</p>
+		<p v-if="usuario.rol === 1"> Rol: Cliente</p>
+		<p v-if="usuario.rol === 2"> Rol: Agente Inmobiliario</p>
 	</div>
-	<div v-if="user && (user.rol === 1 || user.rol === 0)"class="mis-propiedades">
+	<div v-if="usuario && (usuario.rol === 1 || usuario.rol === 0)"class="mis-propiedades">
 	  <h2>Mis Propiedades</h2>
 	  <div v-if="propiedades" class="propiedades-lista">
 		<div v-for="propiedad in propiedades" :key="propiedad.id" class="propiedad-item">
@@ -22,12 +22,12 @@
 			<strong>Metros Cuadrados:</strong> {{ propiedad.metrosCuadrados }} m² <br>
 			<strong>Comuna:</strong> {{ propiedad.comuna }} <br>
 		</div>	
-		<button @click="goToCrearPublicacion()"
+		<button @click="irACrearPublicacion()"
 					 style= "font: 1em sans-serif; font-size: x-large; color: black;background-color: beige;
 					 padding: 10px;border-radius: 8px; height: 180px; width: 200px; text-align: center">Crear Publicación</button>
 	  </div>
 	</div>
-	<div v-if="user && (user.rol === 1 || user.rol === 0)"class="visitas-agendadas">
+	<div v-if="usuario && (usuario.rol === 1 || usuario.rol === 0)"class="visitas-agendadas">
 	  <h2>Visitas Agendadas</h2>
 	  <div v-if="horariosVisitas" class="visitas-lista">
 		<div v-for="horario in horariosVisitas" :key="horario.id" class="horario-item">
@@ -60,7 +60,7 @@
 	name: 'AcountInfo',
 	data(){
         return {
-		  user: null,
+		  usuario: null,
 		  propiedades: null,
 		  horariosVisitas: null
 		}
@@ -74,8 +74,8 @@
 		async obtenerUsuario(){
 			try{
 				const id = localStorage.getItem('userId');
-				const response = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorId/${id}`);
-				this.user = response.data;
+				const respuesta = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorId/${id}`);
+				this.usuario = respuesta.data;
 			}catch(error){
 				console.error('Error al obtener los detalles del usuario:', error);
 			}
@@ -83,8 +83,8 @@
 		async obtenerPropiedades(){
 			try{
 				const idUsuario = localStorage.getItem('userId');
-				const response = await axios.get(`http://localhost:8080/inmuebles/obtenerInmueblesPorUsuario/${idUsuario}`);
-				this.propiedades = response.data;
+				const respuesta = await axios.get(`http://localhost:8080/inmuebles/obtenerInmueblesPorUsuario/${idUsuario}`);
+				this.propiedades = respuesta.data;
 			}catch(error){
 				console.error('Error al obtener las propiedades del usuario:', error);
 			}
@@ -92,15 +92,15 @@
 		async obtenerHorariosVisitas(){
 			try{
 				const id = localStorage.getItem('userId');
-				const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorUsuario/${id}`);
-				this.horariosVisitas = response.data;
+				const respuesta = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorUsuario/${id}`);
+				this.horariosVisitas = respuesta.data;
 			}catch(error){
 				console.error('Error al obtener las visitas del usuario:', error);
 			}
 		},
 		async desagendarVisita(horarioId){
 			try{
-				const response = await axios.post(`http://localhost:8080/horarioVisita/desagendarVisita/${horarioId}`);
+				const respuesta = await axios.post(`http://localhost:8080/horarioVisita/desagendarVisita/${horarioId}`);
 				this.obtenerHorariosVisitas();
 				alert('Visita desagendada correctamente');
 			}catch(error){
@@ -108,7 +108,7 @@
 				alert('Error al desagendar la visita');
 			}
 		},
-		goToCrearPublicacion(){
+		irACrearPublicacion(){
 			this.$router.push('/seleccionar-inmueble');
 		}
 	}
@@ -117,7 +117,7 @@
 </script>
 
 <style scoped>
-.account-info {
+.cuenta-info {
   max-width: 350px;
   margin: 0 auto;
   padding: 20px;

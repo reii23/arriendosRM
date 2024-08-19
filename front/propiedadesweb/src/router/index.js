@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/HomeView.vue";
-import About from "../views/AboutView.vue";
-import Inmuebles from "../views/InmueblesView.vue";
-import Register from "../views/RegisterView.vue";
-import Login from "../views/LoginView.vue";
-import PropertyDetail from "../views/PropertyDetailView.vue";
+import Home from "../views/PaginaDeInicio.vue";
+import About from "../views/SubsidiosInfo.vue";
+import Inmuebles from "../views/Inmuebles.vue";
+import Register from "../views/UsuarioRegistro.vue";
+import Login from "../views/UsuarioInicioSesion.vue";
+import PropertyDetail from "../views/DetallesPropiedad.vue";
 import SeleccionarInmueble from "@/views/SeleccionarInmueble.vue";
 import SeleccionarDatosC from "@/views/SeleccionarDatosC.vue";
 import SeleccionarDatosD from "@/views/SeleccionarDatosD.vue";
 import SeleccionarDatosT from "@/views/SeleccionarDatosT.vue";
 import PublicacionCreada from "@/views/PublicacionCreada.vue";
-import LogoutView from "@/views/LogoutView.vue";
-import AccountView from "@/views/AccountView.vue";
-import AgenteView from "@/views/AgenteView.vue";
+import LogoutView from "@/views/UsuarioCerrarSesion.vue";
+import AccountView from "@/views/UsuarioPerfil.vue";
+import AgenteView from "@/views/AgenteVista.vue";
 
 const routes = [
   {

@@ -13,7 +13,7 @@
   import { useRouter } from 'vue-router';
   
   export default {
-    name: 'SeleccionarInmueble',
+    nombre: 'SeleccionarInmueble',
     setup() {
       const router = useRouter();
       const navigateTo = (path) => {

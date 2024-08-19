@@ -2,34 +2,34 @@
   <div class="seleccionar-casa">
 
     <h2>¿Qué deseas hacer con tu propiedad?</h2>
-    <div class="options">
+    <div class="opciones">
       <label class="radio-option">
-        <input type="radio" v-model="action" value="vender" />
+        <input type="radio" v-model="accion" value="vender" />
         Vender
       </label>
       <label class="radio-option">
-        <input type="radio" v-model="action" value="arrendar" />
+        <input type="radio" v-model="accion" value="arrendar" />
         Arrendar
       </label>
     </div>
 
-    <div class="address-inputs">
+    <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>
-      <input type="text" v-model="address.line1" placeholder="Dirección" />
-      <select v-model="address.comuna">
+      <input type="text" v-model="datosCasa.line1" placeholder="Dirección" />
+      <select v-model="datosCasa.comuna">
         <option value="">Selecciona una comuna</option>
         <option v-for="comuna in comunas" :key="comuna" :value="comuna">
             {{ comuna.replace(/_/g, ' ') }}
         </option>
       </select>
-      <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
-      <input type="text" v-model="address.line3" placeholder="m2 del interior" />
-      <input type="text" v-model="address.line4" placeholder="Cantidad de pisos" />
+      <input type="text" v-model="datosCasa.line2" placeholder="Valor (pesos)" />
+      <input type="text" v-model="datosCasa.line3" placeholder="m² del interior" />
+      <input type="text" v-model="datosCasa.line4" placeholder="Cantidad de pisos" />
       <div class="patio-option">
         <span>¿Tiene patio?</span>
         <div class="button-group">
-          <button @click="setPatio(true)" :class="{ active: address.tienePatio === true }">Sí</button>
-          <button @click="setPatio(false)" :class="{ active: address.tienePatio === false }">No</button>
+          <button @click="establecerPatio(true)" :class="{ active: datosCasa.tienePatio === true }">Sí</button>
+          <button @click="establecerPatio(false)" :class="{ active: datosCasa.tienePatio === false }">No</button>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 export default {
-  name: 'SeleccionarDatosC', 
+  nombre: 'SeleccionarDatosC', 
   setup() {
     const message = ref('');
     const isSuccess = ref(false);
@@ -65,10 +65,10 @@ export default {
     ];
 
     const validarCampoNumerico = (dato, nombreDato) => {
-      if (isNaN(address.value[dato]) || address.value[dato] === '') {
+      if (isNaN(datosCasa.value[dato]) || datosCasa.value[dato] === '') {
         isSuccess.value = false;
         message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
-        address.value[dato] = ''; // Limpiar el campo
+        datosCasa.value[dato] = ''; // Limpiar el campo
         return false;
       }
       return true;
@@ -76,12 +76,12 @@ export default {
 
     const publicarPropiedad = async () => {
       // Si los campos están completos
-      if (action.value && address.value.line1 && address.value.comuna && address.value.line2 &&
-          address.value.line3 && address.value.line4 && address.value.tienePatio !== null) {
+      if (accion.value && datosCasa.value.line1 && datosCasa.value.comuna && datosCasa.value.line2 &&
+          datosCasa.value.line3 && datosCasa.value.line4 && datosCasa.value.tienePatio !== null) {
           
           const datoNumerico = [
             { dato: 'line2', nombreDato: 'Valor (pesos)' },
-            { dato: 'line3', nombreDato: 'm2 del interior' },
+            { dato: 'line3', nombreDato: 'm² del interior' },
             { dato: 'line4', nombreDato: 'Cantidad de pisos' }
           ];
 
@@ -93,13 +93,13 @@ export default {
           try {
             // Crear objeto con los datos de la casa
             const DatosCasa = {
-              tipoOperacion: action.value, // Obtener tipo de operación (vender o arrendar)
-              direccion: address.value.line1, // Obtener dirección
-              comuna: address.value.comuna, // Obtener comuna
-              precio: parseInt(address.value.line2), // Obtener precio
-              metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
-              numPisos: parseInt(address.value.line4), // Obtener cantidad de pisos
-              tienePatio: address.value.tienePatio, // Obtener si tiene patio
+              tipoOperacion: accion.value, // Obtener tipo de operación (vender o arrendar)
+              direccion: datosCasa.value.line1, // Obtener dirección
+              comuna: datosCasa.value.comuna, // Obtener comuna
+              precio: parseInt(datosCasa.value.line2), // Obtener precio
+              metrosCuadrados: parseInt(datosCasa.value.line3), // Obtener m2 del interior
+              numPisos: parseInt(datosCasa.value.line4), // Obtener cantidad de pisos
+              tienePatio: datosCasa.value.tienePatio, // Obtener si tiene patio
               idUsuario: localStorage.getItem('userId') // Obtener id del usuario
             };
             const response = await axios.post('http://localhost:8080/inmuebles/casa', DatosCasa); // Enviar datos al servidor
@@ -122,8 +122,8 @@ export default {
         }
     };
     
-    const action = ref(''); 
-    const address = ref({
+    const accion = ref(''); 
+    const datosCasa = ref({
       line1: '',
       comuna: '',
       line2: '',
@@ -132,18 +132,18 @@ export default {
       tienePatio: null
     });
 
-    const setPatio = (value) => {
-      address.value.tienePatio = value;
+    const establecerPatio = (value) => {
+      datosCasa.value.tienePatio = value;
     };
 
     return {
-      action,
-      address,
+      accion,
+      datosCasa: datosCasa,
       message,
       isSuccess,
       publicarPropiedad,
       comunas,
-      setPatio
+      establecerPatio: establecerPatio
     };
   }
 }
@@ -165,7 +165,7 @@ h2 {
   font-size: 24px;
 }
 
-.options {
+.opciones {
   display: flex;
   justify-content: center;
   gap: 80px;
@@ -179,13 +179,13 @@ h2 {
   font-size: 18px;
 }
 
-.address-inputs {
+.entrada-datos-depa {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.address-inputs h3 {
+.entrada-datos-depa h3 {
   font-size: 20px;
   margin-bottom: 20px;
   text-align: center;

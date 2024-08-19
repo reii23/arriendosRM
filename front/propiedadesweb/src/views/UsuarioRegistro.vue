@@ -1,20 +1,20 @@
 <template>
     <div class="register-container">
       <h2 class="titulo-container">Registro de Usuario</h2>
-      <form @submit.prevent="registerUser">
-        <div class="form-group">
+      <form @submit.prevent="registroDeUsuario">
+        <div class="formulario">
           <label for="nombre">Nombre de usuario</label>
           <input type="text" id="nombre" v-model="user.nombre" required>
         </div>
-        <div class="form-group">
+        <div class="formulario">
           <label for="email">Correo electrónico</label>
           <input type="email" id="email" v-model="user.email" required>
         </div>
-        <div class = "form-group">
+        <div class = "formulario">
           <label for="numeroTelefono">Número de Teléfono</label>
           <input type="text" id="numeroTelefono" v-model="user.numeroTelefono" required>
         </div>
-        <div class="form-group">
+        <div class="formulario">
           <label for="rol">Rol</label>
           <select id="rol" v-model="user.rol">
             <option value="0">Administrador</option>
@@ -22,13 +22,13 @@
             <option value="2">Agente Inmobiliario</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="formulario">
           <label for="password">Contraseña</label>
           <input type="password" id="password" v-model="user.password" required>
         </div>
         <button type="submit">Registrar</button>
       </form>
-      <p v-if="message" :class="{ 'success-message': isSuccess, 'error-message': !isSuccess }">
+      <p v-if="message" :class="{ 'mensaje-exito': isSuccess, 'mensaje-error': !isSuccess }">
         {{ message }}
       </p>
     </div>
@@ -38,7 +38,7 @@
   import axios from 'axios';
   
   export default {
-    name: 'Register',
+    nombre: 'Register',
     data() {
       return {
         user: {
@@ -54,7 +54,7 @@
       }
     },
     methods: {
-      async registerUser() {
+      async registroDeUsuario() {
         this.isSubmitting = true;
         try {
           const response = await axios.post('http://localhost:8080/user/crearUsuario', this.user);
@@ -86,7 +86,7 @@
     text-align: center;
     color: rgb(255, 255, 255);
   }
-  .form-group {
+  .formulario {
     margin-bottom: 15px;
     color:rgb(255, 250, 250);
   }
@@ -121,11 +121,11 @@
   cursor: not-allowed;
 }
 
-.succes-message {
+.mensaje-exito {
   color: green;
 }
 
-.error-message {
+.mensaje-error {
   color: red;
 }
 

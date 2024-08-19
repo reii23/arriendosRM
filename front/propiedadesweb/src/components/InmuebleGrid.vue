@@ -8,7 +8,7 @@
   import InmuebleCard from './InmuebleCard.vue';
   
   export default {
-    name: 'InmuebleGrid',
+    nombre: 'InmuebleGrid',
     components: {
       InmuebleCard
     },

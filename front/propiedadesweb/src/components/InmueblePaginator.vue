@@ -13,7 +13,7 @@
   import Paginator from "primevue/paginator";
   
   export default {
-    name: 'InmueblePaginator',
+    nombre: 'InmueblePaginator',
     components: {
       Paginator
     },

@@ -1,15 +1,15 @@
 <template>
-  <div class="subsidy-info">
+  <div class="subsidio-info">
     <h1>Subsidios para la Adquisición de Inmuebles</h1>
-    <div class="subsidy-card" v-for="subsidy in subsidies" :key="subsidy.id">
-      <h2>{{ subsidy.name }}</h2>
-      <p><strong>Descripción:</strong> {{ subsidy.description }}</p>
+    <div class="subsidio-tarjeta" v-for="subsidio in subsidios" :key="subsidio.id">
+      <h2>{{ subsidio.nombre }}</h2>
+      <p><strong>Descripción:</strong> {{ subsidio.descripcion }}</p>
       <p><strong>Requisitos:</strong></p>
       <ul>
-        <li v-for="requirement in subsidy.requirements" :key="requirement">{{ requirement }}</li>
+        <li v-for="requerimiento in subsidio.requerimientos" :key="requerimiento">{{ requerimiento }}</li>
       </ul>
-      <p><strong>Monto:</strong> {{ subsidy.amount }}</p>
-      <button @click="contactInfo(subsidy)">Más información</button>
+      <p><strong>Monto:</strong> {{ subsidio.monto }}</p>
+      <button @click="contactoInfo(subsidio)">Más información</button>
     </div>
   </div>
 </template>
@@ -18,47 +18,47 @@
 import { ref } from 'vue';
 
 export default {
-  name: 'SubsidyInfo',
+  nombre: 'SubsidyInfo',
   setup() {
-    const subsidies = ref([
+    const subsidios = ref([
       {
         id: 1,
-        name: 'Subsidio Habitacional',
-        description: 'Ayuda económica para la compra de tu primera vivienda.',
-        requirements: [
+        nombre: 'Subsidio Habitacional',
+        descripcion: 'Ayuda económica para la compra de tu primera vivienda.',
+        requerimientos: [
           'Ser mayor de 18 años',
           'No poseer otra propiedad',
           'Ingresos familiares mensuales no superiores a $1,000,000',
         ],
-        amount: '$50,000 - $100,000',
+        monto: '$50,000 - $100,000',
       },
       {
         id: 2,
-        name: 'Subsidio Renovación Urbana',
-        description: 'Subsidio para adquirir inmuebles en zonas de renovación urbana.',
-        requirements: [
+        nombre: 'Subsidio Renovación Urbana',
+        descripcion: 'Subsidio para adquirir inmuebles en zonas de renovación urbana.',
+        requerimientos: [
           'Inmueble ubicado en zona de renovación urbana',
           'Ingreso familiar dentro de los límites establecidos',
         ],
-        amount: '$30,000 - $70,000',
+        monto: '$30,000 - $70,000',
       },
       // Más subsidios pueden ser agregados aquí
     ]);
 
-    const contactInfo = (subsidy) => {
-      alert(`Para más información sobre el ${subsidy.name}, contacta a nuestro equipo de soporte.`);
+    const contactoInfo = (subsidio) => {
+      alert(`Para más información sobre el ${subsidio.nombre}, contacta a nuestro equipo de soporte.`);
     };
 
     return {
-      subsidies,
-      contactInfo,
+      subsidios,
+      contactoInfo: contactoInfo,
     };
   }
 };
 </script>
 
 <style scoped>
-.subsidy-info {
+.subsidio-info {
   background-color: #f0f8ff;
   color: #333;
   padding: 20px;
@@ -73,7 +73,7 @@ h1 {
   margin-bottom: 30px;
 }
 
-.subsidy-card {
+.subsidio-tarjeta {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -81,11 +81,11 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.subsidy-card h2 {
+.subsidio-tarjeta h2 {
   margin-bottom: 10px;
 }
 
-.subsidy-card ul {
+.subsidio-tarjeta ul {
   padding-left: 20px;
 }
 

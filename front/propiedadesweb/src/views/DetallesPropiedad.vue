@@ -69,7 +69,7 @@ import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
 import {auth} from "@/auth";
 
 export default {
-  name: 'PropiedadDetalle',
+  nombre: 'PropiedadDetalle',
   data() {
     return {
       propiedad: null,
@@ -101,15 +101,15 @@ export default {
     },
 	async agendarVisita(idHorario, idInmueble) {
 	  try {
-		const isLoged = auth.isLoggedIn;
+		const sesionIniciada = auth.isLoggedIn;
 		const idUsuario = localStorage.getItem('userId');
-        if(!isLoged){
+        if(!sesionIniciada){
 		  alert('Debe iniciar sesión para agendar una visita');
 		  return;
 		}
-		const response = await axios.post(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}/${idUsuario}`);
-		const response2 = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${idInmueble}`);
-        this.horariosVisita = response2.data;
+		const respuesta = await axios.post(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}/${idUsuario}`);
+		const respuesta2 = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${idInmueble}`);
+        this.horariosVisita = respuesta2.data;
 		alert('Visita agendada correctamente');
 	  } catch (error) {
 		console.error('Error al agendar la visita:', error);

@@ -1,33 +1,33 @@
 <template>
     <div class="seleccionar-depa">
       <h2>¿Qué deseas hacer con tu propiedad?</h2>
-      <div class="options">
+      <div class="opciones">
         <label class="radio-option">
-          <input type="radio" v-model="action" value="vender" />
+          <input type="radio" v-model="accion" value="vender" />
           Vender
         </label>
         <label class="radio-option">
-          <input type="radio" v-model="action" value="arrendar" />
+          <input type="radio" v-model="accion" value="arrendar" />
           Arrendar
         </label>
       </div>
-      <div class="address-inputs">
+      <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>
-      <input type="text" v-model="address.line1" placeholder="Dirección" />
-      <select v-model="address.comuna">
+      <input type="text" v-model="datosDepa.line1" placeholder="Dirección" />
+      <select v-model="datosDepa.comuna">
         <option value="">Selecciona una comuna</option>
         <option v-for="comuna in comunas" :key="comuna" :value="comuna">
           {{ comuna.replace(/_/g, ' ') }}
         </option>
       </select>
-      <input type="text" v-model="address.line2" placeholder="Valor (pesos)" />
-      <input type="text" v-model="address.line3" placeholder="m2 del departamento" />
-      <input type="text" v-model="address.line4" placeholder="Número de piso del departamento" />
+      <input type="text" v-model="datosDepa.line2" placeholder="Valor (pesos)" />
+      <input type="text" v-model="datosDepa.line3" placeholder="m2 del departamento" />
+      <input type="text" v-model="datosDepa.line4" placeholder="Número de piso del departamento" />
       <div class="ascensor-option">
         <span>¿El edificio cuenta con ascensor?</span>
         <div class="button-group">
-          <button @click="setAscensor(true)" :class="{ active: address.hasAscensor === true }">Sí</button>
-          <button @click="setAscensor(false)" :class="{ active: address.hasAscensor === false }">No</button>
+          <button @click="establecerAscensor(true)" :class="{ active: datosDepa.tieneAscensor === true }">Sí</button>
+          <button @click="establecerAscensor(false)" :class="{ active: datosDepa.tieneAscensor === false }">No</button>
         </div>
       </div>
     </div>
@@ -62,10 +62,10 @@ export default {
     ];
 
     const validarCampoNumerico = (dato, nombreDato) => {
-      if (isNaN(address.value[dato]) || address.value[dato] === '') {
+      if (isNaN(datosDepa.value[dato]) || datosDepa.value[dato] === '') {
         isSuccess.value = false;
         message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
-        address.value[dato] = ''; // Limpiar el campo
+        datosDepa.value[dato] = ''; // Limpiar el campo
         return false;
       }
       return true;
@@ -73,8 +73,8 @@ export default {
 
     const publicarPropiedad = async () => {
       // Verificar si los campos están completos
-      if (action.value && address.value.line1 && address.value.comuna && address.value.line2 &&
-          address.value.line3 && address.value.line4 && address.hasAscensor !== null){
+      if (accion.value && datosDepa.value.line1 && datosDepa.value.comuna && datosDepa.value.line2 &&
+          datosDepa.value.line3 && datosDepa.value.line4 && datosDepa.tieneAscensor !== null){
         const datoNumerico = [
             { dato: 'line2', nombreDato: 'Valor (pesos)' },
             { dato: 'line3', nombreDato: 'm2 del interior' },
@@ -89,13 +89,13 @@ export default {
           try {
             // Crear objeto con los datos del departamento
             const DatosDepa = { 
-              tipoOperacion: action.value, // Obtener tipo de operación
-              direccion: address.value.line1, // Obtener dirección
-              comuna: address.value.comuna, // Obtener comuna
-              precio: parseInt(address.value.line2), // Obtener valor
-              metrosCuadrados: parseInt(address.value.line3), // Obtener m2 del interior
-              tieneAscensor: address.value.hasAscensor, // Obtener si tiene ascensor
-              piso: parseInt(address.value.line4), // Obtener número de piso del departamento  // Obtener si tiene patio
+              tipoOperacion: accion.value, // Obtener tipo de operación
+              direccion: datosDepa.value.line1, // Obtener dirección
+              comuna: datosDepa.value.comuna, // Obtener comuna
+              precio: parseInt(datosDepa.value.line2), // Obtener valor
+              metrosCuadrados: parseInt(datosDepa.value.line3), // Obtener m2 del interior
+              tieneAscensor: datosDepa.value.tieneAscensor, // Obtener si tiene ascensor
+              piso: parseInt(datosDepa.value.line4), // Obtener número de piso del departamento  // Obtener si tiene patio
               idUsuario: localStorage.getItem('userId')
             };
             const response = await axios.post('http://localhost:8080/inmuebles/departamento', DatosDepa); // Enviar datos al servidor
@@ -118,28 +118,28 @@ export default {
         }
     };
 
-    const action = ref('');
-    const address = ref({
+    const accion = ref('');
+    const datosDepa = ref({
       line1: '',
       comuna: '',
       line2: '',
       line3: '',
       line4: '',
-      hasAscensor: null
+      tieneAscensor: null
     });
 
-    const setAscensor = (value) => {
-      address.value.hasAscensor = value;
+    const establecerAscensor = (value) => {
+      datosDepa.value.tieneAscensor = value;
     };
 
     return {
-      action,
-      address,
+      accion,
+      datosDepa,
       message,
       isSuccess,
       publicarPropiedad,
       comunas,
-      setAscensor
+      establecerAscensor
     };
   }
 }
@@ -161,7 +161,7 @@ export default {
     font-size: 24px;
   }
   
-  .options {
+  .opciones {
     display: flex;
     justify-content: center;
     gap: 40px;
@@ -175,13 +175,13 @@ export default {
   font-size: 18px;
 }
   
-  .address-inputs {
+  .entrada-datos-depa {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
   
-  .address-inputs h3 {
+  .entrada-datos-depa h3 {
     font-size: 20px;
     margin-bottom: 20px;
     text-align: center;
