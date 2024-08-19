@@ -13,27 +13,27 @@
     </div>
     <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>
-      <input type="text" v-model="datosTerreno.line1" placeholder="Dirección" />
+      <input type="text" v-model="datosTerreno.linea1" placeholder="Dirección" />
       <select v-model="datosTerreno.comuna">
       <option value="">Selecciona una comuna</option>
       <option v-for="comuna in comunas" :key="comuna" :value="comuna">
         {{ comuna.replace(/_/g, ' ') }}
       </option>
     </select>
-      <input type="text" v-model="datosTerreno.line2" placeholder="Valor (pesos)" />
-      <input type="text" v-model="datosTerreno.line3" placeholder="m2 del terreno" />
-      <input type="text" v-model="datosTerreno.line4" placeholder="Tipo de suelo" />
+      <input type="text" v-model="datosTerreno.linea2" placeholder="Valor (pesos)" />
+      <input type="text" v-model="datosTerreno.linea3" placeholder="m2 del terreno" />
+      <input type="text" v-model="datosTerreno.linea4" placeholder="Tipo de suelo" />
       <div class="patio-option">
         <span>¿Cuenta con servicios básicos?</span>
-        <div class="button-group">
+        <div class="botones">
           <button @click="establecerServicios(true)" :class="{ active: datosTerreno.tieneServicios === true }">Sí</button>
           <button @click="establecerServicios(false)" :class="{ active: datosTerreno.tieneServicios === false }">No</button>
         </div>
       </div>
     </div>
     <button @click="publicarPropiedad" class="publicar-button">Publicar Terreno</button>
-  <p v-if="message" :class="{'mensaje-exito': isSuccess, 'mensaje-error': !isSuccess}">
-    {{ message }}
+  <p v-if="mensaje" :class="{'mensaje-exito': esCorrecto, 'mensaje-error': !esCorrecto}">
+    {{ mensaje }}
   </p>
   </div>
 </template>
@@ -45,8 +45,8 @@ import axios from 'axios';
 export default {
   name: 'SeleccionarDatosT',
   setup() {
-    const message = ref('');
-    const isSuccess = ref(false);
+    const mensaje = ref(''); // Crear referencia reactiva para el mensaje
+    const esCorrecto = ref(false); // Crear referencia reactiva para el estado de éxito
 
     const comunas = [
     'COLINA', 'LAMPA', 'TIL_TIL', 'PIRQUE', 'PUENTE_ALTO', 'SAN_JOSE_DE_MAIPO',
@@ -61,10 +61,11 @@ export default {
     'ISLA_DE_MAIPO', 'PADRE_HURTADO', 'PENAFLOR', 'TALAGANTE'
   ];
 
+  // Función para validar campos numéricos
   const validarCampoNumerico = (dato, nombreDato) => {
-      if (isNaN(datosTerreno.value[dato]) || datosTerreno.value[dato] === '') {
-        isSuccess.value = false;
-        message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
+      if (isNaN(datosTerreno.value[dato]) || datosTerreno.value[dato] === '') {  // Verificar si el valor no es un número o está vacío
+        esCorrecto.value = false; // Establecer el estado de éxito como falso
+        mensaje.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato; // Mostrar mensaje de error indicando el campo
         datosTerreno.value[dato] = ''; // Limpiar el campo
         return false;
       }
@@ -72,68 +73,69 @@ export default {
     };
 
     const publicarPropiedad = async () => {
-      if (action.value && datosTerreno.value.line1 && datosTerreno.value.comuna && datosTerreno.value.line2 &&
-          datosTerreno.value.line3 && datosTerreno.value.line4 && datosTerreno.value.tieneServicios != null) { // Validar campos requeridos
-            const datoNumerico = [
-            { dato: 'line2', nombreDato: 'Valor (pesos)' },
-            { dato: 'line3', nombreDato: 'm2 del interior' },
-          ];
+      // Verificar si los campos requeridos están completos
+      if (accion.value && datosTerreno.value.linea1 && datosTerreno.value.comuna && datosTerreno.value.linea2 &&
+          datosTerreno.value.linea3 && datosTerreno.value.linea4 && datosTerreno.value.tieneServicios != null) { // Validar campos requeridos
+        const datoNumerico = [
+          { dato: 'linea2', nombreDato: 'Valor (pesos)' },
+          { dato: 'linea3', nombreDato: 'm2 del interior' },
+        ];
 
-          for (const { dato, nombreDato } of datoNumerico) {
-            if (!validarCampoNumerico(dato, nombreDato)) {
-              return;
-            }
+        for (const { dato, nombreDato } of datoNumerico) { // Iterar sobre los campos numéricos
+          if (!validarCampoNumerico(dato, nombreDato)) { // Verificar si el campo es numérico
+            return;
           }
-          try {
-            // Crear objeto con los datos del terreno
-            const DatosTerreno = { 
-              tipoOperacion: action.value, // Obtener tipo de operación
-              direccion: datosTerreno.value.line1, // Obtener dirección
-              comuna: datosTerreno.value.comuna, // Obtener comuna
-              precio: parseInt(datosTerreno.value.line2), // Obtener valor
-              metrosCuadrados: parseInt(datosTerreno.value.line3), // Obtener m2 del interior
-              tipoSuelo: datosTerreno.value.line4, // Obtener el tipo de suelo
-              tieneServiciosBasicos: datosTerreno.value.tieneServicios, // Obtener si tiene servicios básicos
-              idUsuario: localStorage.getItem('userId')
-            };
-          const response = await axios.post('http://localhost:8080/inmuebles/terreno', DatosTerreno); // Enviar datos al servidor
-          if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
-              isSuccess.value = true;
-              message.value = "Su publicación ha sido guardada exitosamente";
-            } else {
-              throw new Error('Error al guardar la publicación');
-            }
-          } catch (error) {
-            console.error('Error al publicar la propiedad:', error);
-            isSuccess.value = false;
-            message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+        }
+        try {
+          // Crear objeto con los datos del terreno
+          const DatosTerreno = { 
+            tipoOperacion: accion.value, // Obtener tipo de operación
+            direccion: datosTerreno.value.linea1, // Obtener dirección
+            comuna: datosTerreno.value.comuna, // Obtener comuna
+            precio: parseInt(datosTerreno.value.linea2), // Obtener valor
+            metrosCuadrados: parseInt(datosTerreno.value.linea3), // Obtener m2 del interior
+            tipoSuelo: datosTerreno.value.linea4, // Obtener el tipo de suelo
+            tieneServiciosBasicos: datosTerreno.value.tieneServicios, // Obtener si tiene servicios básicos
+            idUsuario: localStorage.getItem('userId')
+          };
+        const response = await axios.post('http://localhost:8080/inmuebles/terreno', DatosTerreno); // Enviar datos al servidor
+        if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
+            esCorrecto.value = true;
+            mensaje.value = "Su publicación ha sido guardada exitosamente";
+          } else {
+            throw new Error('Error al guardar la publicación');
           }
+        } catch (error) {
+              console.error('Error al publicar la propiedad:', error);
+              esCorrecto.value = false;
+              mensaje.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+            }
             
       } else {
-            isSuccess.value = false;
-            message.value = "Por favor, complete todos los campos requeridos";
+            esCorrecto.value = false;
+            mensaje.value = "Por favor, complete todos los campos requeridos";
           }
     };
       
-    const action = ref('');
-    const datosTerreno = ref({
-      line1: '',
+    const accion = ref(''); // Crear referencia reactiva para la acción
+    const datosTerreno = ref({ // Crear referencia reactiva para los datos del terreno
+      linea1: '',
       comuna: '',
-      line2: '',
-      line3: '',
-      line4: '',
+      linea2: '',
+      linea3: '',
+      linea4: '',
       tieneServicios: null
     });
 
     const establecerServicios = (value) => {
-      datosTerreno.value.tieneServicios = value;
+      datosTerreno.value.tieneServicios = value; // Establecer si tiene servicios básicos
     };
 
     return {
-      action,
+      action: accion,
       datosTerreno,
-      message,
-      isSuccess,
+      mensaje: mensaje,
+      esCorrecto: esCorrecto,
       publicarPropiedad,
       comunas,
       establecerServicios
@@ -203,12 +205,12 @@ export default {
   gap: 10px;
 }
 
-.button-group {
+.botones {
   display: flex;
   gap: 10px;
 }
 
-.button-group button {
+.botones button {
   flex: 1;
   padding: 10px;
   border: none;
@@ -218,7 +220,7 @@ export default {
   cursor: pointer;
 }
 
-.button-group button.active {
+.botones button.active {
   background-color: #ff6b35;
   color: #fff;
 }

@@ -69,7 +69,7 @@ import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
 import {auth} from "@/auth";
 
 export default {
-  nombre: 'PropiedadDetalle',
+  name: 'PropiedadDetalle',
   data() {
     return {
       propiedad: null,

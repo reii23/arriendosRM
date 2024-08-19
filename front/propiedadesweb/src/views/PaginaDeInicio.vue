@@ -21,7 +21,7 @@ import Componente from "@/components/Componente.vue";
 import { auth } from "@/auth";
 
 export default {
-  nombre: "HomeView",
+  name: "HomeView",
   components: {
     Componente,
   },

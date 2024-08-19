@@ -2,12 +2,12 @@
   <div>
     <h1>Agente Inmobiliario - Horarios Disponibles</h1>
     <form @submit.prevent="agregarHorario">
-      <div class="formulario">
+      <div class="form-group">
         <label for="fecha">Fecha:</label>
         <input type="date" v-model="nuevoHorario.fecha" required />
       </div>
 
-      <div class="formulario">
+      <div class="form-group">
         <label for="periodo">Periodo:</label>
         <select id="periodo" v-model="nuevoHorario.periodo" required>
           <option value="m">Mañana</option>
@@ -16,7 +16,7 @@
         </select>
       </div>
 
-      <div class="formulario">
+      <div class="form-group">
         <label for="idInmueble">ID del Inmueble:</label>
         <input type="text" id="idInmueble" v-model="nuevoHorario.idInmueble" required />
       </div>
@@ -39,7 +39,7 @@
 import axios from 'axios';
 
 export default {
-  nombre: 'AgenteView',
+  name: 'AgenteView',
   data() {
     return {
       nuevoHorario: {
@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style scoped>
-.formulario {
+.form-group {
   margin-bottom: 15px;
 }
 

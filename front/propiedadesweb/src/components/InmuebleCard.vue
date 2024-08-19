@@ -28,7 +28,7 @@
   import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
   
   export default {
-    nombre: 'InmuebleCard',
+    name: 'InmuebleCard',
     props: {
       inmueble: {
         type: Object,

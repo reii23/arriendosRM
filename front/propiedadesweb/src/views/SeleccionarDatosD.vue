@@ -13,27 +13,27 @@
       </div>
       <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>
-      <input type="text" v-model="datosDepa.line1" placeholder="Dirección" />
+      <input type="text" v-model="datosDepa.linea1" placeholder="Dirección" />
       <select v-model="datosDepa.comuna">
         <option value="">Selecciona una comuna</option>
         <option v-for="comuna in comunas" :key="comuna" :value="comuna">
           {{ comuna.replace(/_/g, ' ') }}
         </option>
       </select>
-      <input type="text" v-model="datosDepa.line2" placeholder="Valor (pesos)" />
-      <input type="text" v-model="datosDepa.line3" placeholder="m2 del departamento" />
-      <input type="text" v-model="datosDepa.line4" placeholder="Número de piso del departamento" />
+      <input type="text" v-model="datosDepa.linea2" placeholder="Valor (pesos)" />
+      <input type="text" v-model="datosDepa.linea3" placeholder="m2 del departamento" />
+      <input type="text" v-model="datosDepa.linea4" placeholder="Número de piso del departamento" />
       <div class="ascensor-option">
         <span>¿El edificio cuenta con ascensor?</span>
-        <div class="button-group">
+        <div class="botones">
           <button @click="establecerAscensor(true)" :class="{ active: datosDepa.tieneAscensor === true }">Sí</button>
           <button @click="establecerAscensor(false)" :class="{ active: datosDepa.tieneAscensor === false }">No</button>
         </div>
       </div>
     </div>
     <button @click="publicarPropiedad" class="publicar-button">Publicar Departamento</button>
-    <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
-      {{ message }}
+    <p v-if="mensaje" :class="{'mensaje-exito': esCorrecto, 'mensaje-error': !esCorrecto}">
+      {{ mensaje }}
     </p>
   </div>
 </template>
@@ -45,8 +45,8 @@ import axios from 'axios';
 export default {
   name: 'SeleccionarDatosD',
   setup() {
-    const message = ref('');
-    const isSuccess = ref(false);
+    const mensaje = ref(''); // Crear referencia reactiva para el mensaje
+    const esCorrecto = ref(false); // Crear referencia reactiva para el estado de éxito
 
     const comunas = [
       'COLINA', 'LAMPA', 'TIL_TIL', 'PIRQUE', 'PUENTE_ALTO', 'SAN_JOSE_DE_MAIPO',
@@ -61,10 +61,11 @@ export default {
       'ISLA_DE_MAIPO', 'PADRE_HURTADO', 'PENAFLOR', 'TALAGANTE'
     ];
 
+    // Función para validar campos numéricos
     const validarCampoNumerico = (dato, nombreDato) => {
-      if (isNaN(datosDepa.value[dato]) || datosDepa.value[dato] === '') {
-        isSuccess.value = false;
-        message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
+      if (isNaN(datosDepa.value[dato]) || datosDepa.value[dato] === '') { // Verificar si el campo no es numérico o está vacío
+        esCorrecto.value = false; // Establecer estado de éxito en falso
+        mensaje.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato; // Mostrar mensaje de error indicando el campo
         datosDepa.value[dato] = ''; // Limpiar el campo
         return false;
       }
@@ -73,16 +74,16 @@ export default {
 
     const publicarPropiedad = async () => {
       // Verificar si los campos están completos
-      if (accion.value && datosDepa.value.line1 && datosDepa.value.comuna && datosDepa.value.line2 &&
-          datosDepa.value.line3 && datosDepa.value.line4 && datosDepa.tieneAscensor !== null){
+      if (accion.value && datosDepa.value.linea1 && datosDepa.value.comuna && datosDepa.value.linea2 &&
+          datosDepa.value.linea3 && datosDepa.value.linea4 && datosDepa.tieneAscensor !== null){
         const datoNumerico = [
-            { dato: 'line2', nombreDato: 'Valor (pesos)' },
-            { dato: 'line3', nombreDato: 'm2 del interior' },
-            { dato: 'line4', nombreDato: 'Número de piso del departamento' }
+            { dato: 'linea2', nombreDato: 'Valor (pesos)' },
+            { dato: 'linea3', nombreDato: 'm2 del interior' },
+            { dato: 'linea4', nombreDato: 'Número de piso del departamento' }
           ];
 
-          for (const { dato, nombreDato } of datoNumerico) {
-            if (!validarCampoNumerico(dato, nombreDato)) {
+          for (const { dato, nombreDato } of datoNumerico) { // Iterar sobre los datos numéricos
+            if (!validarCampoNumerico(dato, nombreDato)) { // Verificar si el campo es numérico
               return;
             }
           }
@@ -90,53 +91,53 @@ export default {
             // Crear objeto con los datos del departamento
             const DatosDepa = { 
               tipoOperacion: accion.value, // Obtener tipo de operación
-              direccion: datosDepa.value.line1, // Obtener dirección
+              direccion: datosDepa.value.linea1, // Obtener dirección
               comuna: datosDepa.value.comuna, // Obtener comuna
-              precio: parseInt(datosDepa.value.line2), // Obtener valor
-              metrosCuadrados: parseInt(datosDepa.value.line3), // Obtener m2 del interior
+              precio: parseInt(datosDepa.value.linea2), // Obtener valor
+              metrosCuadrados: parseInt(datosDepa.value.linea3), // Obtener m2 del interior
               tieneAscensor: datosDepa.value.tieneAscensor, // Obtener si tiene ascensor
-              piso: parseInt(datosDepa.value.line4), // Obtener número de piso del departamento  // Obtener si tiene patio
+              piso: parseInt(datosDepa.value.linea4), // Obtener número de piso del departamento  // Obtener si tiene patio
               idUsuario: localStorage.getItem('userId')
             };
             const response = await axios.post('http://localhost:8080/inmuebles/departamento', DatosDepa); // Enviar datos al servidor
             if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
-                isSuccess.value = true;
-                message.value = "Su publicación ha sido guardada exitosamente";
+                esCorrecto.value = true;
+                mensaje.value = "Su publicación ha sido guardada exitosamente";
               } else {
                 throw new Error('Error al guardar la publicación');
               }
           } 
           catch (error) {
               console.error('Error al publicar la propiedad:', error);
-              isSuccess.value = false;
-              message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+              esCorrecto.value = false;
+              mensaje.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
             }
         // Si no están completos, mostrar mensaje de error
       } else {
-          isSuccess.value = false;
-          message.value = "Por favor, complete todos los campos requeridos";
+          esCorrecto.value = false;
+          mensaje.value = "Por favor, complete todos los campos requeridos";
         }
     };
 
-    const accion = ref('');
-    const datosDepa = ref({
-      line1: '',
+    const accion = ref(''); // Crear referencia reactiva para la acción (vender o arrendar)
+    const datosDepa = ref({ // Crear referencia reactiva para los datos del departamento
+      linea1: '',
       comuna: '',
-      line2: '',
-      line3: '',
-      line4: '',
+      linea2: '',
+      linea3: '',
+      linea4: '',
       tieneAscensor: null
     });
 
     const establecerAscensor = (value) => {
-      datosDepa.value.tieneAscensor = value;
+      datosDepa.value.tieneAscensor = value; // Establecer si el departamento tiene ascensor
     };
 
     return {
       accion,
       datosDepa,
-      message,
-      isSuccess,
+      mensaje,
+      esCorrecto,
       publicarPropiedad,
       comunas,
       establecerAscensor
@@ -206,13 +207,13 @@ export default {
   gap: 10px;
 }
 
-.button-group {
+.botones {
   display: flex;
   gap: 10px;
 }
 
 
-.button-group button {
+.botones button {
   flex: 1;
   padding: 10px;
   border: none;
@@ -222,7 +223,7 @@ export default {
   cursor: pointer;
 }
 
-.button-group button.active {
+.botones button.active {
   background-color: #009908;
   color: #fff;
 }
@@ -245,13 +246,13 @@ export default {
   background-color: #f9d676;
 }
 
-.success-message {
+.mensaje-exito {
   color: #28a745;
   text-align: center;
   margin-top: 20px;
 }
 
-.error-message {
+.mensaje-error {
   color: #dc3545;
   text-align: center;
   margin-top: 20px;

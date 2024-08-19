@@ -18,7 +18,7 @@
 import { ref } from 'vue';
 
 export default {
-  nombre: 'SubsidyInfo',
+  name: 'SubsidyInfo',
   setup() {
     const subsidios = ref([
       {

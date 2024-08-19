@@ -12,8 +12,8 @@
   <script>
   import { useRouter } from 'vue-router';
   
-  export default {
-    nombre: 'SeleccionarInmueble',
+  export default { // 
+    name: 'SeleccionarInmueble', // Se cambia el nombre de la función a 'SeleccionarInmueble'
     setup() {
       const router = useRouter();
       const navigateTo = (path) => {

@@ -15,19 +15,19 @@
 
     <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>
-      <input type="text" v-model="datosCasa.line1" placeholder="Dirección" />
+      <input type="text" v-model="datosCasa.linea1" placeholder="Dirección" />
       <select v-model="datosCasa.comuna">
         <option value="">Selecciona una comuna</option>
         <option v-for="comuna in comunas" :key="comuna" :value="comuna">
             {{ comuna.replace(/_/g, ' ') }}
         </option>
       </select>
-      <input type="text" v-model="datosCasa.line2" placeholder="Valor (pesos)" />
-      <input type="text" v-model="datosCasa.line3" placeholder="m² del interior" />
-      <input type="text" v-model="datosCasa.line4" placeholder="Cantidad de pisos" />
+      <input type="text" v-model="datosCasa.linea2" placeholder="Valor (pesos)" />
+      <input type="text" v-model="datosCasa.linea3" placeholder="m² del interior" />
+      <input type="text" v-model="datosCasa.linea4" placeholder="Cantidad de pisos" />
       <div class="patio-option">
         <span>¿Tiene patio?</span>
-        <div class="button-group">
+        <div class="botones">
           <button @click="establecerPatio(true)" :class="{ active: datosCasa.tienePatio === true }">Sí</button>
           <button @click="establecerPatio(false)" :class="{ active: datosCasa.tienePatio === false }">No</button>
         </div>
@@ -35,8 +35,8 @@
     </div>
 
     <button @click="publicarPropiedad" class="publicar-button">Publicar Casa</button>
-    <p v-if="message" :class="{'success-message': isSuccess, 'error-message': !isSuccess}">
-      {{ message }}
+    <p v-if="mensaje" :class="{'mensaje-exito': esCorrecto, 'mensaje-error': !esCorrecto}">
+      {{ mensaje }}
     </p>
   </div>
 </template>
@@ -46,10 +46,10 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 export default {
-  nombre: 'SeleccionarDatosC', 
+  name: 'SeleccionarDatosC', 
   setup() {
-    const message = ref('');
-    const isSuccess = ref(false);
+    const mensaje = ref(''); // Crear referencia reactiva para el mensaje
+    const esCorrecto = ref(false); // Crear referencia reactiva para el estado de éxito
 
     const comunas = [
       'COLINA', 'LAMPA', 'TIL_TIL', 'PIRQUE', 'PUENTE_ALTO', 'SAN_JOSE_DE_MAIPO',
@@ -64,10 +64,11 @@ export default {
       'ISLA_DE_MAIPO', 'PADRE_HURTADO', 'PENAFLOR', 'TALAGANTE'
     ];
 
+    // Función para validar campos numéricos
     const validarCampoNumerico = (dato, nombreDato) => {
-      if (isNaN(datosCasa.value[dato]) || datosCasa.value[dato] === '') {
-        isSuccess.value = false;
-        message.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato;
+      if (isNaN(datosCasa.value[dato]) || datosCasa.value[dato] === '') { // Verificar si el campo no es numérico o si está vacío
+        esCorrecto.value = false; // Cambiar estado de éxito a falso
+        mensaje.value = 'Por favor, ingrese un valor numérico en el campo de ' + nombreDato; // Mostrar mensaje de error indicando el campo
         datosCasa.value[dato] = ''; // Limpiar el campo
         return false;
       }
@@ -76,17 +77,17 @@ export default {
 
     const publicarPropiedad = async () => {
       // Si los campos están completos
-      if (accion.value && datosCasa.value.line1 && datosCasa.value.comuna && datosCasa.value.line2 &&
-          datosCasa.value.line3 && datosCasa.value.line4 && datosCasa.value.tienePatio !== null) {
+      if (accion.value && datosCasa.value.linea1 && datosCasa.value.comuna && datosCasa.value.linea2 &&
+          datosCasa.value.linea3 && datosCasa.value.linea4 && datosCasa.value.tienePatio !== null) {
           
           const datoNumerico = [
-            { dato: 'line2', nombreDato: 'Valor (pesos)' },
-            { dato: 'line3', nombreDato: 'm² del interior' },
-            { dato: 'line4', nombreDato: 'Cantidad de pisos' }
+            { dato: 'linea2', nombreDato: 'Valor (pesos)' },
+            { dato: 'linea3', nombreDato: 'm² del interior' },
+            { dato: 'linea4', nombreDato: 'Cantidad de pisos' }
           ];
 
-          for (const { dato, nombreDato } of datoNumerico) {
-            if (!validarCampoNumerico(dato, nombreDato)) {
+          for (const { dato, nombreDato } of datoNumerico) { // Iterar sobre los campos numéricos
+            if (!validarCampoNumerico(dato, nombreDato)) { // Validar campos numéricos
               return;
             }
           }
@@ -94,56 +95,56 @@ export default {
             // Crear objeto con los datos de la casa
             const DatosCasa = {
               tipoOperacion: accion.value, // Obtener tipo de operación (vender o arrendar)
-              direccion: datosCasa.value.line1, // Obtener dirección
+              direccion: datosCasa.value.linea1, // Obtener dirección
               comuna: datosCasa.value.comuna, // Obtener comuna
-              precio: parseInt(datosCasa.value.line2), // Obtener precio
-              metrosCuadrados: parseInt(datosCasa.value.line3), // Obtener m2 del interior
-              numPisos: parseInt(datosCasa.value.line4), // Obtener cantidad de pisos
+              precio: parseInt(datosCasa.value.linea2), // Obtener precio
+              metrosCuadrados: parseInt(datosCasa.value.linea3), // Obtener m2 del interior
+              numPisos: parseInt(datosCasa.value.linea4), // Obtener cantidad de pisos
               tienePatio: datosCasa.value.tienePatio, // Obtener si tiene patio
               idUsuario: localStorage.getItem('userId') // Obtener id del usuario
             };
             const response = await axios.post('http://localhost:8080/inmuebles/casa', DatosCasa); // Enviar datos al servidor
             if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
-              isSuccess.value = true;
-              message.value = "Su publicación ha sido guardada exitosamente";
+              esCorrecto.value = true;
+              mensaje.value = "Su publicación ha sido guardada exitosamente";
             } else {
               throw new Error('Error al guardar la publicación');
             }
           } 
           catch (error) { // Manejar errores
             console.error('Error al publicar la propiedad:', error);
-            isSuccess.value = false;
-            message.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+            esCorrecto.value = false;
+            mensaje.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
           }
         // Si los campos no están completos, mostrar mensaje de error
       } else { 
-        isSuccess.value = false;
-        message.value = "Por favor, complete todos los campos requeridos";
+        esCorrecto.value = false;
+        mensaje.value = "Por favor, complete todos los campos requeridos";
         }
     };
     
-    const accion = ref(''); 
-    const datosCasa = ref({
-      line1: '',
+    const accion = ref(''); // Crear referencia reactiva para la acción (vender o arrendar)
+    const datosCasa = ref({ // Crear referencia reactiva para los datos de la casa
+      linea1: '',
       comuna: '',
-      line2: '',
-      line3: '',
-      line4: '',
+      linea2: '',
+      linea3: '',
+      linea4: '',
       tienePatio: null
     });
 
     const establecerPatio = (value) => {
-      datosCasa.value.tienePatio = value;
+      datosCasa.value.tienePatio = value; // Establecer si la casa tiene patio
     };
 
     return {
       accion,
-      datosCasa: datosCasa,
-      message,
-      isSuccess,
+      datosCasa,
+      mensaje,
+      esCorrecto,
       publicarPropiedad,
       comunas,
-      establecerPatio: establecerPatio
+      establecerPatio
     };
   }
 }
@@ -210,12 +211,12 @@ input[type="text"]::placeholder {
   gap: 10px;
 }
 
-.button-group {
+.botones {
   display: flex;
   gap: 10px;
 }
 
-.button-group button {
+.botones button {
   flex: 1;
   padding: 10px;
   border: none;
@@ -225,7 +226,7 @@ input[type="text"]::placeholder {
   cursor: pointer;
 }
 
-.button-group button.active {
+.botones button.active {
   background-color: #ff6b35;
   color: #fff;
 }
@@ -244,13 +245,13 @@ input[type="text"]::placeholder {
   transition: background-color 0.3s;
 }
 
-.success-message {
+.mensaje-exito {
   color: #28a745;
   text-align: center;
   margin-top: 20px;
 }
 
-.error-message {
+.mensaje-error {
   color: #dc3545;
   text-align: center;
   margin-top: 20px;

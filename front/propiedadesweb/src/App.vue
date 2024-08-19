@@ -23,7 +23,7 @@
 import { auth } from '@/auth';
 
 export default {
-  nombre: "App",
+  name: "App",
   setup() {
     return {
       auth

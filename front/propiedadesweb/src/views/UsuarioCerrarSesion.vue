@@ -8,7 +8,7 @@
 import {auth} from "@/auth";
 
 export default {
-  nombre: "LogoutView",
+  name: "LogoutView",
   created() {
     auth.logout(); // Actualiza el estado reactivo
     this.$router.push('/login');
