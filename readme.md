@@ -16,7 +16,7 @@
    npm install
    ```
 
-3. Configuración de las variables de entorno (se deben reemplazar con los valores)
+3. Configuración de las variables de entorno en IntelliJ (se deben reemplazar con los valores)
 
 ```bash
    DB_USERNAME = nombredeusuario;DB_PASSWORD=contraseñadeusuario;DB_NAME=nombrebasededatos
@@ -28,9 +28,13 @@
 
 El backend se ejecuta normalmente en `http://localhost:8080`.
 
+### Poblar base de Datos
+
+Se copian y pegan las inserciones contenidas en el archivo Querys.txt en la consola de pgAdmin4 (preferiblemente ejecutar por bloques). Se ejecuta el código para poblar las tablas.
+
 ### Frontend
 
-luego de ejecutar el backend, para ejecutar el frontend del proyecto:
+Luego de ejecutar el backend, para ejecutar el frontend del proyecto:
 
 ```bash
 npm run dev
@@ -40,7 +44,7 @@ npm run dev
 npm run serve
 ```
 
-El frontend se ejecuta normalmente en `http://localhost:8081`.
+Cualquiera de los dos comandos anteriores sirve, el frontend se ejecuta normalmente en `http://localhost:8081`.
 
 
 ## Puertos utilizados normalmente
@@ -49,4 +53,4 @@ El frontend se ejecuta normalmente en `http://localhost:8081`.
 - Frontend: `localhost:8081`
 
 [Consultas Postman](https://documenter.getpostman.com/view/28812543/2sA3kd9HRZ)
-[Inputs de SQL de prueba](https://gist.github.com/reii23/30e904464835e89719933720a28d0c9d)
+
