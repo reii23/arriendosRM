@@ -10,6 +10,7 @@
         <input type="radio" v-model="action" value="arrendar" />
         Arrendar
       </label>
+    <!-- Agregar formulario para ingresar datos de la propiedad -->
     </div>
     <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>

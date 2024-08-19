@@ -83,17 +83,17 @@ export default {
   methods: {
     async obtenerDetallesPropiedad() {
       try {
-        const id = this.$route.params.id;
-        const response = await axios.get(`http://localhost:8080/inmuebles/${id}`);
-        this.propiedad = response.data;
+        const id = this.$route.params.id; // Obtener el ID de la propiedad desde la URL
+        const response = await axios.get(`http://localhost:8080/inmuebles/${id}`); // Obtener los detalles de la propiedad por su ID
+        this.propiedad = response.data; // Guardar los detalles de la propiedad en la variable 'propiedad'
       } catch (error) {
         console.error('Error al obtener los detalles de la propiedad:', error);
       }
     },
     async obtenerHorariosVisita() {
       try {
-        const id = this.$route.params.id;
-        const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${id}`);
+        const id = this.$route.params.id; // Obtener el ID de la propiedad desde la URL
+        const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${id}`); 
         this.horariosVisita = response.data;
       } catch (error) {
         console.error('Error al obtener los horarios de visita:', error);
@@ -101,9 +101,9 @@ export default {
     },
 	async agendarVisita(idHorario, idInmueble) {
 	  try {
-		const sesionIniciada = auth.isLoggedIn;
-		const idUsuario = localStorage.getItem('userId');
-        if(!sesionIniciada){
+		const sesionIniciada = auth.isLoggedIn; // Verificar si el usuario ha iniciado sesión
+		const idUsuario = localStorage.getItem('userId'); // Obtener el ID del usuario desde el almacenamiento local
+        if(!sesionIniciada){ // Si el usuario no ha iniciado sesión, mostrar un mensaje de alerta
 		  alert('Debe iniciar sesión para agendar una visita');
 		  return;
 		}

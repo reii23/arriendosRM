@@ -1,6 +1,6 @@
 <template>
   <div class="seleccionar-casa">
-
+    
     <h2>¿Qué deseas hacer con tu propiedad?</h2>
     <div class="opciones">
       <label class="radio-option">
@@ -12,7 +12,7 @@
         Arrendar
       </label>
     </div>
-
+    <!-- Agregar formulario para ingresar datos de la propiedad -->
     <div class="entrada-datos-depa">
       <h3>Ingresa los datos de tu propiedad</h3>
       <input type="text" v-model="datosCasa.linea1" placeholder="Dirección" />

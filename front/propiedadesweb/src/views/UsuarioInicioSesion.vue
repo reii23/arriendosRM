@@ -34,9 +34,9 @@ export default {
       try {
         const response = await axios.post('http://localhost:8080/user/login', this.user);
         const response2 = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorEmail/${this.user.email}`);
-        console.log(response2.data.id);
-        auth.login(response2.data.id, response2.data.rol); 
-        this.$router.push('/');
+        console.log(response2.data.id); // Mostrar el ID del usuario en la consola
+        auth.login(response2.data.id, response2.data.rol); // Iniciar sesión con el ID y el rol del usuario
+        this.$router.push('/'); // Redirigir al usuario a la página de inicio
       } catch (error) {
         console.error('Error al iniciar sesión:', error);
       }
