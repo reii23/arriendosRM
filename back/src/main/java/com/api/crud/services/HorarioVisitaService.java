@@ -2,44 +2,63 @@ package com.api.crud.services;
 
 import com.api.crud.models.HorarioVisitaModel;
 import com.api.crud.repository.IHorarioVisitaRepository;
-import com.api.crud.repository.IInmuebleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
+/**
+ * Clase que define los servicios de los horarios de visita
+ */
 public class HorarioVisitaService {
     @Autowired
     IHorarioVisitaRepository horarioVisitaRepository;
 
-    @GetMapping(path = "/obtenerHorariosVisita")
+    /**
+     * Metodo que se encarga de obtener los horarios de visita
+     * @return lista de horarios de visita
+     */
     public ArrayList<HorarioVisitaModel> obtenerHorariosVisita() {
         return (ArrayList<HorarioVisitaModel>) horarioVisitaRepository.findAll();
     }
 
-    //Obtener horarios de visita por id de inmueble
+    /**
+     * Metodo que se encarga de obtener los horarios de visita por id de inmueble
+     * @param id id del inmueble
+     * @return lista de horarios de visita
+     */
     public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorInmueble(Long id) {
         return horarioVisitaRepository.findByIdInmueble(id);
     }
 
+    /**
+     * Metodo que se encarga de obtener los horarios de visita por id de usuario
+     * @param id id del usuario
+     * @return lista de horarios de visita
+     */
     public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuario(Long id) {
         return horarioVisitaRepository.findByIdVisitante(id);
     }
 
-    // Crear horario de visita
+    /**
+     * Metodo que se encarga de crear un horario de visita
+     * @param horarioVisita horario de visita a crear
+     * @return horario de visita creado
+     */
     public HorarioVisitaModel crearHorarioVisita(HorarioVisitaModel horarioVisita) {
         return horarioVisitaRepository.save(horarioVisita);
     }
 
-    public ArrayList<HorarioVisitaModel>  obtenerHorariosVisitaDisponiblesPorIdInmueble(Long idInmueble) {
+    /**
+     * Metodo que se encarga de obtener los horarios de visita disponibles por id de inmueble
+     * @param idInmueble id del inmueble
+     * @return lista de horarios de visita
+     */
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaDisponiblesPorIdInmueble(Long idInmueble) {
         ArrayList<HorarioVisitaModel> horariosVisita = horarioVisitaRepository.findByIdInmueble(idInmueble);
-        ArrayList<HorarioVisitaModel> horariosVisitaDisponibles = new ArrayList<HorarioVisitaModel>();
+        ArrayList<HorarioVisitaModel> horariosVisitaDisponibles = new ArrayList<>();
         for (HorarioVisitaModel horarioVisita : horariosVisita) {
             if(horarioVisita.getIdVisitante() == -1){
                 horariosVisitaDisponibles.add(horarioVisita);
@@ -48,8 +67,13 @@ public class HorarioVisitaService {
         return horariosVisitaDisponibles;
     }
 
-    @PostMapping(path = "/agendarVisita/{id}/{idVisitante}")
-    public HorarioVisitaModel agendarVisita(@PathVariable Long id, @PathVariable Long idVisitante) {
+    /**
+     * Metodo que se encarga de agendar una visita
+     * @param id id del horario de visita
+     * @param idVisitante id del visitante
+     * @return horario de visita
+     */
+    public HorarioVisitaModel agendarVisita(Long id, Long idVisitante) {
         HorarioVisitaModel horarioVisita = horarioVisitaRepository.findById(id).get();
         horarioVisita.setIdVisitante(idVisitante);
         return horarioVisitaRepository.save(horarioVisita);
@@ -57,15 +81,22 @@ public class HorarioVisitaService {
 
     }
 
-    @PostMapping(path = "/desagendarVisita/{id}")
-    public HorarioVisitaModel desagendarVisita(@PathVariable Long id) {
+    /**
+     * Metodo que se encarga de desagendar una visita
+     * @param id id del horario de visita
+     * @return horario de visita
+     */
+    public HorarioVisitaModel desagendarVisita(Long id) {
         HorarioVisitaModel horarioVisita = horarioVisitaRepository.findById(id).get();
         horarioVisita.setIdVisitante(-1L);
         return horarioVisitaRepository.save(horarioVisita);
     }
 
-    @DeleteMapping(path = "/agendarVisita/{id}")
-    public void agendarVisita(@PathVariable Long id) {
+    /**
+     * Metodo que se encarga de eliminar un horario de visita
+     * @param id id del horario de visita
+     */
+    public void agendarVisita(Long id) {
         horarioVisitaRepository.deleteById(id);
     }
 

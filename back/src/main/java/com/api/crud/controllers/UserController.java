@@ -11,17 +11,29 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
+/**
+ * Clase que define el controlador de los usuarios
+ */
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @GetMapping(path = "/obtenerUsuarios")
+    /**
+     * Metodo que se encarga de obtener los usuarios
+     * @return lista de usuarios
+     */
     public ArrayList<UserModel> obtenerUsuarios() {
         return this.userService.obtenerUsuarios();
     }
 
     @PostMapping(path ="/crearUsuario")
+    /**
+     * Metodo que se encarga de crear un usuario
+     * @param user usuario a crear
+     * @return respuesta de la creacion del usuario
+     */
     public ResponseEntity<?> crearUsuario(@RequestBody UserModel user) {
         try {
             // Validar si el email ya existe
@@ -37,22 +49,43 @@ public class UserController {
     }
 
     @GetMapping(path = "/obtenerUsuarioPorId/{id}")
+    /**
+     * Metodo que se encarga de obtener un usuario por id
+     * @param id id del usuario
+     * @return usuario
+     */
     public Optional<UserModel> obtenerUsuarioPorId(@PathVariable("id") Long id) {
         return this.userService.obtenerUsuarioPorId(id);
     }
 
-    // Obtener usuario por email
+
     @GetMapping(path = "/obtenerUsuarioPorEmail/{email}")
+    /**
+     * Metodo que se encarga de obtener un usuario por email
+     * @param email email del usuario
+     * @return usuario
+     */
     public UserModel obtenerUsuarioPorEmail(@PathVariable("email") String email) {
         return this.userService.findByEmail(email);
     }
 
     @PutMapping(path = "/modificarUsuarioPorId/{id}")
+    /**
+     * Metodo que se encarga de modificar un usuario por id
+     * @param request usuario a modificar
+     * @param id id del usuario
+     * @return usuario modificado
+     */
     public UserModel modificarUsuarioPorId(@RequestBody UserModel request, @PathVariable("id") Long id) {
         return this.userService.modificarUsuarioPorId(request, id);
     }
 
     @DeleteMapping(path = "/eliminarUsuarioPorId/{id}")
+    /**
+     * Metodo que se encarga de eliminar un usuario por id
+     * @param id id del usuario
+     * @return respuesta de la eliminacion del usuario
+     */
     public ResponseEntity<?> eliminarUsuarioPorId(@PathVariable("id") Long id){
         boolean resultado = this.userService.eliminarUsuarioPorId(id);
         if (resultado) {
@@ -65,6 +98,11 @@ public class UserController {
 
     // Login
     @PostMapping(path = "/login")
+    /**
+     * Metodo que se encarga de realizar el login
+     * @param user usuario
+     * @return respuesta del login
+     */
     public ResponseEntity<?> login(@RequestBody UserModel user) {
         UserModel userDB = this.userService.login(user);
         if (userDB != null) {
@@ -74,14 +112,28 @@ public class UserController {
         }
     }
 
+    /**
+     * Clase que se encarga de enviar mensajes de respuesta
+     */
     private static class MensajeRespuesta {
         private String mensaje;
         private Object data;
 
+        // Constructores
+
+        /**
+         * Constructor de la clase
+         * @param mensaje
+         */
         public MensajeRespuesta(String mensaje) {
             this.mensaje = mensaje;
         }
 
+        /**
+         * Constructor de la clase
+         * @param mensaje
+         * @param data
+         */
         public MensajeRespuesta(String mensaje, Object data) {
             this.mensaje = mensaje;
             this.data = data;

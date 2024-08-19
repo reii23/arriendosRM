@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
+/**
+ * Clase que define el modelo de un usuario
+ */
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,9 +16,9 @@ public class UserModel {
     private String email;
     private String password;
     private String numeroTelefono;
+    private Integer rol; // 0: Admin, 1: usuarioRegistrado, 2: Agente Inmobiliario
 
-    private Integer rol; // TO DO: preguntar -> 0: Admin, 1: usuarioRegistrado, 2: Agente Inmobiliario
-
+    // Getters y setters
     public String getNombre() {
         return nombre;
     }

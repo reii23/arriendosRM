@@ -3,7 +3,11 @@ package com.api.crud.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "horarioVisita")
+@Table(name = "horario_visita")
+/**
+ * Clase que define el modelo de un horario de visita
+ * a un inmueble.
+ */
 public class HorarioVisitaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +17,8 @@ public class HorarioVisitaModel {
     private Long idVisitante;
     private String fecha;
 
+
+    // Getters y setters
     public Long getId() {
         return id;
     }

@@ -5,10 +5,16 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "departamentos")
+/**
+ * Clase que define el modelo de un departamento
+ */
 public class DepartamentoModel extends InmuebleModel {
     private int piso;
     private boolean tieneAscensor;
 
+    /**
+     * Constructor de la clase DepartamentoModel
+     */
     public DepartamentoModel() {
         setTipoInmueble(TipoInmueble.DEPARTAMENTO);
     }

@@ -5,15 +5,21 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "terrenos")
+/**
+ * Clase que define el modelo de un terreno
+ */
 public class TerrenoModel extends InmuebleModel {
     private boolean tieneServiciosBasicos;
     private String tipoSuelo;
 
+    /**
+     * Constructor de la clase TerrenoModel
+     */
     public TerrenoModel() {
         setTipoInmueble(TipoInmueble.TERRENO);
     }
 
-    // Getters and setters
+    // Getters y setters
     public boolean isTieneServiciosBasicos() {
         return tieneServiciosBasicos;
     }

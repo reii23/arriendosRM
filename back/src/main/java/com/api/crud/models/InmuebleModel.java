@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "inmuebles")
 @Inheritance(strategy = InheritanceType.JOINED)
+/**
+ * Clase abstracta que representa un inmueble en general.
+ * Se utiliza para definir los atributos comunes de los inmuebles.
+ */
 public abstract class InmuebleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +32,6 @@ public abstract class InmuebleModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "comuna")
     private Comuna comuna;
-
-    // recordar que en el front se debe elegir con un dropdown para evitar
-    // que se ingrese alguna comuna mal escrita o que no existe.
 
     public enum Comuna {
         COLINA,
@@ -87,7 +88,7 @@ public abstract class InmuebleModel {
         TALAGANTE
     }
 
-    // Getters and setters
+    // Getters y setters
 
     public Long getId() {
         return id;

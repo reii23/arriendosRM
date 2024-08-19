@@ -10,34 +10,72 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+/**
+ * Clase que define los servicios de los inmuebles
+ */
 public class InmuebleService {
     @Autowired
     private IInmuebleRepository inmuebleRepository;
 
+    /**
+     * Metodo que se encarga de obtener los inmuebles
+     * @return lista de inmuebles
+     */
     public List<InmuebleModel> obtenerInmuebles() {
         return inmuebleRepository.findAll();
     }
 
+    /**
+     * Metodo que se encarga de obtener un inmueble por id
+     * @param id id del inmueble
+     * @return inmueble
+     */
     public Optional<InmuebleModel> obtenerInmueblePorId(Long id) {
         return inmuebleRepository.findById(id);
     }
 
+    /**
+     * Metodo que se encarga de obtener un inmueble por id
+     * @param casa id del inmueble
+     * @return casa
+     */
     public CasaModel crearCasa(CasaModel casa) {
         return inmuebleRepository.save(casa);
     }
 
+    /**
+     * Metodo que se encarga de obtener un inmueble por id
+     * @param departamento id del inmueble
+     * @return departamento
+     */
     public DepartamentoModel crearDepartamento(DepartamentoModel departamento) {
         return inmuebleRepository.save(departamento);
     }
 
+    /**
+     * Metodo que se encarga de obtener un inmueble por id
+     * @param idUsuario id del usuario
+     * @return lista de inmuebles
+     */
     public ArrayList<InmuebleModel> obtenerInmueblePorIdUsuario(Long idUsuario) {
         return inmuebleRepository.findByIdUsuario(idUsuario);
     }
 
+    /**
+     * Metodo que crea un terreno
+     * @param terreno terreno
+     * @return terreno
+     */
     public TerrenoModel crearTerreno(TerrenoModel terreno) {
         return inmuebleRepository.save(terreno);
     }
 
+    /**
+     * Metodo que se encarga de actualizar un inmueble
+     * @param id id del inmueble
+     * @param inmuebleActualizado inmueble actualizado
+     * @return inmueble actualizado
+     */
     public Optional<InmuebleModel> actualizarInmueble(Long id, InmuebleModel inmuebleActualizado) {
         return inmuebleRepository.findById(id).map(inmueble -> {
             inmueble.setDireccion(inmuebleActualizado.getDireccion());
@@ -49,6 +87,11 @@ public class InmuebleService {
         });
     }
 
+    /**
+     * Metodo que se encarga de eliminar un inmueble
+     * @param id id del inmueble
+     * @return true si se elimino, false si no
+     */
     public boolean eliminarInmueble(Long id) {
         if (inmuebleRepository.existsById(id)) {
             inmuebleRepository.deleteById(id);
