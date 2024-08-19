@@ -16,6 +16,12 @@
    npm install
    ```
 
+3. Configuración de las variables de entorno (se deben reemplazar con los valores)
+
+```bash
+   DB_USERNAME = nombredeusuario;DB_PASSWORD=contraseñadeusuario;DB_NAME=nombrebasededatos
+   ```
+
 ## Ejecución
 
 ### Backend
@@ -24,7 +30,11 @@ El backend se ejecuta normalmente en `http://localhost:8080`.
 
 ### Frontend
 
-Para ejecutar el frontend del proyecto:
+luego de ejecutar el backend, para ejecutar el frontend del proyecto:
+
+```bash
+npm run dev
+```
 
 ```bash
 npm run serve
@@ -33,9 +43,10 @@ npm run serve
 El frontend se ejecuta normalmente en `http://localhost:8081`.
 
 
-## Puertos Utilizados normalmente
+## Puertos utilizados normalmente
 
 - Backend: `localhost:8080`
 - Frontend: `localhost:8081`
 
 [Consultas Postman](https://documenter.getpostman.com/view/28812543/2sA3kd9HRZ)
+[Inputs de SQL de prueba](https://gist.github.com/reii23/30e904464835e89719933720a28d0c9d)
