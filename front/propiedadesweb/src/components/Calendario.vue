@@ -120,7 +120,6 @@ export default {
 
 .dia.seleccionado {
     background-color: #9b51e0;
-    /* Similar to the purple in your screenshot */
     color: white;
 }
 
