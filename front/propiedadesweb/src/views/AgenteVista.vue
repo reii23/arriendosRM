@@ -86,8 +86,8 @@ export default {
       const fechaObj = new Date(fecha);
       const dia = fechaObj.getDate().toString().padStart(2, '0');
       const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
-      const anio = fechaObj.getFullYear().toString().slice(-2); // Obtener los dos últimos dígitos del año
-      return `${dia}/${mes}/${anio}/${periodo}`;
+      const anio = fechaObj.getFullYear(); // Obtener año
+      return `${dia}${mes}${anio}${periodo}`;
     }
   }
 };
@@ -103,7 +103,8 @@ label {
   margin-bottom: 5px;
 }
 
-input, select {
+input,
+select {
   width: 8.5%;
   padding: 8px;
   margin-bottom: 10px;

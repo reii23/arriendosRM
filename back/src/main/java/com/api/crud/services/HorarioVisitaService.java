@@ -104,10 +104,9 @@ public class HorarioVisitaService {
 
     public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorFecha(Long idInmueble, String fecha) {
         // Convertir el año a los dos últimos dígitos para hacer coincidir el formato
-        String añoCorto = fecha.substring(8, 10);
-        String fechaFormateadaM = fecha.substring(0, 2) + "/" + fecha.substring(3, 5) + "/" + añoCorto + "/m";
-        String fechaFormateadaT = fecha.substring(0, 2) + "/" + fecha.substring(3, 5) + "/" + añoCorto + "/t";
-        String fechaFormateadaN = fecha.substring(0, 2) + "/" + fecha.substring(3, 5) + "/" + añoCorto + "/n";
+        String fechaFormateadaM = fecha.substring(0, 2) + fecha.substring(3, 5) + fecha.substring(6, 10) + "m";
+        String fechaFormateadaT = fecha.substring(0, 2) + fecha.substring(3, 5) + fecha.substring(6, 10) + "t";
+        String fechaFormateadaN = fecha.substring(0, 2) + fecha.substring(3, 5) + fecha.substring(6, 10) + "n";
 
         System.out.println("Buscando horarios para las fechas: " + fechaFormateadaM + ", " + fechaFormateadaT + ", " + fechaFormateadaN);
 

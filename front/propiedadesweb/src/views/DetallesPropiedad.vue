@@ -35,8 +35,7 @@
     </div>
     <div class="calendario-visita">
       <h2>Seleccione una Fecha para Agendar una Visita</h2>
-      <Calendario class="calendario-visita-component" 
-        @fechaSeleccionada="actualizarFechaSeleccionada"
+      <Calendario class="calendario-visita-component" @fechaSeleccionada="actualizarFechaSeleccionada"
         @horariosPorFecha="horariosPorFecha = $event" />
     </div>
     <div class="horarios-por-fecha">
@@ -86,9 +85,9 @@ export default {
     },
     async obtenerDetallesPropiedad() {
       try {
-        const id = this.$route.params.id; 
+        const id = this.$route.params.id;
         const response = await axios.get(`http://localhost:8080/inmuebles/${id}`); // Obtener detalles de la propiedad
-        this.propiedad = response.data; 
+        this.propiedad = response.data;
       } catch (error) {
         console.error('Error al obtener los detalles de la propiedad:', error);
       }
@@ -102,8 +101,8 @@ export default {
         console.error('Error al obtener horarios por fecha:', error);
       }
     },
-    obtenerHorario(fecha) {
-      const horario = fecha.split('/')[3];
+    obtenerHorario(fecha) { // Fecha formato DDMMYYYYm
+      const horario = fecha[fecha.length - 1];
       switch (horario) {
         case 'm': return 'Mañana (9:00 - 10:30)';
         case 't': return 'Tarde (14:00 - 15:30)';
