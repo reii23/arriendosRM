@@ -2,7 +2,7 @@
     <Paginator
       :rows="rows"
       :totalRecords="totalRecords"
-      :rowsPerPageOptions="[12,24,36,42]"
+      :rowsPerPageOptions="[10,20,30,40]"
       @page="onPageChange"
       :first="first"
       class="mb-4"
