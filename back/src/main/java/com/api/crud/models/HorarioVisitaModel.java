@@ -17,6 +17,16 @@ public class HorarioVisitaModel {
     private Long idVisitante;   // Usuario registrado
     private String fecha;
 
+    @Override
+    public String toString() {
+        return "HorarioVisitaModel{" +
+                "id=" + id +
+                ", idInmueble=" + idInmueble +
+                ", idUsuario=" + idUsuario +
+                ", idVisitante=" + idVisitante +
+                ", fecha='" + fecha + '\'' +
+                '}';
+    }
 
     // Getters y setters
     public Long getId() {
@@ -43,9 +53,13 @@ public class HorarioVisitaModel {
         this.idUsuario = idUsuario;
     }
 
-    public Long getIdVisitante() {return idVisitante;}
+    public Long getIdVisitante() {
+        return idVisitante;
+    }
 
-    public void setIdVisitante(Long idVisitante) {this.idVisitante = idVisitante;}
+    public void setIdVisitante(Long idVisitante) {
+        this.idVisitante = idVisitante;
+    }
 
     public String getFecha() {
         return fecha;

@@ -35,11 +35,11 @@
     </div>
     <div class="calendario-visita">
       <h2>Seleccione una Fecha para Agendar una Visita</h2>
-      <Calendario class="calendario-visita-component" @fechaSeleccionada="fechaSeleccionada = $event"
-        @horariosPorFecha="horariosPorFecha = $event" @obtenerHorariosPorFecha="obtenerHorariosPorFecha" />
+      <Calendario class="calendario-visita-component" 
+        @fechaSeleccionada="actualizarFechaSeleccionada"
+        @horariosPorFecha="horariosPorFecha = $event" />
     </div>
     <div class="horarios-por-fecha">
-      <!-- Obtengo la fecha seleccionada en el calendario -->
       <p v-if="fechaSeleccionada">Horarios disponibles para el {{ fechaSeleccionada }}</p>
       <div v-if="horariosPorFecha.length">
         <div v-for="horario in horariosPorFecha" :key="horario.id" class="horario-item">
@@ -51,7 +51,6 @@
         <p>No hay horarios disponibles para esta fecha.</p>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -79,8 +78,6 @@ export default {
   },
   created() {
     this.obtenerDetallesPropiedad();
-    this.obtenerHorariosVisita();
-    this.actualizarFechaSeleccionada(this.fechaSeleccionada);
   },
   methods: {
     actualizarFechaSeleccionada(fecha) {
@@ -89,34 +86,42 @@ export default {
     },
     async obtenerDetallesPropiedad() {
       try {
-        const id = this.$route.params.id; // Obtener el ID de la propiedad desde la URL
-        const response = await axios.get(`http://localhost:8080/inmuebles/${id}`); // Obtener los detalles de la propiedad por su ID
-        this.propiedad = response.data; // Guardar los detalles de la propiedad en la variable 'propiedad'
+        const id = this.$route.params.id; 
+        const response = await axios.get(`http://localhost:8080/inmuebles/${id}`); // Obtener detalles de la propiedad
+        this.propiedad = response.data; 
       } catch (error) {
         console.error('Error al obtener los detalles de la propiedad:', error);
       }
     },
-    async obtenerHorariosVisita() {
+    async obtenerHorariosPorFecha() {
       try {
-        const id = this.$route.params.id; // Obtener el ID de la propiedad desde la URL
-        const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${id}`);
-        this.horariosVisita = response.data;
+        const id = this.$route.params.id;
+        const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorFecha/${id}/${this.fechaSeleccionada}`); // Obtener horarios disponibles
+        this.horariosPorFecha = response.data;
       } catch (error) {
-        console.error('Error al obtener los horarios de visita:', error);
+        console.error('Error al obtener horarios por fecha:', error);
+      }
+    },
+    obtenerHorario(fecha) {
+      const horario = fecha.split('/')[3];
+      switch (horario) {
+        case 'm': return 'Mañana (9:00 - 10:30)';
+        case 't': return 'Tarde (14:00 - 15:30)';
+        case 'n': return 'Noche (18:00 - 19:30)';
+        default: return '';
       }
     },
     async agendarVisita(idHorario, idInmueble) {
       try {
-        const sesionIniciada = auth.isLoggedIn; // Verificar si el usuario ha iniciado sesión
-        const idUsuario = localStorage.getItem('userId'); // Obtener el ID del usuario desde el almacenamiento local
-        if (!sesionIniciada) { // Si el usuario no ha iniciado sesión, mostrar un mensaje de alerta
+        const sesionIniciada = auth.isLoggedIn;
+        const idUsuario = localStorage.getItem('userId');
+        if (!sesionIniciada) {
           alert('Debe iniciar sesión para agendar una visita');
           return;
         }
-        const respuesta = await axios.post(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}/${idUsuario}`);
-        const respuesta2 = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaDisponiblesPorInmueble/${idInmueble}`);
-        this.horariosVisita = respuesta2.data;
+        await axios.post(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}/${idUsuario}`); // post de agendar visita
         alert('Visita agendada correctamente');
+        this.obtenerHorariosPorFecha(); // Actualizar los horarios disponibles (para que se refleje el horario agendado)
       } catch (error) {
         console.error('Error al agendar la visita:', error);
         alert('Error al agendar la visita');
@@ -131,29 +136,7 @@ export default {
         case 'TERRENO':
           return defaultTerrenoImagen;
       }
-    },
-    async obtenerHorariosPorFecha() {
-      try {
-        const id = this.$route.params.id; // ID del inmueble
-        // Recibo la fecha en formato yyyy-mm-dd y la convierto a dd/mm/yyyy
-        const fecha = this.fechaSeleccionada.split('-').reverse().join('-');
-        console.log(fecha);
-        const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorFecha/${id}/${fecha}`);
-        this.horariosPorFecha = response.data;
-      } catch (error) {
-        console.error('Error al obtener horarios por fecha:', error);
-      }
-    },
-    obtenerHorario(fecha) {
-      const horario = fecha.split('/')[3];
-      switch (horario) {
-        case 'm': return 'Mañana (9:00 - 10:30)';
-        case 't': return 'Tarde (14:00 - 15:30)';
-        case 'n': return 'Noche (18:00 - 19:30)';
-        default: return '';
-      }
     }
-
   }
 }
 </script>

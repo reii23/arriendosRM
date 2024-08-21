@@ -53,6 +53,7 @@ export default {
                 });
             }
             this.diasVisibles = dias;
+            this.seleccionarDia(dias[0], 0);
         },
         formatoFecha(fecha) {
             const opciones = { month: 'numeric', day: 'numeric' };
@@ -63,9 +64,9 @@ export default {
             return fecha.toLocaleDateString('es-ES', opciones).charAt(0).toUpperCase() + fecha.toLocaleDateString('es-ES', opciones).slice(1);
         },
         seleccionarDia(dia, indice) {
-            this.diasVisibles.forEach((dia, i) => dia.seleccionado = i === indice);
-            const fechaFormateada = this.formatoFechaCompleta(dia.fechaCompleta);
-            console.log(fechaFormateada);
+            this.diasVisibles.forEach((d, i) => d.seleccionado = i === indice);
+            this.fechaSeleccionada = dia.fechaFormateada;
+            this.$emit('fechaSeleccionada', dia.fechaFormateada); // Emitir el evento para la fecha seleccionada
         },
         formatoFechaCompleta(fecha) {
             const dia = String(fecha.getDate()).padStart(2, '0');

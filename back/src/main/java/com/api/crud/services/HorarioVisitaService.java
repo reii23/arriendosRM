@@ -103,18 +103,29 @@ public class HorarioVisitaService {
 
 
     public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorFecha(Long idInmueble, String fecha) {
-        // Formato de fecha: dd-mm-yyyy a dd/MM/yyyy
-        String fechaFormateadaM = fecha.substring(0, 2) + "/" + fecha.substring(3,5) + "/" + fecha.substring(6, 10) + "/m";
-        String fechaFormateadaT = fecha.substring(0, 2) + "/" + fecha.substring(3,5) + "/" +fecha.substring(6, 10) + "/t";
-        String fechaFormateadaN = fecha.substring(0, 2) + "/" + fecha.substring(3,5) + "/" + fecha.substring(6, 10) + "/n";
+        // Convertir el año a los dos últimos dígitos para hacer coincidir el formato
+        String añoCorto = fecha.substring(8, 10);
+        String fechaFormateadaM = fecha.substring(0, 2) + "/" + fecha.substring(3, 5) + "/" + añoCorto + "/m";
+        String fechaFormateadaT = fecha.substring(0, 2) + "/" + fecha.substring(3, 5) + "/" + añoCorto + "/t";
+        String fechaFormateadaN = fecha.substring(0, 2) + "/" + fecha.substring(3, 5) + "/" + añoCorto + "/n";
+
+        System.out.println("Buscando horarios para las fechas: " + fechaFormateadaM + ", " + fechaFormateadaT + ", " + fechaFormateadaN);
+
         ArrayList<HorarioVisitaModel> horariosVisita = horarioVisitaRepository.findByIdInmueble(idInmueble);
         ArrayList<HorarioVisitaModel> horariosVisitaPorFecha = new ArrayList<>();
+
         for (HorarioVisitaModel horarioVisita : horariosVisita) {
-            if(horarioVisita.getFecha().equals(fechaFormateadaM) || horarioVisita.getFecha().equals(fechaFormateadaT) || horarioVisita.getFecha().equals(fechaFormateadaN)){
+            System.out.println("Comparando con: " + horarioVisita.getFecha());
+            if (horarioVisita.getFecha().equals(fechaFormateadaM) ||
+                    horarioVisita.getFecha().equals(fechaFormateadaT) ||
+                    horarioVisita.getFecha().equals(fechaFormateadaN)) {
                 horariosVisitaPorFecha.add(horarioVisita);
             }
         }
+
+        System.out.println("Horarios encontrados: " + horariosVisitaPorFecha);
+
         return horariosVisitaPorFecha;
     }
-
 }
+
