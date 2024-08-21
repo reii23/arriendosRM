@@ -110,4 +110,10 @@ public class HorarioVisitaController {
     public void agendarVisita(@PathVariable Long id) {
         this.horarioVisitaService.agendarVisita(id);
     }
+
+    @GetMapping(path = "/obtenerHorariosVisitaPorFecha/{id}/{fecha}")
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorFecha(@PathVariable Long id, @PathVariable String fecha) {
+        return this.horarioVisitaService.obtenerHorariosVisitaPorFecha(id, fecha);
+    }
+
 }

@@ -13,8 +13,8 @@ public class HorarioVisitaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long idInmueble;
-    private Long idUsuario;
-    private Long idVisitante;
+    private Long idUsuario; // Agente inmobiliario
+    private Long idVisitante;   // Usuario registrado
     private String fecha;
 
 

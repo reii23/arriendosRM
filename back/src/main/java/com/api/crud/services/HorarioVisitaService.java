@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Service
 /**
@@ -100,5 +101,20 @@ public class HorarioVisitaService {
         horarioVisitaRepository.deleteById(id);
     }
 
+
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorFecha(Long idInmueble, String fecha) {
+        // Formato de fecha: dd-mm-yyyy a dd/MM/yyyy
+        String fechaFormateadaM = fecha.substring(0, 2) + "/" + fecha.substring(3,5) + "/" + fecha.substring(6, 10) + "/m";
+        String fechaFormateadaT = fecha.substring(0, 2) + "/" + fecha.substring(3,5) + "/" +fecha.substring(6, 10) + "/t";
+        String fechaFormateadaN = fecha.substring(0, 2) + "/" + fecha.substring(3,5) + "/" + fecha.substring(6, 10) + "/n";
+        ArrayList<HorarioVisitaModel> horariosVisita = horarioVisitaRepository.findByIdInmueble(idInmueble);
+        ArrayList<HorarioVisitaModel> horariosVisitaPorFecha = new ArrayList<>();
+        for (HorarioVisitaModel horarioVisita : horariosVisita) {
+            if(horarioVisita.getFecha().equals(fechaFormateadaM) || horarioVisita.getFecha().equals(fechaFormateadaT) || horarioVisita.getFecha().equals(fechaFormateadaN)){
+                horariosVisitaPorFecha.add(horarioVisita);
+            }
+        }
+        return horariosVisitaPorFecha;
+    }
 
 }
