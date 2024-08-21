@@ -100,5 +100,9 @@ public class InmuebleService {
         return false;
     }
 
+    public boolean existeInmueblePorDireccion(String direccion) {
+        InmuebleModel inmueble = inmuebleRepository.findByDireccion(direccion);
+        return inmueble != null;
+    }
 
 }

@@ -117,4 +117,9 @@ public class InmuebleController {
     }
 
 
+    @GetMapping("/verificar-direccion")
+    public ResponseEntity<Boolean> verificarDireccion(@RequestParam String direccion) {
+        boolean existeInmueble = inmuebleService.existeInmueblePorDireccion(direccion);
+        return ResponseEntity.ok(existeInmueble);
+    }
 }

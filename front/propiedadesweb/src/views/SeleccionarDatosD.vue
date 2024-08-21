@@ -73,11 +73,32 @@ export default {
       return true;
     };
 
+    // Función para verificar si la dirección ya existe
+    const verificarDireccion = async () => {
+    try {
+      // Enviar petición al servidor a través de path param
+      const response = await axios.get(`http://localhost:8080/inmuebles/verificar-direccion?direccion=${datosDepa.value.linea1}`);
+      return response.data; // Retornar respuesta del servidor
+    } catch (error) {
+      console.error('Error al verificar la dirección:', error); // Manejar errores en consola
+      return false;
+    }
+  };
+
     const publicarPropiedad = async () => {
       // Verificar si los campos están completos
       if (accion.value && datosDepa.value.linea1 && datosDepa.value.comuna && datosDepa.value.linea2 &&
           datosDepa.value.linea3 && datosDepa.value.linea4 && datosDepa.tieneAscensor !== null){
-        const datoNumerico = [
+        
+            // Verificar si la dirección ya existe
+        const direccionExiste = await verificarDireccion();
+          if (direccionExiste) {
+            esCorrecto.value = false;
+            mensaje.value = "La dirección ingresada ya se encuentra registrada. Por favor, ingrese una dirección diferente.";
+            return;
+          }
+
+          const datoNumerico = [
             { dato: 'linea2', nombreDato: 'Valor (pesos)' },
             { dato: 'linea3', nombreDato: 'm2 del interior' },
             { dato: 'linea4', nombreDato: 'Número de piso del departamento' }

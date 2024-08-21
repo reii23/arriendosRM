@@ -5,12 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Repository
+<<<<<<< Updated upstream
 /**
  * Esta interfaz se encarga de realizar las consultas a la base de datos
  */
+=======
+>>>>>>> Stashed changes
 public interface IInmuebleRepository extends JpaRepository<InmuebleModel, Long> {
     /**
      * Metodo que se encarga de buscar los inmuebles por id de usuario
@@ -19,4 +21,5 @@ public interface IInmuebleRepository extends JpaRepository<InmuebleModel, Long> 
      */
     public ArrayList<InmuebleModel> findByIdUsuario(Long idUsuario);
 
+    public InmuebleModel findByDireccion(String direccion);
 }
