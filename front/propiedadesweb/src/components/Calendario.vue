@@ -156,7 +156,7 @@ export default {
 }
 
 .dia:hover {
-    background-color: #f2f2f2;
+    background-color: #0e0d0d;
 }
 
 .dia.sin-horas {
@@ -165,8 +165,6 @@ export default {
 
 .dia.con-horas {
     border: 2px solid #4CAF50;
-    /* Borde verde */
     color: #00695c;
-    /* Texto oscuro */
 }
 </style>
