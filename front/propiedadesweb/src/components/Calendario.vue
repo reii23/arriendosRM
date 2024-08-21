@@ -4,7 +4,7 @@
         <button @click="irSemanaAnterior" class="navegacion">&lt;</button>
         <div class="dias-container">
             <div v-for="(dia, index) in diasVisibles" :key="index"
-                :class="['dia', { 'seleccionado': dia.seleccionado, 'sin-horas': !dia.hayHoras }]"
+                :class="['dia', { 'seleccionado': dia.seleccionado, 'sin-horas': !dia.hayHoras, 'con-horas': dia.hayHoras }]"
                 @click="seleccionarDia(dia, index)">
                 <p class="dia-nombre">{{ dia.nombre }}</p>
                 <p class="fecha">{{ dia.fecha }}</p>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Calendario',
     data() {
@@ -22,7 +24,8 @@ export default {
             fechaActual: new Date(),
             diasVisibles: [],
             totalDiasVisibles: 7, // Esto define cuántos días se muestran a la vez
-            fechaSeleccionada: null
+            fechaSeleccionada: null,
+            hayHoras: null
         };
     },
     computed: {
@@ -33,8 +36,19 @@ export default {
     },
     created() {
         this.generarDias();
+        this.generarHayHoras();
     },
     methods: {
+        async generarHayHoras() {
+            // Obtengo el id del inmueble por URL
+            const idInmueble = this.$route.params.id;
+            this.diasVisibles.forEach(async dia => {
+                // Obtengo las fechas 
+                const fecha = dia.fechaFormateada;
+                const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorFecha/${idInmueble}/${fecha}`);
+                dia.hayHoras = response.data.length > 0;
+            });
+        },
         generarDias() {
             const dias = [];
             const primerDia = this.fechaActual.getDate() - this.fechaActual.getDay() + 1; // Empezar en lunes
@@ -77,10 +91,12 @@ export default {
         irSemanaAnterior() {
             this.fechaActual.setDate(this.fechaActual.getDate() - this.totalDiasVisibles);
             this.generarDias();
+            this.generarHayHoras();
         },
         irSemanaSiguiente() {
             this.fechaActual.setDate(this.fechaActual.getDate() + this.totalDiasVisibles);
             this.generarDias();
+            this.generarHayHoras();
         }
     },
     watch: {
@@ -120,13 +136,15 @@ export default {
 }
 
 .dia.seleccionado {
-    background-color: #9b51e0;
-    color: white;
+    background-color: #e69b39;
+    color: rgb(255, 208, 138);
 }
 
 .dia p {
     margin: 0;
-    font-size: 16px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .navegacion {
@@ -134,6 +152,7 @@ export default {
     border: none;
     font-size: 24px;
     cursor: pointer;
+    color: #e69b39;
 }
 
 .dia:hover {
@@ -141,6 +160,13 @@ export default {
 }
 
 .dia.sin-horas {
-    opacity: 0.5;
+    opacity: 0.8;
+}
+
+.dia.con-horas {
+    border: 2px solid #4CAF50;
+    /* Borde verde */
+    color: #00695c;
+    /* Texto oscuro */
 }
 </style>
