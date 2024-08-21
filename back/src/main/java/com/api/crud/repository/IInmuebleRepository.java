@@ -7,12 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 @Repository
-<<<<<<< Updated upstream
 /**
  * Esta interfaz se encarga de realizar las consultas a la base de datos
  */
-=======
->>>>>>> Stashed changes
 public interface IInmuebleRepository extends JpaRepository<InmuebleModel, Long> {
     /**
      * Metodo que se encarga de buscar los inmuebles por id de usuario
