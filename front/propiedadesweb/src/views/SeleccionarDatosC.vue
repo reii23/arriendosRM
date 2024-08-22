@@ -13,7 +13,7 @@
       </label>
     </div>
     <!-- Agregar formulario para ingresar datos de la propiedad -->
-    <div class="entrada-datos-depa">
+    <div class="entrada-datos-casa">
       <h3>Ingresa los datos de tu propiedad</h3>
       <input type="text" v-model="datosCasa.linea1" placeholder="Dirección" />
       <select v-model="datosCasa.comuna">
@@ -199,13 +199,13 @@ h2 {
   font-size: 18px;
 }
 
-.entrada-datos-depa {
+.entrada-datos-casa {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.entrada-datos-depa h3 {
+.entrada-datos-casa h3 {
   font-size: 20px;
   margin-bottom: 20px;
   text-align: center;

@@ -70,6 +70,16 @@ export default {
         idVisitante: -1 // Aún no tenemos un ID de visitante, por lo que será nulo
       };
 
+      const periodoEstablecido = (valor) => {
+        if(valor == 'm') {
+          return 'Mañana';
+        } else if(valor == 't') {
+          return 'Tarde';
+        } else {
+          return 'Noche';
+        }
+      };
+
       console.log(this.userId);
       console.log(horario.idInmueble);
       console.log(horario.idVisitante);
@@ -79,7 +89,10 @@ export default {
       try {
         const response = await axios.post('http://localhost:8080/horarioVisita/crearHorarioVisita', horario);
         console.log('Horario registrado:', response.data);
-        this.mensaje = 'Horario registrado exitosamente';
+        this.mensaje = 'Se ha registrado una visita en el inmueble ' + horario.idInmueble + ' para el periodo ' + 
+                        horario.fecha[0] + horario.fecha[1] + '/' + horario.fecha[2] + horario.fecha[3] + '/' + 
+                        horario.fecha[4] + horario.fecha[5] + horario.fecha[6] + horario.fecha[7] + ' ' + 
+                        periodoEstablecido(horario.fecha[8]);
         this.esCorrecto = true;
         this.horarios.push(response.data);
         this.nuevoHorario.fecha = '';
@@ -132,4 +145,15 @@ button {
 button:hover {
   background-color: #ff6200;
 }
+
+.mensaje-exito {
+  color: #28a745;
+  margin-top: 20px;
+}
+
+.mensaje-error {
+  color: red;
+  margin-top: 20px;
+}
+
 </style>
