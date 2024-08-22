@@ -18,5 +18,10 @@ public interface IInmuebleRepository extends JpaRepository<InmuebleModel, Long> 
      */
     public ArrayList<InmuebleModel> findByIdUsuario(Long idUsuario);
 
+    /**
+     * Metodo que se encarga de buscar los inmuebles por direccion
+     * @param direccion direccion del inmueble
+     * @return inmueble
+     */
     public InmuebleModel findByDireccion(String direccion);
 }

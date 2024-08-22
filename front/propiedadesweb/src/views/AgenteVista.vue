@@ -24,6 +24,9 @@
       <!-- Botón de Agregar Horario al final del formulario -->
       <button type="submit">Agregar Horario</button>
     </form>
+    <p v-if="mensaje" :class="{'mensaje-exito': esCorrecto, 'mensaje-error': !esCorrecto}">
+      {{ mensaje }}
+    </p>
 
     <!-- Se eliminó el texto de "Horarios Disponibles" -->
     <!-- <h2>Horarios Disponibles</h2>
@@ -48,7 +51,9 @@ export default {
         idInmueble: ''
       },
       horarios: [],
-      userId: localStorage.getItem('userId')
+      userId: localStorage.getItem('userId'),
+      mensaje: '',
+      esCorrecto: false
     };
   },
   methods: {
@@ -74,12 +79,16 @@ export default {
       try {
         const response = await axios.post('http://localhost:8080/horarioVisita/crearHorarioVisita', horario);
         console.log('Horario registrado:', response.data);
+        this.mensaje = 'Horario registrado exitosamente';
+        this.esCorrecto = true;
         this.horarios.push(response.data);
         this.nuevoHorario.fecha = '';
         this.nuevoHorario.periodo = '';
         this.nuevoHorario.idInmueble = '';
       } catch (error) {
         console.error('Error al registrar el horario:', error);
+        this.mensaje = 'Error al registrar el horario. Inténtalo de nuevo';
+        this.esCorrecto = false;
       }
     },
     formatearFecha(fecha, periodo) {

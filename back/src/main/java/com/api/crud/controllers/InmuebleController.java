@@ -118,6 +118,11 @@ public class InmuebleController {
 
 
     @GetMapping("/verificar-direccion")
+    /**
+     * Metodo que se encarga de verificar si existe un inmueble por direccion
+     * @param direccion direccion del inmueble
+     * @return respuesta
+     */
     public ResponseEntity<Boolean> verificarDireccion(@RequestParam String direccion) {
         boolean existeInmueble = inmuebleService.existeInmueblePorDireccion(direccion);
         return ResponseEntity.ok(existeInmueble);

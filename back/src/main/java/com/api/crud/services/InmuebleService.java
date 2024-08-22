@@ -100,6 +100,11 @@ public class InmuebleService {
         return false;
     }
 
+    /**
+     * Metodo que se encarga de verificar si existe un inmueble por direccion
+     * @param direccion
+     * @return true si existe, false si no
+     */
     public boolean existeInmueblePorDireccion(String direccion) {
         InmuebleModel inmueble = inmuebleRepository.findByDireccion(direccion);
         return inmueble != null;
