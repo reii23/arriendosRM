@@ -17,8 +17,12 @@
       </div>
 
       <div class="form-group">
-        <label for="idInmueble">ID del Inmueble:</label>
-        <input type="text" id="idInmueble" v-model="nuevoHorario.idInmueble" required />
+        <label for="idInmueble">Dirección del Inmueble:</label>
+        <select v-model="nuevoHorario.idInmueble" required>
+          <option v-for="inmueble in inmuebles" :key="inmueble.id" :value="inmueble.id">
+            {{ inmueble.direccion }}
+          </option>
+        </select>
       </div>
 
       <!-- Botón de Agregar Horario al final del formulario -->
@@ -27,14 +31,6 @@
     <p v-if="mensaje" :class="{'mensaje-exito': esCorrecto, 'mensaje-error': !esCorrecto}">
       {{ mensaje }}
     </p>
-
-    <!-- Se eliminó el texto de "Horarios Disponibles" -->
-    <!-- <h2>Horarios Disponibles</h2>
-    <ul>
-      <li v-for="horario in horarios" :key="horario.id">
-        {{ horario.fecha }} a las {{ horario.periodo }}
-      </li>
-    </ul> -->
   </div>
 </template>
 
@@ -50,13 +46,27 @@ export default {
         periodo: '',
         idInmueble: ''
       },
+      inmuebles: [], // Aquí se almacenarán los inmuebles cargados
       horarios: [],
       userId: localStorage.getItem('userId'),
       mensaje: '',
       esCorrecto: false
     };
   },
+  created() {
+    this.cargarInmuebles(); // permite cargar los inmuebles al iniciar la vista
+  },
   methods: {
+
+    // Método que permite cargar los inmuebles que se ubican en la base de datos, consulta: 'http://localhost:8080/inmuebles'
+    async cargarInmuebles() {
+      try {
+        const response = await axios.get('http://localhost:8080/inmuebles');
+        this.inmuebles = response.data;
+      } catch (error) {
+        console.error('Error al cargar los inmuebles:', error);
+      }
+    },
     async agregarHorario() {
       if (!this.userId) {
         console.error('No se puede obtener el ID del usuario.');
@@ -69,12 +79,6 @@ export default {
         idUsuario: this.userId,
         idVisitante: -1 // Aún no tenemos un ID de visitante, por lo que será nulo
       };
-
-      console.log(this.userId);
-      console.log(horario.idInmueble);
-      console.log(horario.idVisitante);
-      console.log(horario.fecha);
-      console.log(horario.idUsuario);
 
       try {
         const response = await axios.post('http://localhost:8080/horarioVisita/crearHorarioVisita', horario);
