@@ -38,7 +38,7 @@
   import axios from 'axios';
   
   export default {
-    nombre: 'Register',
+    name: 'Register',
     data() {
       return {
         user: {
