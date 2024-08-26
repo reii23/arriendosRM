@@ -127,4 +127,23 @@ public class InmuebleController {
         boolean existeInmueble = inmuebleService.existeInmueblePorDireccion(direccion);
         return ResponseEntity.ok(existeInmueble);
     }
+
+    @GetMapping("/obtener-me-gustas-inmueble")
+    /**
+     * Metodo que se encarga de obtener los me gustas de un inmueble
+     * @param inmmueble inmueble
+     * @return me gustas
+     */
+    public Long obtenerMeGustasInmueble(@RequestBody InmuebleModel inmmueble){
+        return inmmueble.getMeGustas();
+    }
+
+    @GetMapping("/obtener-me-gustas")
+    /**
+     * Metodo que se encarga de obtener los me gustas de todos los inmuebles
+     * @return me gustas
+     */
+    public ArrayList<Long> obtenerMeGustas(){
+        return inmuebleService.obtenerMeGustas();
+    }
 }

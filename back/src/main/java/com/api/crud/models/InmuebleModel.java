@@ -17,13 +17,14 @@ public abstract class InmuebleModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_inmueble")
     private TipoInmueble tipoInmueble;
-
+    private String tipoOperacion;
     private String direccion;
     private double precio;
     private boolean disponible;
     private boolean verificado;
     private double metrosCuadrados;
     private Long idUsuario;
+    private Long meGustas;
 
     public enum TipoInmueble {
         CASA, DEPARTAMENTO, TERRENO
@@ -155,4 +156,19 @@ public abstract class InmuebleModel {
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
+    public Long getMeGustas() {
+        return meGustas;
+    }
+    public void setMeGustas(Long meGustas) {
+        this.meGustas = meGustas;
+    }
+
+    public String getTipoOperacion() {
+        return tipoOperacion;
+    }
+
+    public void setTipoOperacion(String tipoOperacion) {
+        this.tipoOperacion = tipoOperacion;
+    }
+
 }

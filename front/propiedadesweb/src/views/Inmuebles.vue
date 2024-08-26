@@ -1,4 +1,15 @@
 <template>
+  <!--carrusel para mostrar inmuebles recomendados-->
+  <div class="carruselDeInmuebles">
+    <div class="carruselInterior">
+      <div class="inmueble" v-for="inmuebleRec in inmueblesRec" :key="inmuebleRec"> <!--inmuebles recomendados-->
+        {{ inmuebleRec }}
+      </div>
+    </div>
+    <button @click="previo">❮</button>
+    <button @click="siguiente">❯</button>
+
+  </div>
   <div class="inmuebles-container">
     <InmueblePaginator
       :rows="rows"
@@ -28,6 +39,7 @@ export default {
       rows: 10,
       totalRecords: 0,
       first: 0,
+      inmuebleRec: [ ],
     };
   },
   computed: {
@@ -74,5 +86,25 @@ export default {
   font-size: 1.2em;
   color: #f1f1f1;
   margin-top: 20px;
+}
+
+.carruselDeInmuebles {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carruselInterior {
+  white-space: nowrap;
+}
+
+.inmueble {
+  width: 40px;
+  margin-right: 10px;
+  display: inline-flex;
+}
+
+button{
+  margin-right: 10px;
+  margin-top: 10px;
 }
 </style>

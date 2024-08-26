@@ -3,6 +3,7 @@
     <img :src="inmueble.imagen || getDefaultImage(inmueble.tipoInmueble)" :alt="inmueble.direccion" class="inmueble-image">
     <div class="inmueble-detalles">
       <h3 class="inmueble-precio">{{ formatPrice(inmueble.precio) }}</h3>
+      <h2 class="inmueble-tipo-operacion">{{ establecerAccion(inmueble) }}</h2>
       <p class="inmueble-direccion">{{ inmueble.direccion }}</p>
       <div class="inmueble-atributos">
         <span>
@@ -51,6 +52,13 @@
       },
       goToDetail() {
         this.$router.push({ name: 'PropertyDetail', params: { id: this.inmueble.id } });
+      },
+      establecerAccion(inmueble){
+        if(inmueble.tipoOperacion === 'Vender'){
+          return inmueble.tipoInmueble + ' en Venta';
+        } else {
+          return inmueble.tipoInmueble + ' en Arriendo';
+        }
       }
     }
   }
@@ -84,6 +92,12 @@
     font-weight: bold;
     color: #02b408;
     margin: 0 0 0px 0;
+  }
+
+  .inmueble-tipo-operacion {
+    font-size: 1em;
+    color: #f5f5f5;
+    margin: 0 0 10px 0;
   }
   
   .inmueble-direccion {
