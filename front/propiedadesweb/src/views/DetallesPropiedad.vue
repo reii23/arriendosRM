@@ -96,6 +96,11 @@ export default {
       // Obtengo el id del usuario dueño de la propiedad
       const idPropietario = this.propiedad.idUsuario;
 
+      // Si el usuario no esta logueado, no se puede contactar
+      if (!auth.isLoggedIn) {
+        alert('Debe iniciar sesión para contactar al propietario');
+        return;
+      }
       // Si el usuario logueado es el dueño de la propiedad, no se puede contactar
       if (idUsuario == idPropietario) {
         alert('Esta es tu propiedad, no puedes contactarte contigo mismo');
