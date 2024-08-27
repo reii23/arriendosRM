@@ -128,13 +128,22 @@ public class InmuebleController {
         return ResponseEntity.ok(existeInmueble);
     }
 
+    @PostMapping("/agregar-me-gusta/{inmueble}")
+    /**
+     * Metodo que se encarga de agregar un me gusta a un inmueble
+     * @param inmueble inmueble
+     */
+    public void agregarMeGusta(@PathVariable InmuebleModel inmueble){
+        inmuebleService.agregarMeGusta(inmueble);
+    }
+
     @GetMapping("/obtener-me-gustas-inmueble")
     /**
      * Metodo que se encarga de obtener los me gustas de un inmueble
      * @param inmmueble inmueble
      * @return me gustas
      */
-    public Long obtenerMeGustasInmueble(@RequestBody InmuebleModel inmmueble){
+    public Integer obtenerMeGustasInmueble(@RequestBody InmuebleModel inmmueble){
         return inmmueble.getMeGustas();
     }
 
@@ -143,7 +152,7 @@ public class InmuebleController {
      * Metodo que se encarga de obtener los me gustas de todos los inmuebles
      * @return me gustas
      */
-    public ArrayList<Long> obtenerMeGustas(){
+    public ArrayList<Integer> obtenerMeGustas(){
         return inmuebleService.obtenerMeGustas();
     }
 }

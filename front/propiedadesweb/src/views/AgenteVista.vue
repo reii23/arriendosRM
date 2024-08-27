@@ -67,19 +67,18 @@ export default {
         console.error('Error al cargar los inmuebles:', error);
       }
     },
+
     async agregarHorario() {
       if (!this.userId) {
         console.error('No se puede obtener el ID del usuario.');
         return;
       }
-
       const horario = {
         fecha: this.formatearFecha(this.nuevoHorario.fecha, this.nuevoHorario.periodo),
         idInmueble: this.nuevoHorario.idInmueble,
         idUsuario: this.userId,
         idVisitante: -1 // Aún no tenemos un ID de visitante, por lo que será nulo
       };
-
       try {
         const response = await axios.post('http://localhost:8080/horarioVisita/crearHorarioVisita', horario);
         console.log('Horario registrado:', response.data);
@@ -118,7 +117,7 @@ label {
 
 input,
 select {
-  width: 8.5%;
+  width: 11.5%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;

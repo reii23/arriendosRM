@@ -6,6 +6,11 @@
         <div class="imagen-container">
           <img :src="propiedad.imagen ? propiedad.imagen : getDefaultImage(propiedad.tipoInmueble)"
             alt="Imagen de la propiedad" class="propiedad-imagen">
+            <!--Mostrar valoraciones solo si la propiedad está verificada-->
+            <div class="encabezado">
+              <button v-show="propiedad && propiedad.verificado == true" class="btn-me-gusta" @click="meGusta(propiedad.id)">🤍</button>
+              <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">Esta propiedad le encanta a {{ propiedad.meGustas }} usuarios</p>
+            </div>
         </div>
         <div class="caracteristicas-container">
           <p><strong>Tipo de Inmueble:</strong> {{ propiedad.tipoInmueble }}</p>
@@ -142,11 +147,17 @@ export default {
 
 <style scoped>
 .propiedad-detalle-container {
+  text-align: left;
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
+.encabezado {
+  display: flex;
+  justify-content:space-evenly;
+  align-items: center;
+}
 h1,
 h2 {
   margin-bottom: 20px;
@@ -174,6 +185,7 @@ h2 {
 
 .caracteristicas-container p {
   margin-bottom: 10px;
+  margin-top: 0px;
 }
 
 .horarios-visita {
@@ -193,6 +205,8 @@ h2 {
 
 .calendario-visita {
   margin-bottom: 20px;
+  margin-top: 60px;
+  text-align: center;
 }
 
 .horarios-por-fecha {
@@ -204,5 +218,28 @@ h2 {
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 10px;
+}
+
+.valoraciones {
+  text-align: center;
+  align-items: center;
+  margin-top: 20px;
+  
+}
+
+.btn-me-gusta {
+  background-color: #f86a9a;
+  color: #eaeaea;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 10px;
+  cursor: pointer;
+  margin-top: 0px;
+  margin-right: 0px;
+}
+
+.comentarios-propiedad {
+  margin-top: 90px;
+  text-align: left;
 }
 </style>

@@ -110,16 +110,21 @@ public class InmuebleService {
         return inmueble != null;
     }
 
-    public Long obtenerMeGustasInmueble(InmuebleModel inmueble){
+    public Integer obtenerMeGustasInmueble(InmuebleModel inmueble){
         return inmueble.getMeGustas();
     }
 
-    public ArrayList<Long> obtenerMeGustas() {
+    public ArrayList<Integer> obtenerMeGustas() {
         ArrayList<InmuebleModel> inmuebles = (ArrayList<InmuebleModel>) inmuebleRepository.findAll();
-        ArrayList<Long> listaMeGustas = new ArrayList<>();
+        ArrayList<Integer> listaMeGustas = new ArrayList<>();
         for(InmuebleModel inmueble : inmuebles){
             listaMeGustas.add(inmueble.getMeGustas());
         }
         return listaMeGustas;
+    }
+
+    public void agregarMeGusta(InmuebleModel inmueble) {
+        inmueble.setMeGustas(inmueble.getMeGustas() + 1);
+        inmuebleRepository.save(inmueble);
     }
 }

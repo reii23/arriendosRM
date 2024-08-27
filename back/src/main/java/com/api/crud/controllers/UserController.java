@@ -1,5 +1,6 @@
 package com.api.crud.controllers;
 
+import com.api.crud.models.InmuebleModel;
 import com.api.crud.models.UserModel;
 import com.api.crud.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -144,6 +146,27 @@ public class UserController {
         public void setMensaje(String mensaje) { this.mensaje = mensaje; }
         public Object getData() { return data; }
         public void setData(Object data) { this.data = data; }
+    }
+
+    @GetMapping(path = "/obtenerInmueblesFavoritos/{idUsuario}")
+    /**
+     * Metodo que se encarga de obtener los inmuebles favoritos de un usuario
+     * @param idUsuario id del usuario
+     * @return lista de inmuebles
+     */
+    public List<InmuebleModel> obtenerFavoritos(@PathVariable Long idUsuario) {
+        return this.userService.obtenerFavoritos(idUsuario);
+    }
+
+    @PostMapping("/agregarFavorito/{idUsuario}/{idInmueble}")
+    /**
+     * Metodo que se encarga de agregar un inmueble a favoritos
+     * @param idUsuario id del usuario
+     * @param idInmueble id del inmueble
+     */
+    public ResponseEntity<?> agregarFavorito(@PathVariable Long idUsuario, @PathVariable Long idInmueble) {
+        this.userService.agregarFavorito(idUsuario, idInmueble);
+        return ResponseEntity.ok().body(new MensajeRespuesta("Inmueble agregado a favoritos"));
     }
 }
 

@@ -24,7 +24,7 @@ public abstract class InmuebleModel {
     private boolean verificado;
     private double metrosCuadrados;
     private Long idUsuario;
-    private Long meGustas;
+    private Integer meGustas = 0;
 
     public enum TipoInmueble {
         CASA, DEPARTAMENTO, TERRENO
@@ -156,10 +156,10 @@ public abstract class InmuebleModel {
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
-    public Long getMeGustas() {
+    public Integer getMeGustas() {
         return meGustas;
     }
-    public void setMeGustas(Long meGustas) {
+    public void setMeGustas(Integer meGustas) {
         this.meGustas = meGustas;
     }
 

@@ -54,7 +54,7 @@
         this.$router.push({ name: 'PropertyDetail', params: { id: this.inmueble.id } });
       },
       establecerAccion(inmueble){
-        if(inmueble.tipoOperacion === 'Vender'){
+        if(inmueble.tipoOperacion === 'vender'){
           return inmueble.tipoInmueble + ' en Venta';
         } else {
           return inmueble.tipoInmueble + ' en Arriendo';
