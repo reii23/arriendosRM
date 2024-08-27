@@ -12,10 +12,12 @@
     "axios": "^1.7.2",
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
+    "google-maps-api-loader": "^1.1.1",
     "primeicons": "^7.0.0",
     "primevue": "^3.53.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vue2-google-maps": "^0.10.7",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

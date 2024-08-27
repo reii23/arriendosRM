@@ -6,11 +6,13 @@
         <div class="imagen-container">
           <img :src="propiedad.imagen ? propiedad.imagen : getDefaultImage(propiedad.tipoInmueble)"
             alt="Imagen de la propiedad" class="propiedad-imagen">
-            <!--Mostrar valoraciones solo si la propiedad está verificada-->
-            <div class="encabezado">
-              <button v-show="propiedad && propiedad.verificado == true" class="btn-me-gusta" @click="meGusta(propiedad.id)">🤍</button>
-              <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">Esta propiedad le encanta a {{ propiedad.meGustas }} usuarios</p>
-            </div>
+          <!--Mostrar valoraciones solo si la propiedad está verificada-->
+          <div class="encabezado">
+            <button v-show="propiedad && propiedad.verificado == true" class="btn-me-gusta"
+              @click="meGusta(propiedad.id)">🤍</button>
+            <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">Esta propiedad le encanta a {{
+              propiedad.meGustas }} usuarios</p>
+          </div>
         </div>
         <div class="caracteristicas-container">
           <p><strong>Tipo de Inmueble:</strong> {{ propiedad.tipoInmueble }}</p>
@@ -33,6 +35,10 @@
             <p><strong>Tipo de Suelo:</strong> {{ propiedad.tipoSuelo }}</p>
           </template>
         </div>
+      </div>
+      <div>
+        <!-- contactar via chat -->
+        <button @click="chatHandle">Contactar</button>
       </div>
     </div>
     <div v-else>
@@ -84,6 +90,50 @@ export default {
     this.obtenerDetallesPropiedad();
   },
   methods: {
+    async chatHandle() {
+      // Obtengo el id del usuario logueado
+      const idUsuario = localStorage.getItem('userId');
+      // Obtengo el id del usuario dueño de la propiedad
+      const idPropietario = this.propiedad.idUsuario;
+
+      // Si el usuario logueado es el dueño de la propiedad, no se puede contactar
+      if (idUsuario == idPropietario) {
+        alert('Esta es tu propiedad, no puedes contactarte contigo mismo');
+        return;
+      }
+      console.log(idUsuario);
+      console.log(idPropietario);
+      // Obtengo todos los chats del usuario propietario
+      const responseProp = await axios.get(`http://localhost:8080/chat/obtenerChatPorIdUsuario1/${idPropietario}`);
+      console.log(responseProp.data);
+      // Si el usuario propietario no tiene chats, creo un chat
+      if (responseProp.data.length == 0) {
+        console.log('no tiene chat');
+        await axios.post(`http://localhost:8080/chat/crearChat/${idPropietario}/${idUsuario}`);
+      } else if (responseProp.data.length > 0) {
+        // Si el usuario propietario ya tiene chats, verifico si ya existe un chat con el usuario logueado
+        let aux = 0;
+        for (let i = 0; i < responseProp.data.length; i++) {
+          if (responseProp.data[i].idUsuario2 == idUsuario) { // Si existe un chat con el usuario logueado, redirijo al chat
+            console.log('existe chat');
+            aux = 1;
+            break;
+          }
+        }
+
+        // Si no existe un chat con el usuario logueado, creo un chat
+        if (aux == 0) {
+          console.log('no existe chat');
+          await axios.post(`http://localhost:8080/chat/crearChat/${idPropietario}/${idUsuario}`);
+        } else {
+          // Si ya existe un chat con el usuario logueado, redirijo al chat
+          // Logica de redireccionamiento
+          console.log('existe chat');
+        }
+      }
+
+
+    },
     actualizarFechaSeleccionada(fecha) {
       this.fechaSeleccionada = fecha;
       this.obtenerHorariosPorFecha();
@@ -155,9 +205,10 @@ export default {
 
 .encabezado {
   display: flex;
-  justify-content:space-evenly;
+  justify-content: space-evenly;
   align-items: center;
 }
+
 h1,
 h2 {
   margin-bottom: 20px;
@@ -224,7 +275,7 @@ h2 {
   text-align: center;
   align-items: center;
   margin-top: 20px;
-  
+
 }
 
 .btn-me-gusta {
