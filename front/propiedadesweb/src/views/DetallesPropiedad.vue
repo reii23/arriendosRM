@@ -108,9 +108,6 @@ export default {
         alert('Esta es tu propiedad, no puedes contactarte contigo mismo');
         return;
       }
-      console.log(idUsuario);
-      console.log(idPropietario);
-      console.log(idPropiedad);
 
       // Obtengo todos los chats del usuario propietario con el usuario logueado y la propiedad seleccionada
       const responseProp = await axios.get(`http://localhost:8080/chat/obtenerChatPorIdUsuario1YIdUsuario2YIdInmueble/${idPropietario}/${idUsuario}/${idPropiedad}`);
@@ -119,11 +116,11 @@ export default {
       if (responseProp.data.length == 0) {
         console.log('no tiene chat');
         await axios.post(`http://localhost:8080/chat/crearChat/${idPropietario}/${idUsuario}/${idPropiedad}`);
-        this.$router.push("/mis-chats-cliente")
+        this.$router.push("/mis-chats")
       } else if (responseProp.data.length > 0) {
         // Si el usuario propietario ya tiene chats, verifico si ya existe un chat con el usuario logueado y la propiedad seleccionada
         console.log('existe chat');
-        this.$router.push("/mis-chats-cliente")
+        this.$router.push("/mis-chats")
       }
     },
     actualizarFechaSeleccionada(fecha) {

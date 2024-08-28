@@ -11,7 +11,9 @@
                 </button>
             </div>
             <div class="chat-list" v-if="vistaActual === 'cliente'">
-                <div v-for="chat in chats" :key="chat.id" class="chat-item" @click="abrirChat(chat)">
+                <div v-for="chat in chats" :key="chat.id"
+                    :class="['chat-item', { 'active-chat': chat.id === chatSeleccionado?.id }]"
+                    @click="abrirChat(chat)">
                     <div class="chat-info">
                         <p class="chat-title-2">Direccion: {{ chat.nombreInmueble }}</p>
                         <p class="chat-title">Nombre Propietario: {{ chat.nombreUsuario }}</p>
@@ -20,7 +22,8 @@
                 </div>
             </div>
             <div class="chat-list" v-if="vistaActual === 'propietario'">
-                <div v-for="chat in chatsPropietario" :key="chat.id" class="chat-item"
+                <div v-for="chat in chatsPropietario" :key="chat.id"
+                    :class="['chat-item', { 'active-chat': chat.id === chatSeleccionado?.id }]"
                     @click="abrirChatPropietario(chat)">
                     <div class="chat-info">
                         <p class="chat-title-2"> Mi vivienda: {{ chat.nombreInmueble }}</p>
@@ -172,7 +175,6 @@ export default {
 <style>
 .chat-page {
     display: flex;
-    /* Hago que el chat se ajuste a la pantalla */
     height: 90vh;
     background-color: #3d5a80;
     color: #EAEAEA;
@@ -189,7 +191,6 @@ export default {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    /* Ajuste para la altura disponible */
 }
 
 .chat-item {
@@ -205,6 +206,11 @@ export default {
 
 .chat-item:hover {
     background-color: #ee6c4d;
+}
+
+.chat-item.active-chat {
+    background-color: #ff1500;
+    /* Color para el chat activo */
 }
 
 .chat-header {
@@ -225,11 +231,6 @@ export default {
     margin: 0;
 }
 
-.chat-last-message {
-    color: #ffffff;
-    margin: 0;
-}
-
 .chat-time {
     font-size: 0.9em;
     color: #ffffff;
@@ -240,13 +241,11 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: #98c1d9;
-    margin: 0;
 }
 
 .messages-container {
     flex-grow: 1;
     overflow-y: scroll;
-    /* Permite el desplazamiento vertical */
     padding-right: 10px;
     padding-left: 10px;
     display: flex;
@@ -260,18 +259,14 @@ export default {
     margin: 5px 0;
     border-radius: 5px;
     max-width: 80%;
-    /* Asegura que los mensajes no se extiendan demasiado */
 }
 
 .message-sent {
-    /* Dejo los mensajes enviados a la derecha*/
     align-self: flex-end;
     background-color: #ee6c4d;
-
 }
 
 .message-received {
-    /* Dejo los mensajes recibidos a la izquierda */
     align-self: flex-start;
     background-color: #454c58;
 }
@@ -321,7 +316,6 @@ export default {
 }
 
 .view-buttons button.active {
-    background-color: #ff1500; /* Color para el botón seleccionado */
+    background-color: #ff1500;
 }
-
 </style>
