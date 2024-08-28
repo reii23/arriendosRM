@@ -12,4 +12,8 @@ public interface IChatRepository extends JpaRepository<ChatModel, Long> {
     ChatModel findByIdUsuario1AndIdUsuario2(Long idUsuario1, Long idUsuario2);
 
     ArrayList<ChatModel> findByIdUsuario1(Long idUsuario1);
+
+    ArrayList<ChatModel> findByIdUsuario1AndIdUsuario2AndIdInmueble(Long idUsuario1, Long idUsuario2, Long idInmueble);
+
+    ArrayList<ChatModel> findByIdUsuario2(Long idUsuario2);
 }

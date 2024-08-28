@@ -19,4 +19,8 @@ public class MensajeService {
     public MensajeModel crearMensaje(MensajeModel mensaje) {
         return mensajeRepository.save(mensaje);
     }
+
+    public MensajeModel enviarMensaje(MensajeModel mensaje) {
+        return mensajeRepository.save(mensaje);
+    }
 }

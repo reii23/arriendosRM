@@ -13,6 +13,7 @@ import PublicacionCreada from "@/views/PublicacionCreada.vue";
 import LogoutView from "@/views/UsuarioCerrarSesion.vue";
 import AccountView from "@/views/UsuarioPerfil.vue";
 import AgenteView from "@/views/AgenteVista.vue";
+import MisChats from "@/views/MisChats.vue";
 
 const routes = [
   {
@@ -84,6 +85,11 @@ const routes = [
   { path: '/agente',
     name: "AgenteView",
     component: AgenteView,
+  },
+  {
+    path: "/mis-chats",
+    name: "MisChats",
+    component: MisChats,
   }
 ];
 

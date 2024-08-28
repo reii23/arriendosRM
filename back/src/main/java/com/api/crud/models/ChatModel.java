@@ -15,6 +15,7 @@ public class ChatModel {
     private Long Id;
     private Long idUsuario1;    // id del usuario propietario de un inmueble
     private Long idUsuario2;    // id del usuario con el que se tiene el chat
+    private Long idInmueble;    // id del inmueble
 
     // Getters and setters
 
@@ -40,6 +41,14 @@ public class ChatModel {
 
     public void setIdUsuario2(Long idUsuario2) {
         this.idUsuario2 = idUsuario2;
+    }
+
+    public Long getIdInmueble() {
+        return idInmueble;
+    }
+
+    public void setIdInmueble(Long idInmueble) {
+        this.idInmueble = idInmueble;
     }
 }
 

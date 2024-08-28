@@ -24,18 +24,15 @@ public class MensajeController {
         return this.mensajeService.obtenerMensajesPorChat(idChat);
     }
 
-    @PutMapping(path = "/enviarMensaje/{idChat}/{idUsuario}")
+    @PostMapping(path = "/enviarMensaje")
     /**
      * Metodo que se encarga de enviar un mensaje
      * @param mensaje mensaje a enviar
-     * @param idChat id del chat
-     * @param idUsuario id del usuario
      * @return mensaje enviado
      */
-    public MensajeModel enviarMensaje(@RequestBody MensajeModel mensaje, @PathVariable("idChat") Long idChat, @PathVariable("idUsuario") Long idUsuario) {
-        mensaje.setIdChat(idChat);
-        mensaje.setIdUsuario(idUsuario);
-        return this.mensajeService.crearMensaje(mensaje);
+    public MensajeModel enviarMensaje(@RequestBody MensajeModel mensaje) {
+        return this.mensajeService.enviarMensaje(mensaje);
     }
+
 
 }

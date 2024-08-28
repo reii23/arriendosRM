@@ -12,8 +12,10 @@
       <!-- Mostrar Logout solo si está logueado -->
       <span v-if="auth.isLoggedIn"> | </span>
       <router-link v-if="auth.isLoggedIn" to="/logout">Cerrar sesión</router-link>
-	  <span v-if="auth.isLoggedIn"> | </span>
-	  <router-link v-if="auth.isLoggedIn" to="/account">Mi Cuenta</router-link>
+      <span v-if="auth.isLoggedIn"> | </span>
+      <router-link v-if="auth.isLoggedIn" to="/account">Mi Cuenta</router-link>
+      <span v-if="auth.isLoggedIn"> | </span>
+      <router-link v-if="auth.isLoggedIn" to="/mis-chats">Mis Chats</router-link>
     </nav>
     <router-view />
   </div>
@@ -39,7 +41,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #fffafa;
-  background-color: rgb(2,43,96);
+  background-color: rgb(2, 43, 96);
 }
 
 nav {
@@ -52,6 +54,6 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: rgb(255,146,2);
+  color: rgb(255, 146, 2);
 }
 </style>

@@ -95,6 +95,8 @@ export default {
       const idUsuario = localStorage.getItem('userId');
       // Obtengo el id del usuario dueño de la propiedad
       const idPropietario = this.propiedad.idUsuario;
+      // Obtengo el id de la propiedad
+      const idPropiedad = this.propiedad.id;
 
       // Si el usuario no esta logueado, no se puede contactar
       if (!auth.isLoggedIn) {
@@ -108,36 +110,21 @@ export default {
       }
       console.log(idUsuario);
       console.log(idPropietario);
-      // Obtengo todos los chats del usuario propietario
-      const responseProp = await axios.get(`http://localhost:8080/chat/obtenerChatPorIdUsuario1/${idPropietario}`);
-      console.log(responseProp.data);
-      // Si el usuario propietario no tiene chats, creo un chat
+      console.log(idPropiedad);
+
+      // Obtengo todos los chats del usuario propietario con el usuario logueado y la propiedad seleccionada
+      const responseProp = await axios.get(`http://localhost:8080/chat/obtenerChatPorIdUsuario1YIdUsuario2YIdInmueble/${idPropietario}/${idUsuario}/${idPropiedad}`);
+
+      // Si el usuario propietario no tiene chats con el usuario logueado para la propiedad seleccionada, creo un chat
       if (responseProp.data.length == 0) {
         console.log('no tiene chat');
-        await axios.post(`http://localhost:8080/chat/crearChat/${idPropietario}/${idUsuario}`);
+        await axios.post(`http://localhost:8080/chat/crearChat/${idPropietario}/${idUsuario}/${idPropiedad}`);
+        this.$router.push("/mis-chats-cliente")
       } else if (responseProp.data.length > 0) {
-        // Si el usuario propietario ya tiene chats, verifico si ya existe un chat con el usuario logueado
-        let aux = 0;
-        for (let i = 0; i < responseProp.data.length; i++) {
-          if (responseProp.data[i].idUsuario2 == idUsuario) { // Si existe un chat con el usuario logueado, redirijo al chat
-            console.log('existe chat');
-            aux = 1;
-            break;
-          }
-        }
-
-        // Si no existe un chat con el usuario logueado, creo un chat
-        if (aux == 0) {
-          console.log('no existe chat');
-          await axios.post(`http://localhost:8080/chat/crearChat/${idPropietario}/${idUsuario}`);
-        } else {
-          // Si ya existe un chat con el usuario logueado, redirijo al chat
-          // Logica de redireccionamiento
-          console.log('existe chat');
-        }
+        // Si el usuario propietario ya tiene chats, verifico si ya existe un chat con el usuario logueado y la propiedad seleccionada
+        console.log('existe chat');
+        this.$router.push("/mis-chats-cliente")
       }
-
-
     },
     actualizarFechaSeleccionada(fecha) {
       this.fechaSeleccionada = fecha;
