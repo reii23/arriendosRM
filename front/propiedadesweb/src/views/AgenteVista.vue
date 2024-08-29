@@ -95,11 +95,8 @@ export default {
       }
     },
     formatearFecha(fecha, periodo) {
-      const fechaObj = new Date(fecha);
-      const dia = fechaObj.getDate().toString().padStart(2, '0');
-      const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
-      const anio = fechaObj.getFullYear(); // Obtener año
-      return `${dia}${mes}${anio}${periodo}`;
+      const [anio, mes, dia] = fecha.split('-'); // Descomponer la fecha en sus componentes
+      return `${dia}/${mes}/${anio}/${periodo}`;
     }
   }
 };
