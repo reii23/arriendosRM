@@ -107,9 +107,14 @@ public class UserService {
      * @param idUsuario id del usuario
      * @return lista de inmuebles favoritos
      */
-    public List<InmuebleModel> obtenerFavoritos(Long idUsuario) {
-        UserModel usuario = userRepository.findById(idUsuario).get();
-        return usuario.getInmueblesFavoritos();
+    public List<Long> obtenerFavoritos(Long idUsuario) {
+        UserModel usuario = userRepository.findById(idUsuario).get(); // se obtiene el usuario
+        List<InmuebleModel> listaInmueblesFav= usuario.getInmueblesFavoritos(); // se obtiene la lista de inmuebles favoritos
+        List<Long> listaIdInmueblesFav = new ArrayList<>(); // se crea una lista de id de inmuebles favoritos vacía
+        for (InmuebleModel inmueble : listaInmueblesFav) { // se recorre la lista de inmuebles favoritos
+            listaIdInmueblesFav.add(inmueble.getId()); // se agrega el id del inmueble a la lista de id de inmuebles favoritos
+        }
+        return listaIdInmueblesFav;
     }
 
     /**
@@ -118,14 +123,25 @@ public class UserService {
      * @param idInmueble id del inmueble
      */
     public void agregarFavorito(Long idUsuario, Long idInmueble) {
-        UserModel usuario = userRepository.findById(idUsuario).get();
-        InmuebleModel inmuebleFavorito = inmuebleRepository.findById(idInmueble).get();
-        if(!usuario.getInmueblesFavoritos().contains(inmuebleFavorito)){
-            usuario.setInmueblesFavoritos(inmuebleFavorito);
-            userRepository.save(usuario);
+        UserModel usuario = userRepository.findById(idUsuario).get(); // se obtiene el usuario
+        InmuebleModel inmuebleFavorito = inmuebleRepository.findById(idInmueble).get(); // se obtiene el inmueble
+        if(!usuario.getInmueblesFavoritos().contains(inmuebleFavorito)){ // si el inmueble no esta en la lista de favoritos
+            usuario.setInmueblesFavoritos(inmuebleFavorito); // se agrega el inmueble a la lista de favoritos
+            userRepository.save(usuario); // se guarda el usuario
         }
     }
 
+    public void eliminarFavorito(Long idUsuario, Long idInmueble) {
+        UserModel usuario = userRepository.findById(idUsuario).get(); // se obtiene el usuario
+        InmuebleModel inmueble = inmuebleRepository.findById(idInmueble).get(); // se obtiene el inmueble
+        List<InmuebleModel> listaInmueblesFavoritos = usuario.getInmueblesFavoritos(); // se obtiene la lista de inmuebles favoritos del usuario
+        if(listaInmueblesFavoritos.contains(inmueble)){ // se verifica si el inmueble esta en la lista de favoritos
+            listaInmueblesFavoritos.remove(inmueble); // se elimina el inmueble de la lista de favoritos
+            userRepository.save(usuario); // se guarda el usuario
+        }else {
+            System.out.println("No se encontro el inmueble en la lista de favoritos");
+        }
+    }
 }
 
 

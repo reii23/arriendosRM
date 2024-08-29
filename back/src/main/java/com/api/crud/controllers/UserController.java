@@ -2,6 +2,7 @@ package com.api.crud.controllers;
 
 import com.api.crud.models.InmuebleModel;
 import com.api.crud.models.UserModel;
+import com.api.crud.services.InmuebleService;
 import com.api.crud.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private InmuebleService inmuebleService;
 
     @GetMapping(path = "/obtenerUsuarios")
     /**
@@ -154,19 +157,34 @@ public class UserController {
      * @param idUsuario id del usuario
      * @return lista de inmuebles
      */
-    public List<InmuebleModel> obtenerFavoritos(@PathVariable Long idUsuario) {
+    public List<Long> obtenerFavoritos(@PathVariable Long idUsuario) {
         return this.userService.obtenerFavoritos(idUsuario);
     }
 
-    @PostMapping("/agregarFavorito/{idUsuario}/{idInmueble}")
+    @PostMapping("/agregarInmuebleFavorito/{idUsuario}/{idInmueble}")
     /**
      * Metodo que se encarga de agregar un inmueble a favoritos
      * @param idUsuario id del usuario
      * @param idInmueble id del inmueble
      */
     public ResponseEntity<?> agregarFavorito(@PathVariable Long idUsuario, @PathVariable Long idInmueble) {
-        this.userService.agregarFavorito(idUsuario, idInmueble);
+        this.userService.agregarFavorito(idUsuario, idInmueble); // Agregar inmueble a favoritos del usuario
+        InmuebleModel inmuebleAgregado = this.inmuebleService.obtenerInmueblePorId(idInmueble).get(); // Obtener inmueble de la clase inmueble
+        this.inmuebleService.agregarMeGusta(inmuebleAgregado); // Agregar un me gusta al inmueble
         return ResponseEntity.ok().body(new MensajeRespuesta("Inmueble agregado a favoritos"));
+    }
+
+    @DeleteMapping("/eliminarInmuebleFavorito/{idUsuario}/{idInmueble}")
+    /**
+     * Metodo que se encarga de eliminar un inmueble de favoritos
+     * @param idUsuario id del usuario
+     * @param idInmueble id del inmueble
+     */
+    public ResponseEntity<?> eliminarFavorito(@PathVariable Long idUsuario, @PathVariable Long idInmueble){
+        this.userService.eliminarFavorito(idUsuario, idInmueble); // Eliminar inmueble de favoritos del usuario
+        InmuebleModel inmuebleEliminado = this.inmuebleService.obtenerInmueblePorId(idInmueble).get(); // Obtener inmueble de la clase inmueble
+        this.inmuebleService.eliminarMeGusta(inmuebleEliminado); // Eliminar un me gusta al inmueble
+        return ResponseEntity.ok().body(new MensajeRespuesta("Inmueble eliminado de favoritos"));
     }
 }
 

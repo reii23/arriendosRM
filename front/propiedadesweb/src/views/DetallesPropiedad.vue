@@ -8,10 +8,12 @@
             alt="Imagen de la propiedad" class="propiedad-imagen">
           <!--Mostrar valoraciones solo si la propiedad está verificada-->
           <div class="encabezado">
-            <button v-show="propiedad && propiedad.verificado == true" class="btn-me-gusta"
-              @click="meGusta(propiedad.id)">🤍</button>
-            <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">Esta propiedad le encanta a {{
-              propiedad.meGustas }} usuarios</p>
+            <button v-show="propiedad && propiedad.verificado == true" 
+            class="btn-me-gusta" @click="meGusta"> {{ iconoMeGusta }}
+            </button>
+            <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">
+              Esta propiedad le encanta a {{ propiedad.meGustas }} usuarios
+            </p>
           </div>
         </div>
         <div class="caracteristicas-container">
@@ -71,6 +73,7 @@ import defaultDepartamentoImagen from '@/assets/default-departamento.jpg';
 import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
 import { auth } from "@/auth";
 import Calendario from '@/components/Calendario.vue';
+import { ref } from 'vue';
 
 export default {
   name: 'PropiedadDetalle',
@@ -83,11 +86,13 @@ export default {
       horariosVisita: null,
       // Fecha seleccionada en el calendario
       fechaSeleccionada: '',
-      horariosPorFecha: []
+      horariosPorFecha: [],
+      iconoMeGusta: '🤍'
     };
   },
   created() {
     this.obtenerDetallesPropiedad();
+    this.verificarMeGusta();
   },
   methods: {
     async chatHandle() {
@@ -179,6 +184,37 @@ export default {
         case 'TERRENO':
           return defaultTerrenoImagen;
       }
+    },
+    async verificarMeGusta(){
+      try{
+        const idUsuario = Number(localStorage.getItem('userId')); // Obtener id del usuario
+        const response = await axios.get(`http://localhost:8080/user/obtenerInmueblesFavoritos/${idUsuario}`); // Obtener inmuebles favoritos del usuario
+        const esFavorito = false;
+        this.esFavorito = response.data.contains(Number(this.propiedad.id)); // Verificar si la propiedad está en favoritos
+        this.iconoMeGusta = this.esFavorito ? '❤️' : '🤍';
+      }catch(error){
+        console.error('Error al verificar si la propiedad es favorita:', error);
+      }
+    },
+    async meGusta(){
+      if(!auth.isLoggedIn){ // Si el usuario no está logueado
+        alert('Debe iniciar sesión para agregar a favoritos');
+        return;
+      }else{
+        const idUsuario = Number(localStorage.getItem('userId')); // Obtener id del usuario
+        const idInmueble = this.propiedad.id; // Obtener id de la propiedad
+        
+          if(this.esFavorito === true){ // Si la propiedad está en favoritos (esFavorito = true)
+            await axios.delete(`http://localhost:8080/user/eliminarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Eliminar propiedad de favoritos
+            this.esFavorito = false;
+            this.iconoMeGusta = '🤍';
+          }else{ // Si la propiedad no está en favoritos (esFavorito = false)
+            await axios.post(`http://localhost:8080/user/agregarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Agregar propiedad a favoritos
+            this.esFavorito = true;
+            this.iconoMeGusta = '❤️';
+          }
+        
+      }
     }
   }
 }
@@ -268,10 +304,10 @@ h2 {
 }
 
 .btn-me-gusta {
-  background-color: #f86a9a;
+  background-color: #6fd7fd;
   color: #eaeaea;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px 10px;
   cursor: pointer;
   margin-top: 0px;

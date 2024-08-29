@@ -128,7 +128,7 @@ public class InmuebleController {
         return ResponseEntity.ok(existeInmueble);
     }
 
-    @PostMapping("/agregar-me-gusta/{inmueble}")
+    @PostMapping("/agregarMeGusta/{inmueble}")
     /**
      * Metodo que se encarga de agregar un me gusta a un inmueble
      * @param inmueble inmueble
@@ -137,7 +137,16 @@ public class InmuebleController {
         inmuebleService.agregarMeGusta(inmueble);
     }
 
-    @GetMapping("/obtener-me-gustas-inmueble")
+    @DeleteMapping("/eliminarMeGusta/{inmueble}")
+    /**
+     * Metodo que se encarga de eliminar un me gusta a un inmueble
+     * @param inmueble inmueble
+     */
+    public void eliminarMeGusta(@PathVariable InmuebleModel inmueble){
+        inmuebleService.eliminarMeGusta(inmueble);
+    }
+
+    @GetMapping("/obtenerMeGustasInmueble")
     /**
      * Metodo que se encarga de obtener los me gustas de un inmueble
      * @param inmmueble inmueble
@@ -147,7 +156,7 @@ public class InmuebleController {
         return inmmueble.getMeGustas();
     }
 
-    @GetMapping("/obtener-me-gustas")
+    @GetMapping("/obtenerMeGustas")
     /**
      * Metodo que se encarga de obtener los me gustas de todos los inmuebles
      * @return me gustas

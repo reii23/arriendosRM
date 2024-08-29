@@ -127,4 +127,9 @@ public class InmuebleService {
         inmueble.setMeGustas(inmueble.getMeGustas() + 1);
         inmuebleRepository.save(inmueble);
     }
+
+    public void eliminarMeGusta(InmuebleModel inmueble){
+        inmueble.setMeGustas(inmueble.getMeGustas() - 1);
+        inmuebleRepository.save(inmueble);
+    }
 }
