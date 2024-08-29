@@ -12,7 +12,7 @@
             class="btn-me-gusta" @click="meGusta"> {{ iconoMeGusta }}
             </button>
             <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">
-              Esta propiedad le encanta a {{ propiedad.meGustas }} usuarios
+              Esta propiedad le interesa a {{ propiedad.meGustas }} usuarios
             </p>
           </div>
         </div>
@@ -73,7 +73,6 @@ import defaultDepartamentoImagen from '@/assets/default-departamento.jpg';
 import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
 import { auth } from "@/auth";
 import Calendario from '@/components/Calendario.vue';
-import { ref } from 'vue';
 
 export default {
   name: 'PropiedadDetalle',
@@ -87,8 +86,13 @@ export default {
       // Fecha seleccionada en el calendario
       fechaSeleccionada: '',
       horariosPorFecha: [],
-      iconoMeGusta: '🤍'
+      esFavorito: false
     };
+  },
+  computed: {
+    iconoMeGusta() {
+      return this.esFavorito ? '❤️' : '🤍'; 
+    }
   },
   created() {
     this.obtenerDetallesPropiedad();
@@ -186,12 +190,13 @@ export default {
       }
     },
     async verificarMeGusta(){
+      if(!auth.isLoggedIn){ // Si el usuario no está logueado
+        return;
+      }
       try{
         const idUsuario = Number(localStorage.getItem('userId')); // Obtener id del usuario
-        const response = await axios.get(`http://localhost:8080/user/obtenerInmueblesFavoritos/${idUsuario}`); // Obtener inmuebles favoritos del usuario
-        const esFavorito = false;
-        this.esFavorito = response.data.contains(Number(this.propiedad.id)); // Verificar si la propiedad está en favoritos
-        this.iconoMeGusta = this.esFavorito ? '❤️' : '🤍';
+        const inmueblesFavoritos = await axios.get(`http://localhost:8080/user/obtenerInmueblesFavoritos/${idUsuario}`); // Obtener inmuebles favoritos del usuario
+        this.esFavorito = inmueblesFavoritos.data.some(inmueble => inmueble.id === this.propiedad.id); // Verificar si la propiedad está en favoritos
       }catch(error){
         console.error('Error al verificar si la propiedad es favorita:', error);
       }
@@ -207,11 +212,9 @@ export default {
           if(this.esFavorito === true){ // Si la propiedad está en favoritos (esFavorito = true)
             await axios.delete(`http://localhost:8080/user/eliminarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Eliminar propiedad de favoritos
             this.esFavorito = false;
-            this.iconoMeGusta = '🤍';
           }else{ // Si la propiedad no está en favoritos (esFavorito = false)
             await axios.post(`http://localhost:8080/user/agregarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Agregar propiedad a favoritos
             this.esFavorito = true;
-            this.iconoMeGusta = '❤️';
           }
         
       }
