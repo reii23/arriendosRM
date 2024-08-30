@@ -164,4 +164,54 @@ public class InmuebleController {
     public ArrayList<Integer> obtenerMeGustas(){
         return inmuebleService.obtenerMeGustas();
     }
+
+
+    @GetMapping("/obtenerInmueblesVerificados")
+    /**
+     * Metodo que se encarga de obtener los inmuebles verificados
+     * @return lista de inmuebles
+     */
+    public ArrayList<InmuebleModel> obtenerInmueblesVerificados(ArrayList<InmuebleModel> inmuebles) {
+        ArrayList<InmuebleModel> inmueblesVerificados = new ArrayList<>();
+        for (InmuebleModel inmueble : inmuebles) {
+            if (inmueble.isVerificado()) {
+                inmueblesVerificados.add(inmueble);
+            }
+        }
+        return inmueblesVerificados;
+    }
+
+    @GetMapping("/obtenerInmueblesEnArriendo")
+    /**
+     * Metodo que se encarga de obtener los inmuebles en arriendo
+     * @return lista de inmuebles
+     */
+    public ArrayList<InmuebleModel> obtenerInmueblesEnArriendo(ArrayList<InmuebleModel> inmuebles){
+        ArrayList<InmuebleModel> inmueblesArrendados = new ArrayList<>();
+        for(InmuebleModel inmueble : inmuebles){
+            if(inmueble.getTipoOperacion().equals("arrendar")){
+                inmueblesArrendados.add(inmueble);
+            }
+        }
+        return inmueblesArrendados;
+    }
+
+    @GetMapping("/obtenerTopInmueblesPorMegusta")
+    /**
+     * Metodo que se encarga de obtener los inmuebles ordenados por me gusta
+     * @return lista de inmuebles
+     */
+    public ResponseEntity<ArrayList<InmuebleModel>> obtenerTopInmueblesPorMeGusta() {
+        ArrayList<InmuebleModel> inmueblesTotales = new ArrayList<>(inmuebleService.obtenerInmuebles()); // Se obtienen todos los inmuebles
+        ArrayList<InmuebleModel> inmueblesVerificados = obtenerInmueblesVerificados(inmueblesTotales); //
+        ArrayList<InmuebleModel> inmuebles = obtenerInmueblesEnArriendo(inmueblesVerificados);
+
+        if (inmuebles.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Si no hay inmuebles, se retorna un 204
+        }
+        // Si hay inmuebles, se ordenan por me gusta
+        ArrayList<InmuebleModel> resultado = inmuebleService.ordenarTopInmueblesPorMeGusta(inmuebles, 0, inmuebles.size() - 1);
+        return ResponseEntity.ok(resultado);
+    }
+
 }
