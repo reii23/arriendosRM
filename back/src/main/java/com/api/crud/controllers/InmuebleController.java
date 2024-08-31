@@ -214,4 +214,18 @@ public class InmuebleController {
         return ResponseEntity.ok(resultado);
     }
 
+    /**
+     * Método que obtiene inmuebles dentro de un rango de precios.
+     * @param precioMin Precio mínimo
+     * @param precioMax Precio máximo
+     * @return Lista de inmuebles dentro del rango de precios
+     */
+    @GetMapping("/rango-precios")
+    public ResponseEntity<List<InmuebleModel>> obtenerInmueblesPorRangoDePrecios(
+            @RequestParam("precioMin") double precioMin,
+            @RequestParam("precioMax") double precioMax) {
+        List<InmuebleModel> inmuebles = inmuebleService.obtenerInmueblesPorRangoDePrecios(precioMin, precioMax);
+        return ResponseEntity.ok(inmuebles);
+    }
+
 }

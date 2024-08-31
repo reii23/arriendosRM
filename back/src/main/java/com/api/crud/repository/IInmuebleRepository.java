@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 /**
@@ -24,4 +25,12 @@ public interface IInmuebleRepository extends JpaRepository<InmuebleModel, Long> 
      * @return inmueble
      */
     public InmuebleModel findByDireccion(String direccion);
+
+    /**
+     * Método que busca inmuebles dentro de un rango de precios
+     * @param precioMin Precio mínimo
+     * @param precioMax Precio máximo
+     * @return Lista de inmuebles dentro del rango de precios especificado
+     */
+    public List<InmuebleModel> findByPrecioBetween(double precioMin, double precioMax);
 }

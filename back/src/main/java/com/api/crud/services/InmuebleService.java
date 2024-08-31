@@ -193,4 +193,14 @@ public class InmuebleService {
 
         return inmuebles;
     }
+
+    /**
+     * Método que obtiene una lista de inmuebles dentro de un rango de precios.
+     * @param precioMin Precio mínimo
+     * @param precioMax Precio máximo
+     * @return Lista de inmuebles dentro del rango de precios
+     */
+    public List<InmuebleModel> obtenerInmueblesPorRangoDePrecios(double precioMin, double precioMax) {
+        return inmuebleRepository.findByPrecioBetween(precioMin, precioMax);
+    }
 }
