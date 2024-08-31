@@ -1,16 +1,16 @@
 -- Inserciones para 20 casas
 INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado, metros_cuadrados, comuna, id_usuario) VALUES
-('CASA', 'Calle Londres 38', 695000000, true, false, 66, 'CONCHALI', 3),
-('CASA', 'Av. Providencia 1225', 850000000, true, true, 95, 'PROVIDENCIA', 3),
-('CASA', 'Pasaje Las Rosas 456', 520000000, false, true, 75, 'LA_FLORIDA', 3),
-('CASA', 'Calle San Diego 789', 680000000, true, false, 80, 'SANTIAGO', 3),
-('CASA', 'Av. Apoquindo 3500', 1200000000, true, true, 150, 'LAS_CONDES', 3),
-('CASA', 'Calle Nataniel Cox 123', 450000000, false, false, 60, 'SANTIAGO', 4),
-('CASA', 'Av. Vicuña Mackenna 4860', 750000000, true, true, 100, 'LA_FLORIDA',4),
-('CASA', 'Pasaje Los Olivos 789', 580000000, true, false, 70, 'MAIPU', 4),
-('CASA', 'Calle Irarrázaval 2345', 820000000, false, true, 110, 'NUNOA', 4),
-('CASA', 'Av. La Florida 1234', 620000000, true, true, 85, 'LA_FLORIDA', 3),
-('CASA', 'Calle Pedro de Valdivia 890', 980000000, true, false, 130, 'PROVIDENCIA', 4);
+('CASA', 'Calle Londres 38', 695000000, true, false, 66, 'CONCHALI', 3, 0, 'vender'),
+('CASA', 'Av. Providencia 1225', 850000000, true, true, 95, 'PROVIDENCIA', 3, 1, 'vender'),
+('CASA', 'Pasaje Las Rosas 456', 520000000, false, true, 75, 'LA_FLORIDA', 3, 0, 'arrendar'),
+('CASA', 'Calle San Diego 789', 680000000, true, false, 80, 'SANTIAGO', 3, 0, 'arrendar'),
+('CASA', 'Av. Apoquindo 3500', 1200000000, true, true, 150, 'LAS_CONDES', 3, 0, 'vender'),
+('CASA', 'Calle Nataniel Cox 123', 450000000, false, false, 60, 'SANTIAGO', 4, 0, 'arrendar'),
+('CASA', 'Av. Vicuña Mackenna 4860', 750000000, true, true, 100, 'LA_FLORIDA',4, 0, 'arrendar'),
+('CASA', 'Pasaje Los Olivos 789', 580000000, true, false, 70, 'MAIPU', 4, 0, 'arrendar'),
+('CASA', 'Calle Irarrázaval 2345', 820000000, false, true, 110, 'NUNOA', 4, 0, 'arrendar'),
+('CASA', 'Av. La Florida 1234', 620000000, true, true, 85, 'LA_FLORIDA', 3, 0, 'vender'),
+('CASA', 'Calle Pedro de Valdivia 890', 980000000, true, false, 130, 'PROVIDENCIA', 4, 0, 'vender');
 
 -- Inserciones para la tabla casas (propiedades específicas de casas: num_pisos y tiene_patio)
 INSERT INTO casas (id, num_pisos, tiene_patio) VALUES
@@ -28,18 +28,18 @@ INSERT INTO casas (id, num_pisos, tiene_patio) VALUES
 
 
 -- Inserciones para la tabla inmuebles (propiedades comunes)
-INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado, metros_cuadrados, comuna, id_usuario) VALUES
-('DEPARTAMENTO', 'Calle Londres 123', 150000000, true, false, 45, 'CONCHALI', 3),
-('DEPARTAMENTO', 'Av. Providencia 1234', 200000000, true, true, 60, 'PROVIDENCIA', 3),
-('DEPARTAMENTO', 'Pasaje Las Amapolas 789', 170000000, false, true, 55, 'LA_FLORIDA', 3),
-('DEPARTAMENTO', 'Calle San Diego 1001', 190000000, true, false, 50, 'SANTIAGO', 3),
-('DEPARTAMENTO', 'Av. Apoquindo 3501', 300000000, true, true, 85, 'LAS_CONDES', 4),
-('DEPARTAMENTO', 'Calle Nataniel Cox 234', 120000000, false, false, 40, 'SANTIAGO', 4),
-('DEPARTAMENTO', 'Av. Vicuña Mackenna 4000', 220000000, true, true, 65, 'LA_FLORIDA', 4),
-('DEPARTAMENTO', 'Pasaje Las Acacias 500', 130000000, true, false, 50, 'MAIPU', 4),
-('DEPARTAMENTO', 'Calle Irarrázaval 3456', 280000000, false, true, 70, 'NUNOA', 4),
-('DEPARTAMENTO', 'Av. La Florida 4567', 180000000, true, true, 55, 'LA_FLORIDA', 3),
-('DEPARTAMENTO', 'Calle Pedro de Valdivia 100', 240000000, true, false, 90, 'PROVIDENCIA', 4);
+INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado, metros_cuadrados, comuna, id_usuario, me_gustas, tipo_operacion) VALUES
+('DEPARTAMENTO', 'Calle Londres 123', 150000000, true, false, 45, 'CONCHALI', 3, 0, 'vender'),
+('DEPARTAMENTO', 'Av. Providencia 1234', 200000000, true, true, 60, 'PROVIDENCIA', 3, 5, 'arrendar'),
+('DEPARTAMENTO', 'Pasaje Las Amapolas 789', 170000000, false, true, 55, 'LA_FLORIDA', 3, 0, 'arrendar'),
+('DEPARTAMENTO', 'Calle San Diego 1001', 190000000, true, false, 50, 'SANTIAGO', 3, 0, 'vender'),
+('DEPARTAMENTO', 'Av. Apoquindo 3501', 300000000, true, true, 85, 'LAS_CONDES', 4, 2, 'arrendar'),
+('DEPARTAMENTO', 'Calle Nataniel Cox 234', 120000000, false, false, 40, 'SANTIAGO', 4, 0, 'arrendar'),
+('DEPARTAMENTO', 'Av. Vicuña Mackenna 4000', 220000000, true, true, 65, 'LA_FLORIDA', 4, 0, 'arrendar'),
+('DEPARTAMENTO', 'Pasaje Las Acacias 500', 130000000, true, false, 50, 'MAIPU', 4, 0, 'vender'),
+('DEPARTAMENTO', 'Calle Irarrázaval 3456', 280000000, false, true, 70, 'NUNOA', 4, 2, 'vender'),
+('DEPARTAMENTO', 'Av. La Florida 4567', 180000000, true, true, 55, 'LA_FLORIDA', 3, 0, 'arrendar'),
+('DEPARTAMENTO', 'Calle Pedro de Valdivia 100', 240000000, true, false, 90, 'PROVIDENCIA', 4, 0, 'arrendar');
 
 -- Insertar 20 departamentos (propiedades específicas de departamentos: piso y tiene_ascensor)
 INSERT INTO departamentos (id, piso, tiene_ascensor) VALUES
@@ -56,17 +56,17 @@ INSERT INTO departamentos (id, piso, tiene_ascensor) VALUES
 ((SELECT id FROM inmuebles WHERE direccion = 'Calle Pedro de Valdivia 100'), 8, true);
 
 -- Inserciones para la tabla inmuebles (propiedades comunes)
-INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado, metros_cuadrados, comuna, id_usuario) VALUES
-('TERRENO', 'Calle Los Álamos 123', 250000000, true, false, 500, 'COLINA', 3),
-('TERRENO', 'Av. Los Sauces 456', 320000000, false, true, 600, 'LAMPA', 3),
-('TERRENO', 'Camino El Sol 789', 150000000, true, false, 300, 'TIL_TIL', 3),
-('TERRENO', 'Calle Las Acacias 101', 400000000, true, true, 700, 'BUIN', 3),
-('TERRENO', 'Pasaje Las Araucarias 202', 180000000, true, false, 350, 'PAINE', 4),
-('TERRENO', 'Calle El Bosque 303', 500000000, false, true, 800, 'MELIPILLA', 4),
-('TERRENO', 'Av. El Roble 404', 200000000, true, false, 450, 'ISLA_DE_MAIPO', 4),
-('TERRENO', 'Camino Las Lilas 505', 340000000, true, true, 650, 'SAN_BERNARDO', 4),
-('TERRENO', 'Calle Los Pinos 606', 280000000, false, false, 400, 'CALERA_DE_TANGO', 4),
-('TERRENO', 'Av. Las Palmas 707', 220000000, true, true, 500, 'ALHUE', 4);
+INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado, metros_cuadrados, comuna, id_usuario, me_gustas, tipo_operacion) VALUES
+('TERRENO', 'Calle Los Álamos 123', 250000000, true, false, 500, 'COLINA', 3, 0, 'vender'),
+('TERRENO', 'Av. Los Sauces 456', 320000000, false, true, 600, 'LAMPA', 3, 0, 'vender'),
+('TERRENO', 'Camino El Sol 789', 150000000, true, false, 300, 'TIL_TIL', 3, 0, 'arrendar'),
+('TERRENO', 'Calle Las Acacias 101', 400000000, true, true, 700, 'BUIN', 3, 0, 'vender'),
+('TERRENO', 'Pasaje Las Araucarias 202', 180000000, true, false, 350, 'PAINE', 4, 0, 'arrendar'),
+('TERRENO', 'Calle El Bosque 303', 500000000, false, true, 800, 'MELIPILLA', 4, 1, 'vender'),
+('TERRENO', 'Av. El Roble 404', 200000000, true, false, 450, 'ISLA_DE_MAIPO', 4, 0, 'arrendar'),
+('TERRENO', 'Camino Las Lilas 505', 340000000, true, true, 650, 'SAN_BERNARDO', 4, 0, 'vender'),
+('TERRENO', 'Calle Los Pinos 606', 280000000, false, false, 400, 'CALERA_DE_TANGO', 4, 0, 'arrendar'),
+('TERRENO', 'Av. Las Palmas 707', 220000000, true, true, 500, 'ALHUE', 4, 1, 'vender');
 
 -- Insertar 20 terrenos (propiedades específicas de terrenos: tiene_servicios_basicos y tipo_suelo)
 INSERT INTO terrenos (id, tiene_servicios_basicos, tipo_suelo) VALUES
