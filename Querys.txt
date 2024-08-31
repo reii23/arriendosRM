@@ -70,16 +70,16 @@ INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado,
 
 -- Insertar 20 terrenos (propiedades específicas de terrenos: tiene_servicios_basicos y tipo_suelo)
 INSERT INTO terrenos (id, tiene_servicios_basicos, tipo_suelo) VALUES
-((SELECT id FROM inmuebles WHERE direccion = 'Calle Los Álamos 123'), true, 'arcilloso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Av. Los Sauces 456'), false, 'arenoso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Camino El Sol 789'), true, 'rocoso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Calle Las Acacias 101'), true, 'arcilloso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Pasaje Las Araucarias 202'), false, 'arenoso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Calle El Bosque 303'), true, 'arcilloso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Av. El Roble 404'), true, 'arenoso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Camino Las Lilas 505'), true, 'rocoso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Calle Los Pinos 606'), false, 'arcilloso'),
-((SELECT id FROM inmuebles WHERE direccion = 'Av. Las Palmas 707'), true, 'arenoso');
+((SELECT id FROM inmuebles WHERE direccion = 'Calle Los Álamos 123'), true, 'arcilloso', 3),
+((SELECT id FROM inmuebles WHERE direccion = 'Av. Los Sauces 456'), false, 'arenoso', 3),
+((SELECT id FROM inmuebles WHERE direccion = 'Camino El Sol 789'), true, 'rocoso', 3),
+((SELECT id FROM inmuebles WHERE direccion = 'Calle Las Acacias 101'), true, 'arcilloso', 3),
+((SELECT id FROM inmuebles WHERE direccion = 'Pasaje Las Araucarias 202'), false, 'arenoso', 4),
+((SELECT id FROM inmuebles WHERE direccion = 'Calle El Bosque 303'), true, 'arcilloso', 4),
+((SELECT id FROM inmuebles WHERE direccion = 'Av. El Roble 404'), true, 'arenoso', 4),
+((SELECT id FROM inmuebles WHERE direccion = 'Camino Las Lilas 505'), true, 'rocoso', 4),
+((SELECT id FROM inmuebles WHERE direccion = 'Calle Los Pinos 606'), false, 'arcilloso', 4),
+((SELECT id FROM inmuebles WHERE direccion = 'Av. Las Palmas 707'), true, 'arenoso', 4);
 
 -- Admins 
 INSERT INTO usuarios (nombre, email, password, numero_telefono, rol) 
