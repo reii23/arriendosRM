@@ -131,6 +131,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Metodo que se encarga de eliminar un inmueble de favoritos
+     * @param idUsuario id del usuario
+     * @param idInmueble id del inmueble
+     */
     public void eliminarFavorito(Long idUsuario, Long idInmueble) {
         UserModel usuario = userRepository.findById(idUsuario).get(); // se obtiene el usuario
         InmuebleModel inmueble = inmuebleRepository.findById(idInmueble).get(); // se obtiene el inmueble

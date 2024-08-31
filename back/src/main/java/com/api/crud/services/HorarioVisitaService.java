@@ -111,6 +111,12 @@ public class HorarioVisitaService {
     }
 
 
+    /**
+     * Metodo que se encarga de obtener los horarios de visita por fecha
+     * @param idInmueble id del inmueble
+     * @param fecha fecha
+     * @return lista de horarios de visita
+     */
     public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorFecha(Long idInmueble, String fecha) {
         // Convertir el año a los dos últimos dígitos para hacer coincidir el formato
         String fechaFormateadaM = fecha.substring(0, 2) + fecha.substring(3, 5) + fecha.substring(6, 10) + "m";

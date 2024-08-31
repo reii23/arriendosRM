@@ -121,6 +121,12 @@ public class HorarioVisitaController {
         this.horarioVisitaService.agendarVisita(id);
     }
 
+    /**
+     * Metodo que se encarga de obtener los horarios de visita por fecha
+     * @param id id del inmueble
+     * @param fecha fecha
+     * @return lista de horarios de visita
+     */
     @GetMapping(path = "/obtenerHorariosVisitaPorFecha/{id}/{fecha}")
     public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorFecha(@PathVariable Long id, @PathVariable String fecha) {
         return this.horarioVisitaService.obtenerHorariosVisitaPorFecha(id, fecha);

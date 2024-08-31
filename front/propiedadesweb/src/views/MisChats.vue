@@ -77,6 +77,7 @@ export default {
         await this.cargarChatsPropietario();
     },
     methods: {
+        // Cambiar entre las vistas de chats del cliente y del propietario
         cambiarVista(vista) {
             this.vistaActual = vista;
             this.cargarChats();
