@@ -8,8 +8,8 @@
             alt="Imagen de la propiedad" class="propiedad-imagen">
           <!--Mostrar valoraciones solo si la propiedad está verificada-->
           <div class="encabezado">
-            <button v-show="propiedad && propiedad.verificado == true" 
-            class="btn-me-gusta" @click="meGusta"> {{ iconoMeGusta }}
+            <button v-show="propiedad && propiedad.verificado == true" class="btn-me-gusta" @click="meGusta"> {{
+              iconoMeGusta }}
             </button>
             <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">
               <br>Esta propiedad le interesa a {{ propiedad.meGustas }} usuarios
@@ -38,7 +38,7 @@
           </template>
         </div>
       </div>
-      <div >
+      <div>
         <!-- contactar via chat -->
         <button @click="chatHandle" style="margin-left: 40px;">Contactar</button>
       </div>
@@ -63,11 +63,11 @@
         <p>No hay horarios disponibles para esta fecha.</p>
       </div>
     </div>
-	<div v-if="propiedadesFavoritas" class="favoritos-lista">
-		<div v-for="propiedad in propiedadesFavoritas" :key="propiedad.id" class="favorito-item">
-		<strong>Propiedad:</strong> {{ propiedad}}<br>
-		</div>
-	  </div>
+    <div v-if="propiedadesFavoritas" class="favoritos-lista">
+      <div v-for="propiedad in propiedadesFavoritas" :key="propiedad.id" class="favorito-item">
+        <strong>Propiedad:</strong> {{ propiedad }}<br>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     iconoMeGusta() {
-      return this.esFavorito ? '❤️' : '🤍'; 
+      return this.esFavorito ? '❤️' : '🤍';
     }
   },
   created() {
@@ -154,7 +154,11 @@ export default {
       try {
         const id = this.$route.params.id;
         const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorFecha/${id}/${this.fechaSeleccionada}`); // Obtener horarios disponibles
-        this.horariosPorFecha = response.data;
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].idVisitante == -1) {
+            this.horariosPorFecha.push(response.data[i]);
+          }
+        }
       } catch (error) {
         console.error('Error al obtener horarios por fecha:', error);
       }
@@ -176,9 +180,18 @@ export default {
           alert('Debe iniciar sesión para agendar una visita');
           return;
         }
+        // Obtengo el rol del usuario
+        const response = await axios.get(`http://localhost:8080/user/obtenerUsuarioPorId/${idUsuario}`);
+        const rol = response.data.rol;
+        if (rol != 1) {
+          alert('Debe iniciar sesión como cliente para agendar una visita');
+          return;
+        }
         await axios.post(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}/${idUsuario}`); // post de agendar visita
         alert('Visita agendada correctamente');
-        this.obtenerHorariosPorFecha(); // Actualizar los horarios disponibles (para que se refleje el horario agendado)
+        // Actualizar horarios disponibles
+        this.horariosPorFecha = this.horariosPorFecha.filter(horario => horario.id !== idHorario);
+
       } catch (error) {
         console.error('Error al agendar la visita:', error);
         alert('Error al agendar la visita');
@@ -194,36 +207,36 @@ export default {
           return defaultTerrenoImagen;
       }
     },
-    async verificarMeGusta(){
-      if(!auth.isLoggedIn){ // Si el usuario no está logueado
+    async verificarMeGusta() {
+      if (!auth.isLoggedIn) { // Si el usuario no está logueado
         return;
       }
-      try{
+      try {
         const idUsuario = Number(localStorage.getItem('userId')); // Obtener id del usuario
         const inmueblesFavoritos = await axios.get(`http://localhost:8080/user/obtenerInmueblesFavoritos/${idUsuario}`); // Obtener inmuebles favoritos del usuario
-		this.esFavorito = inmueblesFavoritos.data.some((elem) => elem === this.propiedad.id)// Verificar si la propiedad está en favoritos
-      }catch(error){
+        this.esFavorito = inmueblesFavoritos.data.some((elem) => elem === this.propiedad.id)// Verificar si la propiedad está en favoritos
+      } catch (error) {
         console.error('Error al verificar si la propiedad es favorita:', error);
       }
     },
-    async meGusta(){
-      if(!auth.isLoggedIn){ // Si el usuario no está logueado
+    async meGusta() {
+      if (!auth.isLoggedIn) { // Si el usuario no está logueado
         alert('Debe iniciar sesión para agregar a favoritos');
         return;
-      }else{
+      } else {
         const idUsuario = Number(localStorage.getItem('userId')); // Obtener id del usuario
         const idInmueble = this.propiedad.id; // Obtener id de la propiedad
-          if(this.esFavorito === true){ // Si la propiedad está en favoritos (esFavorito = true)
-            await axios.delete(`http://localhost:8080/user/eliminarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Eliminar propiedad de favoritos
-			this.propiedad.meGustas -= 1;
-			this.esFavorito = false;
-			//alert('Propiedad eliminada de favoritos correctamente');
-          }else{ // Si la propiedad no está en favoritos (esFavorito = false)
-            await axios.post(`http://localhost:8080/user/agregarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Agregar propiedad a favoritos
-			this.propiedad.meGustas += 1;
-			this.esFavorito = true;
-			//alert('Propiedad agregada a favoritos correctamente');
-          }
+        if (this.esFavorito === true) { // Si la propiedad está en favoritos (esFavorito = true)
+          await axios.delete(`http://localhost:8080/user/eliminarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Eliminar propiedad de favoritos
+          this.propiedad.meGustas -= 1;
+          this.esFavorito = false;
+          //alert('Propiedad eliminada de favoritos correctamente');
+        } else { // Si la propiedad no está en favoritos (esFavorito = false)
+          await axios.post(`http://localhost:8080/user/agregarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Agregar propiedad a favoritos
+          this.propiedad.meGustas += 1;
+          this.esFavorito = true;
+          //alert('Propiedad agregada a favoritos correctamente');
+        }
       }
     }
   }

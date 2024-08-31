@@ -40,14 +40,21 @@ export default {
     },
     methods: {
         async generarHayHoras() {
-            // Obtengo el id del inmueble por URL
             const idInmueble = this.$route.params.id;
-            this.diasVisibles.forEach(async dia => {
-                // Obtengo las fechas 
+            for (const dia of this.diasVisibles) {
                 const fecha = dia.fechaFormateada;
                 const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorFecha/${idInmueble}/${fecha}`);
-                dia.hayHoras = response.data.length > 0;
-            });
+
+                const horarios = response.data;
+                if (horarios.length > 0) {
+                    // primero obtengo los idVisitante de los horarios
+                    const idVisitantes = horarios.map(horario => horario.idVisitante);
+                    // Luego si hay algun idVisitante que sea -1 significa que hay horarios disponibles
+                    dia.hayHoras = idVisitantes.includes(-1);
+                } else {
+                    dia.hayHoras = false;
+                }
+            }
         },
         generarDias() {
             const dias = [];

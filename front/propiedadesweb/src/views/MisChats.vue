@@ -64,10 +64,10 @@ export default {
     name: 'MisChats',
     data() {
         return {
-            chats: [],
-            chatsPropietario: [],
-            chatSeleccionado: null,
-            mensajes: [],
+            chats: [],  // Chats del usuario
+            chatsPropietario: [],   // Chats del propietario
+            chatSeleccionado: null, // Chat seleccionado
+            mensajes: [],   // Mensajes del chat seleccionado
             nuevoMensaje: '', // Nuevo mensaje a enviar
             vistaActual: '' // Vista actual
         }
@@ -142,7 +142,7 @@ export default {
                 idChat: this.chatSeleccionado.id,
                 idUsuario: localStorage.getItem('userId'),
                 mensaje: this.nuevoMensaje,
-                fechaEnvio: new Date().toISOString() // Puedes ajustar el formato de fecha si es necesario
+                fechaEnvio: new Date().toISOString()
             };
 
             try {
