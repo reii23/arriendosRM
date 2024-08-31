@@ -4,8 +4,12 @@
     <form @submit.prevent="agregarHorario">
       <div class="form-group">
         <label for="fecha">Fecha:</label>
-        <input type="date" v-model="nuevoHorario.fecha" required />
+        <input type="date" id="dia" v-model="nuevoHorario.fecha" required @input="agregarDias()" />
       </div>
+	  <div>
+		<label for="dias">Dias Seleccionados: {{ this.dias.length }}</label>
+        <p v-for="dia in dias">{{ dia }}</p>
+	  </div>
 
       <div class="form-group">
         <label for="periodo">Periodo:</label>
@@ -48,6 +52,7 @@ export default {
       },
       inmuebles: [], // Aquí se almacenarán los inmuebles cargados
       horarios: [],
+	  dias:[],
       userId: localStorage.getItem('userId'),
       mensaje: '',
       esCorrecto: false
@@ -67,36 +72,43 @@ export default {
         console.error('Error al cargar los inmuebles:', error);
       }
     },
+	async agregarDias(){
+	  const inputNombre = document.querySelector('#dia');
 
+	  this.dias.push(inputNombre.value);
+
+	},
     async agregarHorario() {
       if (!this.userId) {
         console.error('No se puede obtener el ID del usuario.');
         return;
       }
-      const horario = {
-        fecha: this.formatearFecha(this.nuevoHorario.fecha, this.nuevoHorario.periodo),
-        idInmueble: this.nuevoHorario.idInmueble,
-        idUsuario: this.userId,
-        idVisitante: -1 // Aún no tenemos un ID de visitante, por lo que será nulo
-      };
-      try {
-        const response = await axios.post('http://localhost:8080/horarioVisita/crearHorarioVisita', horario);
-        console.log('Horario registrado:', response.data);
-        this.mensaje = 'Horario registrado exitosamente';
-        this.esCorrecto = true;
-        this.horarios.push(response.data);
-        this.nuevoHorario.fecha = '';
-        this.nuevoHorario.periodo = '';
-        this.nuevoHorario.idInmueble = '';
-      } catch (error) {
-        console.error('Error al registrar el horario:', error);
-        this.mensaje = 'Error al registrar el horario. Inténtalo de nuevo';
-        this.esCorrecto = false;
-      }
+	  for(let dia in this.dias){
+        const horario = {
+          fecha: this.formatearFecha(dia, this.nuevoHorario.periodo),
+          idInmueble: this.nuevoHorario.idInmueble,
+          idUsuario: this.userId,
+          idVisitante: -1 // Aún no tenemos un ID de visitante, por lo que será nulo
+        };
+        try {
+          const response = await axios.post('http://localhost:8080/horarioVisita/crearHorarioVisita', horario);
+          console.log('Horario registrado:', response.data);
+          this.mensaje = 'Horario registrado exitosamente';
+          this.esCorrecto = true;
+          this.horarios.push(response.data);
+          this.nuevoHorario.fecha = '';
+        } catch (error) {
+          console.error('Error al registrar el horario:', error);
+          this.mensaje = 'Error al registrar el horario. Inténtalo de nuevo';
+          this.esCorrecto = false;
+        }}
+		this.nuevoHorario.periodo = '';
+		this.nuevoHorario.idInmueble = '';
+		this.dias = [];
     },
     formatearFecha(fecha, periodo) {
       const [anio, mes, dia] = fecha.split('-'); // Descomponer la fecha en sus componentes
-      return `${dia}/${mes}/${anio}/${periodo}`;
+      return `${dia}${mes}${anio}${periodo}`;
     }
   }
 };

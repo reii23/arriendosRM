@@ -28,6 +28,14 @@
 	  </div>
 	</div>
 	<div v-if="usuario && (usuario.rol === 1 || usuario.rol === 0)"class="visitas-agendadas">
+	  <h2>Mis Favoritos</h2>
+	  <div v-if="propiedadesFavoritas" class="favoritos-lista">
+		<div v-for="propiedad in propiedadesFavoritas" :key="propiedad.id" class="favorito-item">
+		<strong>Propiedad:</strong> {{ propiedad }}<br>
+		</div>
+	  </div>
+	</div>
+	<div v-if="usuario && (usuario.rol === 1 || usuario.rol === 0)"class="visitas-agendadas">
 	  <h2>Visitas Agendadas</h2>
 	  <div v-if="horariosVisitas" class="visitas-lista">
 		<div v-for="horario in horariosVisitas" :key="horario.id" class="horario-item">
@@ -62,13 +70,15 @@
         return {
 		  usuario: null,
 		  propiedades: null,
-		  horariosVisitas: null
+		  horariosVisitas: null,
+		  propiedadesFavoritas: null
 		}
 	},
 	created(){
 		this.obtenerUsuario();
 		this.obtenerPropiedades();
 		this.obtenerHorariosVisitas();
+		this.obtenerPropiedadesFavoritas();
 	},
 	methods:{
 		async obtenerUsuario(){
@@ -96,6 +106,15 @@
 				this.horariosVisitas = respuesta.data;
 			}catch(error){
 				console.error('Error al obtener las visitas del usuario:', error);
+			}
+		},
+		async obtenerPropiedadesFavoritas(){
+			try{
+				const id = localStorage.getItem('userId');
+				const respuesta = await axios.get(`http://localhost:8080/user/obtenerInmueblesFavoritos/${id}`);
+				this.propiedadesFavoritas = respuesta.data;
+			}catch(error){
+				console.error('Error al obtener las propiedades favoritas del usuario:', error);
 			}
 		},
 		async desagendarVisita(horarioId){

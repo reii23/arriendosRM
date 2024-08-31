@@ -12,7 +12,7 @@
             class="btn-me-gusta" @click="meGusta"> {{ iconoMeGusta }}
             </button>
             <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">
-              Esta propiedad le interesa a {{ propiedad.meGustas }} usuarios
+              <br>Esta propiedad le interesa a {{ propiedad.meGustas }} usuarios
             </p>
           </div>
         </div>
@@ -38,9 +38,9 @@
           </template>
         </div>
       </div>
-      <div>
+      <div >
         <!-- contactar via chat -->
-        <button @click="chatHandle">Contactar</button>
+        <button @click="chatHandle" style="margin-left: 40px;">Contactar</button>
       </div>
     </div>
     <div v-else>
@@ -63,6 +63,11 @@
         <p>No hay horarios disponibles para esta fecha.</p>
       </div>
     </div>
+	<div v-if="propiedadesFavoritas" class="favoritos-lista">
+		<div v-for="propiedad in propiedadesFavoritas" :key="propiedad.id" class="favorito-item">
+		<strong>Propiedad:</strong> {{ propiedad}}<br>
+		</div>
+	  </div>
   </div>
 </template>
 
@@ -86,7 +91,7 @@ export default {
       // Fecha seleccionada en el calendario
       fechaSeleccionada: '',
       horariosPorFecha: [],
-      esFavorito: false
+      esFavorito: null
     };
   },
   computed: {
@@ -196,7 +201,7 @@ export default {
       try{
         const idUsuario = Number(localStorage.getItem('userId')); // Obtener id del usuario
         const inmueblesFavoritos = await axios.get(`http://localhost:8080/user/obtenerInmueblesFavoritos/${idUsuario}`); // Obtener inmuebles favoritos del usuario
-        this.esFavorito = inmueblesFavoritos.data.some(inmueble => inmueble.id === this.propiedad.id); // Verificar si la propiedad está en favoritos
+		this.esFavorito = inmueblesFavoritos.data.some((elem) => elem === this.propiedad.id)// Verificar si la propiedad está en favoritos
       }catch(error){
         console.error('Error al verificar si la propiedad es favorita:', error);
       }
@@ -208,15 +213,17 @@ export default {
       }else{
         const idUsuario = Number(localStorage.getItem('userId')); // Obtener id del usuario
         const idInmueble = this.propiedad.id; // Obtener id de la propiedad
-        
           if(this.esFavorito === true){ // Si la propiedad está en favoritos (esFavorito = true)
             await axios.delete(`http://localhost:8080/user/eliminarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Eliminar propiedad de favoritos
-            this.esFavorito = false;
+			this.propiedad.meGustas -= 1;
+			this.esFavorito = false;
+			//alert('Propiedad eliminada de favoritos correctamente');
           }else{ // Si la propiedad no está en favoritos (esFavorito = false)
             await axios.post(`http://localhost:8080/user/agregarInmuebleFavorito/${idUsuario}/${idInmueble}`); // Agregar propiedad a favoritos
-            this.esFavorito = true;
+			this.propiedad.meGustas += 1;
+			this.esFavorito = true;
+			//alert('Propiedad agregada a favoritos correctamente');
           }
-        
       }
     }
   }
@@ -307,7 +314,7 @@ h2 {
 }
 
 .btn-me-gusta {
-  background-color: #6fd7fd;
+  background-color: rgb(6, 43, 96);
   color: #eaeaea;
   border: none;
   border-radius: 10px;
@@ -315,6 +322,9 @@ h2 {
   cursor: pointer;
   margin-top: 0px;
   margin-right: 0px;
+  height: 100px;
+  width: 100px;
+  font-size: 75px;
 }
 
 .comentarios-propiedad {
