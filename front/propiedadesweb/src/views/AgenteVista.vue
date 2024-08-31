@@ -83,7 +83,7 @@ export default {
         console.error('No se puede obtener el ID del usuario.');
         return;
       }
-	  for(let dia in this.dias){
+	  for(let dia of this.dias){
         const horario = {
           fecha: this.formatearFecha(dia, this.nuevoHorario.periodo),
           idInmueble: this.nuevoHorario.idInmueble,
