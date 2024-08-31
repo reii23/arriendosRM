@@ -12,8 +12,10 @@
               iconoMeGusta }}
             </button>
             <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">
-              <br>Esta propiedad le interesa a {{ propiedad.meGustas }} usuarios
+              <br><br>Esta propiedad le interesa a {{ propiedad.meGustas }} usuarios
             </p>
+			<button @click="chatHandle" class="btn-contactar">✉</button>
+			<p><br>Contactar</p>
           </div>
         </div>
         <div class="caracteristicas-container">
@@ -37,10 +39,6 @@
             <p><strong>Tipo de Suelo:</strong> {{ propiedad.tipoSuelo }}</p>
           </template>
         </div>
-      </div>
-      <div>
-        <!-- contactar via chat -->
-        <button @click="chatHandle" style="margin-left: 40px;">Contactar</button>
       </div>
     </div>
     <div v-else>
@@ -335,6 +333,22 @@ h2 {
   cursor: pointer;
   margin-top: 0px;
   margin-right: 0px;
+  height: 100px;
+  width: 100px;
+  font-size: 75px;
+}
+
+.btn-contactar {
+  background-color: rgb(6, 43, 96);
+  color: white;
+  border: none;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px 10px;
+  cursor: pointer;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-left: 10px;
   height: 100px;
   width: 100px;
   font-size: 75px;

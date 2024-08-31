@@ -34,7 +34,7 @@
       <!-- Botón de Agregar Horario al final del formulario -->
       <button type="submit">Agregar Horario</button>
     </form>
-	<div v-for="mensaje in mensajes">
+	<div v-for="mensaje in mensajes" v-if="mensajeTemporal">
       <p :class="{'mensaje-exito': mensaje[0] === 'H', 'mensaje-error': mensaje[0] === 'Y'}">
         {{ mensaje }}
       </p>
@@ -60,7 +60,7 @@ export default {
 	  misHorarios: null,
       userId: localStorage.getItem('userId'),
       mensajes: [],
-      esCorrecto: false
+      mensajeTemporal: false
     };
   },
   created() {
@@ -89,9 +89,7 @@ export default {
     },
 	async agregarDias(){
 	  const inputNombre = document.querySelector('#dia');
-
 	  this.dias.push(inputNombre.value);
-
 	},
     async agregarHorario() {
       if (!this.userId) {
@@ -110,23 +108,25 @@ export default {
             const response = await axios.post('http://localhost:8080/horarioVisita/crearHorarioVisita', horario);
             console.log('Horario registrado:', response.data);
             this.mensajes.push('Horario registrado exitosamente ' + this.formatearFecha3(horario.fecha));
-            this.esCorrecto = true;
+            this.mensajeTemporal = true;
             this.horarios.push(response.data);
             this.nuevoHorario.fecha = '';
-			this.cargarMisHorarios();
           } catch (error) {
             console.error('Error al registrar el horario:', error);
             this.mensajes = 'Error al registrar el horario. Inténtalo de nuevo';
-            this.esCorrecto = false;
+            this.mensajeTemporal = true;
           }
 		}else{
 			this.mensajes.push('Ya existe un horario para esa fecha ' + this.formatearFecha3(horario.fecha)) ;
-			this.esCorrecto = false;
+			this.mensajeTemporal = true;
 		}
-	}
+		this.cargarMisHorarios();
+	  }
+	const n = this.dias.length;
 	this.nuevoHorario.periodo = '';
 	this.nuevoHorario.idInmueble = '';
 	this.dias = [];
+	this.mostrarMensajeTemporal(n);
     },
 	eliminarDia(indice){
 		this.dias.splice(indice, 1);
@@ -152,7 +152,14 @@ export default {
 			}
 		}
 		return true;
-	}
+	},
+	mostrarMensajeTemporal(n) {
+      // Ocultar el mensaje después de 3 segundos (3000 ms)
+      setTimeout(() => {
+        this.mensajeTemporal = false;
+		this.mensajes.length = 0;
+      }, n*1000); // Cambia 3000 por el tiempo que desees en milisegundos
+    }
   }
 };
 </script>
@@ -176,6 +183,12 @@ select {
   border-radius: 4px;
 }
 
+.mensaje-exito {
+  color: green;
+}
+.mensaje-error {
+  color: red;
+}
 button {
   padding: 10px;
   background-color: #ff2600;
