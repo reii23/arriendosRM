@@ -25,4 +25,11 @@ public interface IHorarioVisitaRepository extends JpaRepository<HorarioVisitaMod
      * @return lista de horarios de visita
      */
     ArrayList<HorarioVisitaModel> findByIdVisitante(Long idVisitante);
+
+    /**
+     * Metodo que se encarga de buscar los horarios de visita por id de guia
+     * @param idGuia id del visitante
+     * @return lista de horarios de visita
+     */
+    ArrayList<HorarioVisitaModel> findByIdUsuario(Long idGuia);
 }

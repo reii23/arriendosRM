@@ -37,14 +37,24 @@ public class HorarioVisitaController {
         return this.horarioVisitaService.obtenerHorariosVisitaPorInmueble(id);
     }
 
-    @GetMapping(path = "/obtenerHorariosVisitaPorUsuario/{id}")
+    @GetMapping(path = "/obtenerHorariosVisitaPorUsuarioGuia/{id}")
     /**
-     * Metodo que se encarga de obtener los horarios de visita por id de usuario
+     * Metodo que se encarga de obtener los horarios de visita por id de usuario agente inmobiliario
      * @param id id del usuario
      * @return lista de horarios de visita
      */
-    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuario(@PathVariable Long id) {
-        return this.horarioVisitaService.obtenerHorariosVisitaPorUsuario(id);
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuarioGuia(@PathVariable Long id) {
+        return this.horarioVisitaService.obtenerHorariosVisitaPorUsuarioGuia(id);
+    }
+
+    @GetMapping(path = "/obtenerHorariosVisitaPorUsuarioVisitante/{id}")
+    /**
+     * Metodo que se encarga de obtener los horarios de visita por id de usuario cliente
+     * @param id id del usuario
+     * @return lista de horarios de visita
+     */
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuarioVisitante(@PathVariable Long id) {
+        return this.horarioVisitaService.obtenerHorariosVisitaPorUsuarioVisitante(id);
     }
 
     @GetMapping(path = "obtenerHorariosVisitaDisponiblesPorInmueble/{id}")

@@ -35,11 +35,20 @@ public class HorarioVisitaService {
     }
 
     /**
-     * Metodo que se encarga de obtener los horarios de visita por id de usuario
+     * Metodo que se encarga de obtener los horarios de visita por id de usuario agente inmobiliario
      * @param id id del usuario
      * @return lista de horarios de visita
      */
-    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuario(Long id) {
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuarioGuia(Long id) {
+        return horarioVisitaRepository.findByIdUsuario(id);
+    }
+
+    /**
+     * Metodo que se encarga de obtener los horarios de visita por id de usuario visitante
+     * @param id id del usuario
+     * @return lista de horarios de visita
+     */
+    public ArrayList<HorarioVisitaModel> obtenerHorariosVisitaPorUsuarioVisitante(Long id) {
         return horarioVisitaRepository.findByIdVisitante(id);
     }
 
