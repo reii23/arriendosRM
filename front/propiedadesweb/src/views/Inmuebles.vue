@@ -1,25 +1,20 @@
 <template>
   <!--carrusel para mostrar inmuebles recomendados-->
   <div class="carruselDeInmuebles">
-    <Carousel :value="inmuebleRec" numVisible="4" numScroll="1" orientation="horizontal">
-  <template #item="elementoPropiedad"> <!-- el item elementoPropiedad aplica para todas las propiedades traidas-->
-    <div class="inmueble">
-      
-      <!-- TO DO:
-      - traer imagen correspondiente del inmueble
-      - que al hacer click se envíe tambien a detalles de propiedad
-      
-      -->
-      <div class="content">
-        <p>Me gusta: {{ elementoPropiedad.data.meGustas }}</p>
-        <p>Precio: ${{ elementoPropiedad.data.precio }}</p>
-        <p>Direccion:{{ elementoPropiedad.data.direccion }}</p>
-       
-      </div>
-    </div>
-  </template>
-</Carousel>
-
+    <h2>Top 10 inmuebles </h2>
+    <Carousel :value="inmuebleRec" numVisible="5" numScroll="1" orientation="horizontal">
+      <template #item="elementoPropiedad">
+        <div class="inmueble" @click="goToDetail(elementoPropiedad.data.id)">
+          <!-- imagen del inmueble -->
+          <img :src="elementoPropiedad.data.imagen || getDefaultImage(elementoPropiedad.data.tipoInmueble)" />
+          <div class="content">
+            <p>Me gusta: {{ elementoPropiedad.data.meGustas }}</p>
+            <p>Precio: ${{ elementoPropiedad.data.precio }}</p>
+            <p>Dirección: {{ elementoPropiedad.data.direccion }}</p>
+          </div>
+        </div>
+      </template>
+    </Carousel>
   </div>
 
   <!-- Botón de filtros -->
@@ -39,12 +34,7 @@
   </div>
 
   <div class="inmuebles-container">
-    <InmueblePaginator
-      :rows="rows"
-      :totalRecords="totalRecords"
-      :first="first"
-      @page-change="onPageChange"
-    />
+    <InmueblePaginator :rows="rows" :totalRecords="totalRecords" :first="first" @page-change="onPageChange" />
     <div v-if="InmueblesEnPagina.length === 0" class="no-inmuebles">No hay inmuebles disponibles para mostrar </div>
     <InmuebleGrid v-else :inmuebles="InmueblesEnPagina" />
   </div>
@@ -104,19 +94,30 @@ export default {
           console.error("Error al traer los inmuebles", error);
         });
     },
-
-    
+    getDefaultImage(tipoInmueble) {
+      switch (tipoInmueble) {
+        case 'CASA':
+          return defaultCasaImagen;
+        case 'DEPARTAMENTO':
+          return defaultDepartamentoImagen;
+        case 'TERRENO':
+          return defaultTerrenoImagen;
+      }
+    },
+    goToDetail(idInmueble) {
+      this.$router.push({ name: 'PropertyDetail', params: { id: idInmueble } });
+    },
     // Función que permite cargar el top de inmuebles por likes para el carrusel
     loadTopInmuebles() {
-  this.inmuebleService.getTopLikedInmuebles()
-    .then((response) => {
-      console.log("Top de inmuebles recibidos:", response.data); 
-      this.inmuebleRec = response.data;
-    })
-    .catch((error) => {
-      console.error("Error al traer los inmuebles", error);
-    });
-},
+      this.inmuebleService.getTopLikedInmuebles()
+        .then((response) => {
+          console.log("Top de inmuebles recibidos:", response.data);
+          this.inmuebleRec = response.data;
+        })
+        .catch((error) => {
+          console.error("Error al traer los inmuebles", error);
+        });
+    },
 
     onPageChange(event) {
       console.log("Page changed:", event);
@@ -170,7 +171,7 @@ export default {
   display: inline-flex;
 }
 
-button{
+button {
   margin-right: 10px;
   margin-top: 10px;
 }
@@ -178,44 +179,29 @@ button{
 .filtro-button {
   margin: 20px 0;
   padding: 10px 20px;
-  background-color: #943e04;
+  background-color: #f36c3d;
   color: white;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.filtro-container button {
-  padding: 5px 15px;
-  background-color: #048d24; /* Color de fondo verde */
-  color: white; /* Color del texto en blanco */
-  border: none; /* Sin bordes */
-  border-radius: 4px; /* Bordes redondeados */
-  cursor: pointer; /* Cursor en forma de mano */
-  transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
-  align-self: start; /* Alinear el botón al principio para que no ocupe toda la anchura */
+.filtro-button:hover {
+  background-color: #e55d2a;
+  transform: translateY(-2px);
 }
 
-.filtro-container button:hover {
-  background-color: #024811; /* Color de fondo más oscuro al hacer hover */
+.filtro-button:active {
+  background-color: #d84f1f;
+  transform: translateY(0);
 }
 
-
-/* estilos del carrusel */
-.carruselDeInmuebles .inmueble {
-  width: 300px; 
-  margin-right: 20px; 
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
-}
-
-.carruselDeInmuebles .inmueble:hover {
-  transform: scale(1.1);  /* al pasar el mouse se agranda un poco */
-}
-
-.carruselDeInmuebles img { /* estilos imagen */
+.carruselDeInmuebles img {
+  /* estilos imagen */
   width: 100%;
-  height: 200px; 
+  height: 200px;
   object-fit: cover;
 }
 
@@ -224,11 +210,27 @@ button{
   background: #000000;
 }
 
-.carruselDeInmuebles h3, .carruselDeInmuebles p {
-  margin: 5px 0; /* Margen entre elementos */
+.carruselDeInmuebles h3,
+.carruselDeInmuebles p {
+  margin: 5px 0;
 }
 
 .carruselDeInmuebles .pi {
   margin-right: 4px;
+}
+
+
+.carruselDeInmuebles .inmueble {
+  width: 300px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer
+}
+
+.carruselDeInmuebles .inmueble:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 </style>

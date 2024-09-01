@@ -15,8 +15,8 @@
 
 
 .home-subtitulo {
-  color: #eeeeee; 
-  font-size: 24px; 
+  color: #eeeeee;
+  font-size: 24px;
   margin-top: 0;
   margin-bottom: 20px;
 }

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {auth} from "@/auth";
+import { auth } from "@/auth";
 
 export default {
   name: "LogoutView",
@@ -16,5 +16,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

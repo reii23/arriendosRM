@@ -3,15 +3,17 @@
     <img alt="Vue logo" src="../assets/residenciasRM.png" />
 
     <div v-if="auth.isLoggedIn">
-      <p>Hola {{ nombreUsuario }}, bienvenido a residenciasRM, tu rol es {{rolUsuario}}.</p>
+      <p>Hola {{ nombreUsuario }}, bienvenido a residenciasRM, tu rol es {{ rolUsuario }}.</p>
     </div>
     <Componente msg="Bienvenido a residenciasRM" />
 
     <!-- Botón para agregar horarios disponibles (solo para rol 2 y 0) -->
-    <button v-if="auth.rol == 2 || auth.rol == 0" @click="handleAddScheduleClick" class="btn-horarios">Agregar Horarios Disponibles</button>
+    <button v-if="auth.rol == 2 || auth.rol == 0" @click="handleAddScheduleClick" class="btn-horarios">Agregar Horarios
+      Disponibles</button>
 
     <!-- Botón para publicar inmueble (para rol 1, 0 y usuarios no logueados) -->
-    <button v-if="auth.rol == 1 || auth.rol == 0 || !auth.isLoggedIn" @click="handleCreatePublicationClick" class="btn-publicar">Publicar Inmueble</button>
+    <button v-if="auth.rol == 1 || auth.rol == 0 || !auth.isLoggedIn" @click="handleCreatePublicationClick"
+      class="btn-publicar">Publicar Inmueble</button>
   </div>
 </template>
 
@@ -72,7 +74,8 @@ export default {
 </script>
 
 <style scoped>
-.btn-publicar, .btn-horarios {
+.btn-publicar,
+.btn-horarios {
   margin-top: 10px;
   padding: 12px 60px;
   font-size: 18px;
@@ -101,8 +104,8 @@ export default {
   background-color: #FB8C00;
 }
 
-.btn-publicar:active, .btn-horarios:active {
+.btn-publicar:active,
+.btn-horarios:active {
   transform: scale(0.98);
 }
-
 </style>

@@ -17,7 +17,7 @@
 
 <script>
 import axios from 'axios';
-import {auth} from "@/auth";
+import { auth } from "@/auth";
 
 export default {
   nombre: 'Login',
@@ -51,28 +51,33 @@ export default {
   margin: 0 auto;
   padding: 20px;
 }
+
 .formulario {
   margin-bottom: 15px;
 }
+
 label {
   display: block;
   margin-bottom: 5px;
 }
+
 input {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
 button {
   width: 100%;
   padding: 10px;
-  background-color: rgb(255,146,2);
+  background-color: rgb(255, 146, 2);
   color: rgb(236, 236, 236);
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
+
 button:hover {
   background-color: rgb(8, 8, 8);
 }

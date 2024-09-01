@@ -1,6 +1,6 @@
 <template>
   <div class="seleccionar-casa">
-    
+
     <h2>¿Qué deseas hacer con tu propiedad?</h2>
     <div class="opciones">
       <label class="radio-option">
@@ -19,7 +19,7 @@
       <select v-model="datosCasa.comuna">
         <option value="">Selecciona una comuna</option>
         <option v-for="comuna in comunas" :key="comuna" :value="comuna">
-            {{ comuna.replace(/_/g, ' ') }}
+          {{ comuna.replace(/_/g, ' ') }}
         </option>
       </select>
       <input type="text" v-model="datosCasa.linea2" placeholder="Valor (pesos)" />
@@ -35,7 +35,7 @@
     </div>
 
     <button @click="publicarPropiedad" class="publicar-button">Publicar Casa</button>
-    <p v-if="mensaje" :class="{'mensaje-exito': esCorrecto, 'mensaje-error': !esCorrecto}">
+    <p v-if="mensaje" :class="{ 'mensaje-exito': esCorrecto, 'mensaje-error': !esCorrecto }">
       {{ mensaje }}
     </p>
   </div>
@@ -46,7 +46,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 export default {
-  name: 'SeleccionarDatosC', 
+  name: 'SeleccionarDatosC',
   setup() {
     const mensaje = ref(''); // Crear referencia reactiva para el mensaje
     const esCorrecto = ref(false); // Crear referencia reactiva para el estado de éxito
@@ -77,71 +77,71 @@ export default {
 
     // Función para verificar si la dirección ya existe
     const verificarDireccion = async () => {
-    try {
-      // Enviar petición al servidor a través de path param
-      const response = await axios.get(`http://localhost:8080/inmuebles/verificar-direccion?direccion=${datosCasa.value.linea1}`);
-      return response.data; // Retornar respuesta del servidor
-    } catch (error) {
-      console.error('Error al verificar la dirección:', error); // Manejar errores en consola
-      return false;
-    }
-  };
+      try {
+        // Enviar petición al servidor a través de path param
+        const response = await axios.get(`http://localhost:8080/inmuebles/verificar-direccion?direccion=${datosCasa.value.linea1}`);
+        return response.data; // Retornar respuesta del servidor
+      } catch (error) {
+        console.error('Error al verificar la dirección:', error); // Manejar errores en consola
+        return false;
+      }
+    };
 
     const publicarPropiedad = async () => {
       // Si los campos están completos
       if (accion.value && datosCasa.value.linea1 && datosCasa.value.comuna && datosCasa.value.linea2 &&
-          datosCasa.value.linea3 && datosCasa.value.linea4 && datosCasa.value.tienePatio !== null) {
-          
-          // Verificar si la dirección ya existe
-          const direccionExiste = await verificarDireccion();
-          if (direccionExiste) {
-            esCorrecto.value = false;
-            mensaje.value = "La dirección ingresada ya se encuentra registrada. Por favor, ingrese una dirección diferente.";
+        datosCasa.value.linea3 && datosCasa.value.linea4 && datosCasa.value.tienePatio !== null) {
+
+        // Verificar si la dirección ya existe
+        const direccionExiste = await verificarDireccion();
+        if (direccionExiste) {
+          esCorrecto.value = false;
+          mensaje.value = "La dirección ingresada ya se encuentra registrada. Por favor, ingrese una dirección diferente.";
+          return;
+        }
+        const datoNumerico = [
+          { dato: 'linea2', nombreDato: 'Valor (pesos)' },
+          { dato: 'linea3', nombreDato: 'm² del interior' },
+          { dato: 'linea4', nombreDato: 'Cantidad de pisos' }
+        ];
+
+        for (const { dato, nombreDato } of datoNumerico) { // Iterar sobre los campos numéricos
+          if (!validarCampoNumerico(dato, nombreDato)) { // Validar campos numéricos
             return;
           }
-          const datoNumerico = [
-            { dato: 'linea2', nombreDato: 'Valor (pesos)' },
-            { dato: 'linea3', nombreDato: 'm² del interior' },
-            { dato: 'linea4', nombreDato: 'Cantidad de pisos' }
-          ];
-
-          for (const { dato, nombreDato } of datoNumerico) { // Iterar sobre los campos numéricos
-            if (!validarCampoNumerico(dato, nombreDato)) { // Validar campos numéricos
-              return;
-            }
+        }
+        try {
+          // Crear objeto con los datos de la casa
+          const DatosCasa = {
+            tipoOperacion: accion.value, // Obtener tipo de operación (vender o arrendar)
+            direccion: datosCasa.value.linea1, // Obtener dirección
+            comuna: datosCasa.value.comuna, // Obtener comuna
+            precio: parseInt(datosCasa.value.linea2), // Obtener precio
+            metrosCuadrados: parseInt(datosCasa.value.linea3), // Obtener m2 del interior
+            numPisos: parseInt(datosCasa.value.linea4), // Obtener cantidad de pisos
+            tienePatio: datosCasa.value.tienePatio, // Obtener si tiene patio
+            idUsuario: localStorage.getItem('userId') // Obtener id del usuario
+          };
+          const response = await axios.post('http://localhost:8080/inmuebles/casa', DatosCasa); // Enviar datos al servidor
+          if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
+            esCorrecto.value = true;
+            mensaje.value = "Su publicación ha sido guardada exitosamente";
+          } else {
+            throw new Error('Error al guardar la publicación');
           }
-          try {
-            // Crear objeto con los datos de la casa
-            const DatosCasa = {
-              tipoOperacion: accion.value, // Obtener tipo de operación (vender o arrendar)
-              direccion: datosCasa.value.linea1, // Obtener dirección
-              comuna: datosCasa.value.comuna, // Obtener comuna
-              precio: parseInt(datosCasa.value.linea2), // Obtener precio
-              metrosCuadrados: parseInt(datosCasa.value.linea3), // Obtener m2 del interior
-              numPisos: parseInt(datosCasa.value.linea4), // Obtener cantidad de pisos
-              tienePatio: datosCasa.value.tienePatio, // Obtener si tiene patio
-              idUsuario: localStorage.getItem('userId') // Obtener id del usuario
-            };
-            const response = await axios.post('http://localhost:8080/inmuebles/casa', DatosCasa); // Enviar datos al servidor
-            if (response.status === 200 || response.status === 201) { // Verificar si la respuesta es exitosa
-              esCorrecto.value = true;
-              mensaje.value = "Su publicación ha sido guardada exitosamente";
-            } else {
-              throw new Error('Error al guardar la publicación');
-            }
-          } 
-          catch (error) { // Manejar errores
-            console.error('Error al publicar la propiedad:', error);
-            esCorrecto.value = false;
-            mensaje.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
-          }
+        }
+        catch (error) { // Manejar errores
+          console.error('Error al publicar la propiedad:', error);
+          esCorrecto.value = false;
+          mensaje.value = "Hubo un error al guardar la publicación. Por favor, intente nuevamente.";
+        }
         // Si los campos no están completos, mostrar mensaje de error
-      } else { 
+      } else {
         esCorrecto.value = false;
         mensaje.value = "Por favor, complete todos los campos requeridos";
-        }
+      }
     };
-    
+
     const accion = ref(''); // Crear referencia reactiva para la acción (vender o arrendar)
     const datosCasa = ref({ // Crear referencia reactiva para los datos de la casa
       linea1: '',
@@ -211,7 +211,8 @@ h2 {
   text-align: center;
 }
 
-input[type="text"], select {
+input[type="text"],
+select {
   padding: 12px;
   border: none;
   border-radius: 4px;

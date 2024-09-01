@@ -14,8 +14,8 @@
             <p v-show="propiedad && propiedad.verificado == true" class="valoraciones">
               <br><br>Esta propiedad le interesa a {{ propiedad.meGustas }} usuarios
             </p>
-			<button @click="chatHandle" class="btn-contactar">✉</button>
-			<p><br>Contactar</p>
+            <button @click="chatHandle" class="btn-contactar">✉</button>
+            <p><br>Contactar</p>
           </div>
         </div>
         <div class="caracteristicas-container">
