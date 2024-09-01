@@ -1,13 +1,24 @@
 <template>
   <!--carrusel para mostrar inmuebles recomendados-->
   <div class="carruselDeInmuebles">
-    <div class="carruselInterior">
-      <div class="inmueble" v-for="inmuebleRec in inmueblesRec" :key="inmuebleRec"> <!--inmuebles recomendados-->
-        {{ inmuebleRec }}
+    <Carousel :value="inmuebleRec" numVisible="4" numScroll="1" orientation="horizontal">
+  <template #item="elementoPropiedad"> <!-- el item elementoPropiedad aplica para todas las propiedades traidas-->
+    <div class="inmueble">
+      
+      <!-- TO DO:
+      - traer imagen correspondiente del inmueble
+      - que al hacer click se envíe tambien a detalles de propiedad
+      
+      -->
+      <div class="content">
+        <p>Me gusta: {{ elementoPropiedad.data.meGustas }}</p>
+        <p>Precio: ${{ elementoPropiedad.data.precio }}</p>
+        <p>Direccion:{{ elementoPropiedad.data.direccion }}</p>
+       
       </div>
     </div>
-    <button @click="previo">❮</button>
-    <button @click="siguiente">❯</button>
+  </template>
+</Carousel>
 
   </div>
 
@@ -43,11 +54,16 @@
 import InmueblePaginator from "../components/InmueblePaginator.vue";
 import InmuebleGrid from "../components/InmuebleGrid.vue";
 import InmuebleService from "../services/InmuebleService";
+import Carousel from 'primevue/carousel'
+import defaultCasaImagen from '@/assets/default-house.jpg';
+import defaultDepartamentoImagen from '@/assets/default-departamento.jpg';
+import defaultTerrenoImagen from '@/assets/default-terreno.jpg';
 
 export default {
   components: {
     InmueblePaginator,
     InmuebleGrid,
+    Carousel
   },
   data() {
     return {
@@ -71,6 +87,8 @@ export default {
   created() {
     this.inmuebleService = new InmuebleService();
     this.loadInmuebles();
+    this.loadTopInmuebles();
+
   },
   methods: {
     loadInmuebles() {
@@ -83,9 +101,23 @@ export default {
           this.first = 0;
         })
         .catch((error) => {
-          console.error("Error fetching inmuebles:", error);
+          console.error("Error al traer los inmuebles", error);
         });
     },
+
+    
+    // Función que permite cargar el top de inmuebles por likes para el carrusel
+    loadTopInmuebles() {
+  this.inmuebleService.getTopLikedInmuebles()
+    .then((response) => {
+      console.log("Top de inmuebles recibidos:", response.data); 
+      this.inmuebleRec = response.data;
+    })
+    .catch((error) => {
+      console.error("Error al traer los inmuebles", error);
+    });
+},
+
     onPageChange(event) {
       console.log("Page changed:", event);
       this.first = event.first;
@@ -165,5 +197,38 @@ button{
 
 .filtro-container button:hover {
   background-color: #024811; /* Color de fondo más oscuro al hacer hover */
+}
+
+
+/* estilos del carrusel */
+.carruselDeInmuebles .inmueble {
+  width: 300px; 
+  margin-right: 20px; 
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.carruselDeInmuebles .inmueble:hover {
+  transform: scale(1.1);  /* al pasar el mouse se agranda un poco */
+}
+
+.carruselDeInmuebles img { /* estilos imagen */
+  width: 100%;
+  height: 200px; 
+  object-fit: cover;
+}
+
+.carruselDeInmuebles .content {
+  padding: 10px;
+  background: #000000;
+}
+
+.carruselDeInmuebles h3, .carruselDeInmuebles p {
+  margin: 5px 0; /* Margen entre elementos */
+}
+
+.carruselDeInmuebles .pi {
+  margin-right: 4px;
 }
 </style>

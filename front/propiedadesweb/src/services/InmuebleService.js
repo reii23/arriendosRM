@@ -6,7 +6,9 @@ class InmuebleService {
   getAll() {
     return axios.get(API_URL);
   }
+
+  getTopLikedInmuebles(){
+    return axios.get(`${API_URL}/obtenerTopInmueblesPorMegusta`);
+  }
 }
-
 export default InmuebleService;
-
