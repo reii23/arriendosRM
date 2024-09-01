@@ -1,5 +1,5 @@
 -- Inserciones para 20 casas
-INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado, metros_cuadrados, comuna, id_usuario) VALUES
+INSERT INTO inmuebles (tipo_inmueble, direccion, precio, disponible, verificado, metros_cuadrados, comuna, id_usuario, me_gustas, tipo_operacion) VALUES
 ('CASA', 'Calle Londres 38', 695000000, true, false, 66, 'CONCHALI', 3, 0, 'vender'),
 ('CASA', 'Av. Providencia 1225', 850000000, true, true, 95, 'PROVIDENCIA', 3, 1, 'vender'),
 ('CASA', 'Pasaje Las Rosas 456', 520000000, false, true, 75, 'LA_FLORIDA', 3, 0, 'arrendar'),
