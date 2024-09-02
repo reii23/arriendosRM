@@ -199,18 +199,22 @@ public class InmuebleController {
     @GetMapping("/obtenerTopInmueblesPorMegusta")
     /**
      * Metodo que se encarga de obtener los inmuebles ordenados por me gusta
-     * @return lista de inmuebles
+     * @return lista de inmueblesA
      */
     public ResponseEntity<ArrayList<InmuebleModel>> obtenerTopInmueblesPorMeGusta() {
         ArrayList<InmuebleModel> inmueblesTotales = new ArrayList<>(inmuebleService.obtenerInmuebles()); // Se obtienen todos los inmuebles
-        ArrayList<InmuebleModel> inmueblesVerificados = obtenerInmueblesVerificados(inmueblesTotales); //
-        ArrayList<InmuebleModel> inmuebles = obtenerInmueblesEnArriendo(inmueblesVerificados);
+        ArrayList<InmuebleModel> inmuebles = obtenerInmueblesVerificados(inmueblesTotales);
 
         if (inmuebles.isEmpty()) {
             return ResponseEntity.noContent().build(); // Si no hay inmuebles, se retorna un 204
         }
         // Si hay inmuebles, se ordenan por me gusta
         ArrayList<InmuebleModel> resultado = inmuebleService.ordenarTopInmueblesPorMeGusta(inmuebles, 0, inmuebles.size() - 1);
+        // Obtengo los 10 primeros inmuebles
+        if (resultado.size() > 10) {
+            resultado = new ArrayList<>(resultado.subList(0, 10));
+        }
+
         return ResponseEntity.ok(resultado);
     }
 
