@@ -112,7 +112,7 @@ public class HorarioVisitaController {
         return this.horarioVisitaService.desagendarVisita(id);
     }
 
-    @DeleteMapping(path = "/agendarVisita/{id}")
+    @DeleteMapping(path = "/eliminarHorarioVisita/{id}")
     /**
      * Metodo que se encarga de agendar una visita
      * @param id id del horario de visita

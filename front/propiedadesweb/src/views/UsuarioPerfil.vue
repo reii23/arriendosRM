@@ -14,8 +14,8 @@
 			<h2>Mis Propiedades</h2>
 			<div v-if="propiedades" class="propiedades-lista">
 				<div v-for="propiedad in propiedades" :key="propiedad.id" class="propiedad-item">
-					<router-link :to="'/inmuebles/' + propiedad.id">
-						<strong>Dirección:</strong> {{ propiedad.direccion }} <br></router-link>
+					<router-link :to="'/inmuebles/' + propiedad.id"><strong>Ir a la propiedad</strong></router-link><br>
+					<strong>Dirección:</strong> {{ propiedad.direccion }} <br>
 					<strong>Precio:</strong> ${{ propiedad.precio.toLocaleString() }} <br>
 					<strong>Disponible:</strong> {{ propiedad.disponible ? 'Sí' : 'No' }} <br>
 					<strong>Verificado:</strong> {{ propiedad.verificado ? 'Sí' : 'No' }} <br>
@@ -26,11 +26,16 @@
 					 padding: 10px;border-radius: 8px; height: 180px; width: 200px; text-align: center">Crear Publicación</button>
 			</div>
 		</div>
-		<div v-if="usuario && (usuario.rol === 1 || usuario.rol === 0)" class="visitas-agendadas">
+		<div v-if="usuario && (usuario.rol === 1 || usuario.rol === 0)" class="mis-propiedades">
 			<h2>Mis Favoritos</h2>
-			<div v-if="propiedadesFavoritas" class="favoritos-lista">
+			<div v-if="propiedadesFavoritas" class="propiedades-lista">
 				<div v-for="propiedad in propiedadesFavoritas" :key="propiedad.id" class="favorito-item">
-					<strong>Propiedad:</strong> {{ propiedad.direccion }}<br>
+					<router-link :to="'/inmuebles/' + propiedad.id"><strong>Ir a la propiedad</strong></router-link><br>
+					<strong>Dirección:</strong> {{ propiedad.direccion }}<br>
+					<strong>Precio:</strong> ${{ propiedad.precio.toLocaleString() }} <br>
+					<strong>Disponible:</strong> {{ propiedad.disponible ? 'Sí' : 'No' }} <br>
+					<strong>Verificado:</strong> {{ propiedad.verificado ? 'Sí' : 'No' }} <br>
+					<strong>Comuna:</strong> {{ propiedad.comuna }} <br>
 				</div>
 			</div>
 		</div>
@@ -73,7 +78,7 @@
 						<strong>Hora:</strong> 18:00 - 19:30
 					</div>
 					<br>
-					<button @click="desagendarVisita(horario.id)"
+					<button @click="eliminarHorarioVisita(horario.id)"
 						style="width: 120px; height: 30px  ; background-color: #FFF"> Desagendar</button>
 				</div>
 			</div>
@@ -169,6 +174,16 @@ export default {
 				alert('Error al desagendar la visita');
 			}
 		},
+		async eliminarHorarioVisita(horarioId) {
+			try {
+				const respuesta = await axios.delete(`http://localhost:8080/horarioVisita/eliminarHorarioVisita/${horarioId}`);
+				this.obtenerHorariosGuia();
+				alert('Horario de visita eliminado correctamente');
+			} catch (error) {
+				console.error('Error al eliminar el horario de visita:', error);
+				alert('Error al eliminar el horario de visita');
+			}
+		},
 		async obtenerPropiedad(id) {
 			try {
 				const respuesta = await axios.get(`http://localhost:8080/inmuebles/${id}`);
@@ -237,9 +252,20 @@ h2 {
 	background-color: beige;
 	padding: 10px;
 	border-radius: 8px;
-	height: 180px;
-	width: 200px;
+	height: auto;
+	width: auto;
 	text-align: center;
 
+}
+
+.favorito-item {
+	font: 1em sans-serif;
+	color: black;
+	background-color: beige;
+	padding: 10px;
+	border-radius: 8px;
+	height: auto;
+	width: auto;
+	text-align: center;
 }
 </style>
