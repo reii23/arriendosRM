@@ -30,7 +30,7 @@ export default {
           'No poseer otra propiedad',
           'Ingresos familiares mensuales no superiores a $1,000,000',
         ],
-        monto: '$50,000 - $100,000',
+        monto: '$5,000,000 - $10,000,000',
       },
       {
         id: 2,
@@ -40,7 +40,7 @@ export default {
           'Inmueble ubicado en zona de renovación urbana',
           'Ingreso familiar dentro de los límites establecidos',
         ],
-        monto: '$30,000 - $70,000',
+        monto: '$3,000,000 - $7,000,000',
       },
       // Más subsidios pueden ser agregados aquí
     ]);
