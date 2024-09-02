@@ -185,6 +185,11 @@ export default {
           alert('Debe iniciar sesión como cliente para agendar una visita');
           return;
         }
+        // Si el id del usuario es igual al id del propietario de la propiedad, no se puede agendar visita
+        if (idUsuario == this.propiedad.idUsuario) {
+          alert('No puedes agendar una visita a tu propia propiedad');
+          return;
+        }
         await axios.post(`http://localhost:8080/horarioVisita/agendarVisita/${idHorario}/${idUsuario}`); // post de agendar visita
         alert('Visita agendada correctamente');
         // Actualizar horarios disponibles
