@@ -150,6 +150,8 @@ export default {
     },
     async obtenerHorariosPorFecha() {
       try {
+        // elimino los horarios anteriores
+        this.horariosPorFecha = [];
         const id = this.$route.params.id;
         const response = await axios.get(`http://localhost:8080/horarioVisita/obtenerHorariosVisitaPorFecha/${id}/${this.fechaSeleccionada}`); // Obtener horarios disponibles
         for (let i = 0; i < response.data.length; i++) {

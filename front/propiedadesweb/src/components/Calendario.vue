@@ -85,6 +85,7 @@ export default {
             return fecha.toLocaleDateString('es-ES', opciones).charAt(0).toUpperCase() + fecha.toLocaleDateString('es-ES', opciones).slice(1);
         },
         seleccionarDia(dia, indice) {
+
             this.diasVisibles.forEach((d, i) => d.seleccionado = i === indice);
             this.fechaSeleccionada = dia.fechaFormateada;
             this.$emit('fechaSeleccionada', dia.fechaFormateada); // Emitir el evento para la fecha seleccionada
